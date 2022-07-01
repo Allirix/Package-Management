@@ -1,18 +1,17 @@
 import { useMemo, useState } from "react";
 import "./Locations.css";
-import { useLocationsContext } from "../../utils/providers/LocationProvider";
+import { useDeliveryLocationsContext } from "../../utils/providers/LocationProvider";
 
 const suburbNames = ["Mitchelton", "Upper Kedron", "Gaythorne", "Keperra"];
 
 export default function LocationsView() {
   const [selectedSuburb, setSelectedSuburb] = useState(suburbNames[0]);
-  const { locations, remove, edit, add } = useLocationsContext();
+  const { deliveryLocations, remove, edit, add } =
+    useDeliveryLocationsContext();
 
   const suburbs = useMemo(
     () =>
-      locations.reduce((acc, l, id) => {
-        console.log(acc);
-
+      deliveryLocations.reduce((acc, l, id) => {
         const poi = {
           ...l,
           id,
@@ -23,9 +22,8 @@ export default function LocationsView() {
         else acc[l.suburb] = [poi];
         return acc;
       }, {}),
-    [locations]
+    [deliveryLocations]
   );
-  console.log(suburbs, locations);
   return (
     <>
       <div className="suburb-select">

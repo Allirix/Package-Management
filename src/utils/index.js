@@ -81,7 +81,6 @@ export const hammingDistance = (s1 = "", s2 = "") => {
   if (l1 !== l2) return Infinity;
   let d = 0;
   for (let i = 0; i < l1; i += 1) if (s1[i] !== s2[i]) d++;
-  if (d < 2) console.log(s1, s2, d, s1 === s2);
 
   return d;
 };

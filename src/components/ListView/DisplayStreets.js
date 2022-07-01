@@ -24,7 +24,8 @@ export default function DisplayStreets() {
 }
 
 const Suburb = ({ suburb }) => {
-  const { display, remove, toggle, show, showSuburb } = useStreetContext();
+  const { display, remove, toggle, show, showSuburb, averagePerHour } =
+    useStreetContext();
 
   const v = useMemo(
     () => ({
@@ -36,12 +37,18 @@ const Suburb = ({ suburb }) => {
 
   const length = display[suburb].length;
 
+  console.log(averagePerHour);
+
   return (
     <div className="suburb" onClick={v.setShow}>
       <div className="suburb-header">
         <span>{v.suburb}</span>
         <div>
-          <span>{length}</span>
+          <span>
+            {suburb === "Delivered"
+              ? Math.round(10 * averagePerHour) / 10 + "/hr"
+              : length}
+          </span>
           <img alt="" src="./img/down.png" />
         </div>
       </div>

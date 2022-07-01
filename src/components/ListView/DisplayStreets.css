@@ -32,7 +32,7 @@
 }
 
 .suburb-header div {
-  width: 40px;
+  width: 60px;
   display: flex;
   justify-content: space-between;
   align-items: space-between;
@@ -53,27 +53,23 @@
   background-color: #f1effd !important;
   box-shadow: 0 0 5px rgb(123, 123, 255);
   z-index: 3;
-  padding: 10px 10px;
+  padding: 10px 0;
 }
 
 .suburbs .suburb:first-of-type .streets .street:first-of-type .street-details {
-  transform: scale(1.1);
   transform-origin: left;
   transition: all 1s ease;
 }
 
 .suburbs .suburb:first-of-type .streets .street:first-of-type button {
-  transform: scaleX(1.1);
   transform-origin: right;
   transition: all 1s ease-out;
 }
 
 .suburbs .suburb:first-of-type .streets .street:first-of-type .parcels {
-  transform: scale(1.1);
   transform-origin: left;
   transition: all 1s ease-out;
   font-weight: 600;
-  margin-right: 10px;
 }
 
 .street {

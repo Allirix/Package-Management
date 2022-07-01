@@ -1,15 +1,21 @@
-import LocationProvider, { useLocationsContext } from "./LocationProvider";
+import LocationProvider, {
+  useDeliveryLocationsContext,
+} from "./LocationProvider";
 import StreetProvider, { useStreetContext } from "./StreetProvider";
-import PositionProvider, { usePositionContext } from "./PositionProvider";
+import MyPositionProvider, { useMyPositionContext } from "./MyPositionProvider";
 
 export default function Provider({ children }) {
   return (
-    <PositionProvider>
+    <MyPositionProvider>
       <LocationProvider>
         <StreetProvider>{children}</StreetProvider>
       </LocationProvider>
-    </PositionProvider>
+    </MyPositionProvider>
   );
 }
 
-export { useLocationsContext, useStreetContext, usePositionContext };
+export {
+  useDeliveryLocationsContext as useLocationsContext,
+  useStreetContext,
+  useMyPositionContext,
+};

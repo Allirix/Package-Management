@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { useLocationsContext } from "../utils/providers/LocationProvider";
-import { downloadObj } from "../utils/hooks/useLocations";
+import { useDeliveryLocationsContext } from "../utils/providers/LocationProvider";
+import { downloadObj } from "../utils/hooks/useDeliveryLocations";
 
 export default function Settings() {
   const [showAdd, setShowAdd] = useState(false);
 
-  const { handleChange, locations, reset, add } = useLocationsContext();
+  const { handleChange, deliveryLocations, reset, add } =
+    useDeliveryLocationsContext();
 
   return (
     <div>
@@ -24,7 +25,7 @@ export default function Settings() {
       <div className="action-btns">
         <button onClick={reset}>Reset</button>
         <button>
-          <a {...{ ...downloadObj(locations) }}>Download</a>
+          <a {...{ ...downloadObj(deliveryLocations) }}>Download</a>
         </button>
         <button onClick={() => setShowAdd((t) => !t)}>Add</button>
       </div>

@@ -1,13 +1,9 @@
 import { useMemo } from "react";
 import { getDistance } from "..";
-import { usePositionContext } from "../providers";
-import useHistory from "./useHistory";
-import useSelected from "./useSelected";
+import { useMyPositionContext } from "../providers";
 
-export const useStreets = (search) => {
-  const location = usePositionContext();
-  const { selected, remove, add, toggle, set } = useSelected();
-  const { addHistory, undo } = useHistory(set);
+export const useStreets = (search, selected) => {
+  const location = useMyPositionContext();
 
   const display = useMemo(() => {
     if (!selected) return {};
@@ -22,15 +18,27 @@ export const useStreets = (search) => {
       .reduce(toDictionary, {});
   }, [search, selected, location]);
 
+  const delivered = display?.Delivered?.reduce(
+    (acc, e) => {
+      const hr = new Date(e.time.delivered).getHours();
+      return {
+        ...acc,
+        [hr]: acc[hr] + 1,
+      };
+    },
+    { ...new Array(24).fill(0) }
+  );
+
+  const total =
+    delivered &&
+    Object.keys(delivered)
+      ?.map((e) => delivered[e])
+      .filter((e) => e > 0);
+
   return {
     suburbs: Object.keys(display),
     display,
-    selected,
-    set,
-    toggle: toggle(addHistory),
-    add: add(addHistory)(location),
-    remove,
-    undo,
+    averagePerHour: total?.reduce((acc, e) => acc + e, 0) / total?.length,
   };
 };
 

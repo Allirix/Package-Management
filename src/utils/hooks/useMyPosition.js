@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-export default function usePosition() {
+export default function useMyPosition() {
   const [position, setPosition] = useState({});
   const [error, setError] = useState(null);
 

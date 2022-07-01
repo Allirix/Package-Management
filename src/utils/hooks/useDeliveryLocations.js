@@ -1,15 +1,16 @@
-import { useEffect } from "react";
-
-import rawStreets from "../../data/streets.json";
+import init from "../../data/streets.json";
 import useLocalStorage from "./useLocalStorage";
 
-export const useLocations = () => {
-  const [locations, setLocations] = useLocalStorage("all-streets", rawStreets);
+export const useDeliveryLocations = () => {
+  const [deliveryLocations, setLocations] = useLocalStorage(
+    "all-streets",
+    init
+  );
 
   return {
-    locations,
+    deliveryLocations,
 
-    reset: () => setLocations(rawStreets),
+    reset: () => setLocations(init),
 
     remove: (id) => () =>
       setLocations((location) =>
@@ -33,7 +34,7 @@ export const useLocations = () => {
       });
     },
 
-    handleChange(e) {
+    loadFileOnEvent(e) {
       const reader = new FileReader();
       reader.readAsText(e.target.files[0], "UTF-8");
       reader.onload = (e) => setLocations(JSON.parse(e.target.result));

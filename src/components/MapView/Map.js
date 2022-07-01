@@ -8,7 +8,7 @@ import "./Map.css";
 import { Street } from "../ListView/DisplayStreets";
 
 import { useEffect, useState } from "react";
-import { useStreetContext, usePositionContext } from "../../utils/providers";
+import { useStreetContext, useMyPositionContext } from "../../utils/providers";
 
 // const subs = ["Mitchelton", "Upper Kedron", "Keperra", "Gaythorne"];
 const mapColors = ["red", "blue", "magenta", "green"]; // red, green, blue, yellow, cyan
@@ -78,19 +78,12 @@ const MapOptions = {
 };
 
 export default function MapView() {
-  // const [map, setMap] = useState(null);
-
+  const location = useMyPositionContext();
   const [centre, setCentre] = useState();
-
   const [updateMap, setUpdateMap] = useState(true);
 
   const toggleAutoUpdate = () => setUpdateMap((u) => !u);
-
   const { selected: streets, remove, toggle } = useStreetContext();
-  const location = usePositionContext();
-
-  // const onLoad = (map) => setMap(map);
-
   const [highlighted, setHighlighted] = useState(null);
 
   useEffect(() => {
@@ -104,8 +97,6 @@ export default function MapView() {
         streets[i].lng === e.latLng.lng()
       ) {
         setHighlighted(i);
-        // toggle(i)();
-
         break;
       }
     }
@@ -119,6 +110,11 @@ export default function MapView() {
             street={streets[highlighted]}
             remove={remove(highlighted)}
             toggle={toggle(highlighted)}
+            i={
+              streets[highlighted]?.time?.delivered?.getHours() +
+              ":" +
+              leadingZero(streets[highlighted]?.time?.delivered?.getMinutes())
+            }
           />
         )}
       </div>
@@ -144,12 +140,14 @@ export default function MapView() {
       >
         {streets &&
           streets.map((street, i) => {
-            const isDelivered = street.deliverNumber > 0;
+            const isDelivered = street.delivered;
             const label = {
               className:
                 "marker-label marker-label--" + street.suburb[0].toLowerCase(),
               text: isDelivered
-                ? street.deliverNumber + ""
+                ? street.time.delivered.getHours() +
+                  ":" +
+                  leadingZero(street.time.delivered.getMinutes())
                 : street.number + " " + street.name,
             };
             const position = { lat: street.lat, lng: street.lng };
@@ -181,3 +179,5 @@ export default function MapView() {
     </>
   );
 }
+
+const leadingZero = (num) => (num < 10 ? "0" + num : num);

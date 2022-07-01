@@ -1,12 +1,12 @@
 import { createContext, useContext } from "react";
-import usePosition from "../hooks/usePosition";
+import useMyPosition from "../hooks/useMyPosition";
 
 export const PositionContext = createContext();
 
-export const usePositionContext = () => useContext(PositionContext);
+export const useMyPositionContext = () => useContext(PositionContext);
 
 export default function PositionProvider({ children }) {
-  const position = usePosition();
+  const position = useMyPosition();
 
   return (
     <PositionContext.Provider value={position}>

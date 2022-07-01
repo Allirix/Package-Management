@@ -12,11 +12,12 @@ html {
   scrollbar-width: none;
   margin: 0;
   padding: 0;
+  --primary-color: blue;
+  --secondary-color: red;
 }
 
 body {
   margin: 0;
-  margin-bottom: 150px;
   padding: 0;
   -webkit-touch-callout: none;
   -webkit-user-select: none;

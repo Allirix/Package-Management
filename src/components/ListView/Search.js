@@ -13,7 +13,7 @@ export default function Search() {
   const style = { transform: `scale(${animation})`, transformOrigin: "bottom" };
 
   return (
-    <div className="search overlay-search" style={style}>
+    <div className="search overlay-search">
       <input
         placeholder="Search..."
         value={search[0].toUpperCase()}
@@ -22,7 +22,7 @@ export default function Search() {
       <button onClick={undo} className="reset">
         <img src={deleteIcon} alt="" />
       </button>
-      <button className="new">
+      <button className="new" style={style}>
         <Link to="/new/0">
           <img src={plusIcon} alt="" />
         </Link>

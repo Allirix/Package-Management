@@ -1,25 +1,27 @@
 import useLocalStorage from "./useLocalStorage";
 
-import { getLatLong, getDistance } from "../";
+import { getLatLong } from "..";
+import useHistory from "./useHistory";
 
 const startState = () => ({
   delivered: false,
-  deliverNumber: null,
   time: { added: new Date(), updated: null, delivered: null },
 });
 
-export default function useSelected() {
+export default function useAddedStreets() {
   const [selected, set] = useLocalStorage("selected", []);
+  const { addHistory, undo } = useHistory(set);
   const [show, _showSuburb] = useLocalStorage("show", {});
 
   return {
     selected,
     set,
     show,
+    undo,
     showSuburb: (e) => _showSuburb((s) => ({ ...s, [e]: !s[e] })),
     remove: (id) => () => set((s) => s.filter((e, i) => id !== i)),
     reset: () => [set([]), localStorage.removeItem("selected")],
-    add: (addHistory) => (location) => async (obj) => {
+    add: async (obj) => {
       const existing = selected.findIndex(findExisting(obj));
 
       if (existing === -1) {
@@ -28,7 +30,6 @@ export default function useSelected() {
           ...obj,
           ...googleMapsLoc,
           ...startState(),
-          distance: getDistance(googleMapsLoc, location),
         };
         set((streets) => {
           const newStreets = streets.concat(street);
@@ -36,15 +37,9 @@ export default function useSelected() {
           return newStreets;
         });
       } else {
-        console.log(obj.notes + " " + selected[existing].notes);
-        const street = {
-          ...selected[existing],
-          parcels: selected[existing].parcels.concat(obj.parcels),
-          notes: obj.notes + " " + selected[existing].notes,
-        };
         set((streets) => {
           let newStreets = streets.slice(0);
-          newStreets[existing] = street;
+          newStreets[existing] = obj;
           addHistory(newStreets);
           return newStreets;
         });
@@ -53,9 +48,8 @@ export default function useSelected() {
       _showSuburb((suburbs) => ({ ...suburbs, [obj.suburb]: true }));
     },
 
-    toggle: (addHistory) => (i) => () =>
+    toggle: (i) => () =>
       set((st) => {
-        console.log(st);
         let newStreet = st.slice(0);
 
         const wasDelivered = newStreet[i].delivered;
@@ -69,7 +63,7 @@ export default function useSelected() {
   };
 }
 
-const findExisting = (obj) => (e) =>
+export const findExisting = (obj) => (e) =>
   e.type === obj.type &&
   e.number === obj.number &&
   e.suburb === obj.suburb &&

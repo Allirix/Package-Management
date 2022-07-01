@@ -30,8 +30,6 @@ function Camera() {
     ctx.putImageData(preprocessImage(canvas), 0, 0);
     const dataUrl = canvas.toDataURL("image/jpeg");
 
-    console.log({ dataUrl, text, imageRef });
-
     Tesseract.recognize(dataUrl, "eng", {
       logger: (m) => {
         setProgress(m.progress);
@@ -45,8 +43,6 @@ function Camera() {
         // Get full output
         let text = result.data.text;
 
-        console.log(result);
-
         setText(text);
         // setPin(patterns);
       });
@@ -54,11 +50,8 @@ function Camera() {
 
   function handleTakePhoto(dataUri) {
     // Do stuff with the photo...
-    console.log("takePhoto");
 
     setSrc(dataUri);
-
-    console.log(dataUri);
   }
 
   return (
