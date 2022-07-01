@@ -11,10 +11,16 @@ import Provider from "./utils/providers";
 const rootElement = document.getElementById("root");
 const root = createRoot(rootElement);
 
+console.log(process.env.GOOGLE_KEY);
+
 root.render(
   <BrowserRouter>
     <Provider>
-      <LoadScript googleMapsApiKey="AIzaSyDYWeSF4f4A-3gVJtrZdaRy7vfBF3Xq6TY">
+      <LoadScript
+        googleMapsApiKey={
+          process.env.GOOGLE_KEY || "AIzaSyDYWeSF4f4A-3gVJtrZdaRy7vfBF3Xq6TY"
+        }
+      >
         <App />
       </LoadScript>
     </Provider>

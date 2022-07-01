@@ -16,8 +16,6 @@ const mapData = map.features.map((e) =>
   e.geometry.coordinates[0].map((c) => ({ lat: c[1], lng: c[0] }))
 );
 
-//AIzaSyDYWeSF4f4A-3gVJtrZdaRy7vfBF3Xq6TY
-
 const options = (i) => ({
   fillColor: mapColors[i],
   fillOpacity: 0.05,
@@ -111,9 +109,11 @@ export default function MapView() {
             remove={remove(highlighted)}
             toggle={toggle(highlighted)}
             i={
-              streets[highlighted]?.time?.delivered?.getHours() +
+              new Date(streets[highlighted]?.time?.delivered)?.getHours() +
               ":" +
-              leadingZero(streets[highlighted]?.time?.delivered?.getMinutes())
+              leadingZero(
+                new Date(streets[highlighted]?.time?.delivered)?.getMinutes()
+              )
             }
           />
         )}
@@ -145,9 +145,9 @@ export default function MapView() {
               className:
                 "marker-label marker-label--" + street.suburb[0].toLowerCase(),
               text: isDelivered
-                ? street.time.delivered.getHours() +
+                ? new Date(street.time.delivered).getHours() +
                   ":" +
-                  leadingZero(street.time.delivered.getMinutes())
+                  leadingZero(new Date(street.time.delivered).getMinutes())
                 : street.number + " " + street.name,
             };
             const position = { lat: street.lat, lng: street.lng };
