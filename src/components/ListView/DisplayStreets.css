@@ -1,0 +1,275 @@
+.suburbs {
+  border: 2px solid white;
+}
+.suburb {
+  padding: 10px 0;
+  box-shadow: inset 0px 10px 30px -15px #ffffff, 0px 5px 10px -10px #949494;
+  color: rgba(0, 0, 0, 0.9);
+  display: flex;
+  flex-direction: column;
+  font-family: "Montserrat", sans-serif;
+
+  background-color: rgb(246, 246, 246);
+
+  border-radius: 5px;
+}
+
+.suburb-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 15px 1em 20px 1em;
+}
+
+.suburb-header img {
+  color: black;
+  width: 20px;
+}
+
+.suburb-header span {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.suburb-header div {
+  width: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: space-between;
+}
+
+.suburb-header div span {
+  font-weight: 600;
+}
+
+.streets {
+  display: flex;
+  flex-direction: column;
+  transform-origin: top;
+  will-change: height, opacity;
+}
+
+.suburbs .suburb:first-of-type .streets .street:first-of-type {
+  background-color: #f1effd !important;
+  box-shadow: 0 0 5px rgb(123, 123, 255);
+  z-index: 3;
+  padding: 10px 10px;
+}
+
+.suburbs .suburb:first-of-type .streets .street:first-of-type .street-details {
+  transform: scale(1.1);
+  transform-origin: left;
+  transition: all 1s ease;
+}
+
+.suburbs .suburb:first-of-type .streets .street:first-of-type button {
+  transform: scaleX(1.1);
+  transform-origin: right;
+  transition: all 1s ease-out;
+}
+
+.suburbs .suburb:first-of-type .streets .street:first-of-type .parcels {
+  transform: scale(1.1);
+  transform-origin: left;
+  transition: all 1s ease-out;
+  font-weight: 600;
+  margin-right: 10px;
+}
+
+.street {
+  transition: all 1s ease-out;
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  grid-template-columns: 80px 1.5fr 60px 70px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px 0 rgba(255, 255, 255, 0.5),
+    inset 0 20px 20px -25px rgba(255, 255, 255, 1);
+  background-color: rgb(250, 250, 250);
+
+  width: 100%;
+  border: 1px solid white;
+}
+
+.parcels {
+}
+
+.parcel {
+  display: flex;
+  height: 50px;
+  width: 80px;
+}
+
+.p-color {
+  width: 40px;
+  box-shadow: inset 0 0 10px 0px black;
+  border-top-right-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+  margin: 5px 0;
+
+  border: 1px solid white;
+}
+
+.p-col {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  padding: 0 2px;
+}
+.p-row {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.p-size {
+  color: rgba(0, 0, 0, 0.7);
+  font-size: 1.5em;
+  font-weight: 400;
+  margin-right: 2px;
+}
+
+.p-type {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.p-type img {
+  height: 1.5em;
+}
+
+.p-label {
+  font-size: 10px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.show-street {
+}
+
+.p-delivered {
+  width: 100%;
+  height: 100%;
+  color: rgba(0, 128, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 900;
+}
+
+.street-details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 0 10px;
+  width: 100%;
+  height: 100%;
+}
+
+.name {
+  font-size: 14px;
+}
+
+.distance {
+  font-size: 10px;
+  font-weight: 100;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.name,
+.distance,
+.address-notes {
+  color: rgba(0, 0, 0, 1);
+  font-family: "Montserrat", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.distance,
+.address-notes {
+  font-size: 0.7em;
+  font-weight: 200 !important;
+  color: rgba(0, 0, 0, 0.85);
+  padding-right: 0.5em;
+}
+
+.address-notes {
+  font-size: 10px;
+  color: rgba(0, 0, 0, 0.5);
+  text-transform: uppercase;
+}
+
+.extra-details {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.delivered {
+  color: white;
+}
+.incomplete {
+  color: red;
+}
+
+.deliver,
+.delete {
+  border: 3px solid white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  margin: 2px;
+  height: 100%;
+  min-height: 60px;
+  width: 60px;
+  box-shadow: inset 0 10px 15px -10px rgba(255, 255, 255, 1),
+    0 1px 5px -3px black;
+}
+
+.deliver {
+  background-color: rgb(49, 49, 156);
+  margin-left: 10px;
+  font-size: 20px;
+}
+
+.delete {
+  background-color: rgb(165, 85, 85, 0.8);
+}
+
+.deliver img,
+.delete img {
+  border: none;
+  width: 28px;
+  padding: 5px;
+  filter: invert(100%);
+}
+
+.start-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 70vh;
+}
+
+.start-page h2 {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  color: rgb(43, 36, 141);
+  text-shadow: -2px -2px 0 white, -2px -1px 0 white, -2px 0px 0 white,
+    -2px 1px 0 white, -2px 2px 0 white, -1px -2px 0 white, -1px -1px 0 white,
+    -1px 0px 0 white, -1px 1px 0 white, -1px 2px 0 white, 0px -2px 0 white,
+    0px -1px 0 white, 0px 0px 0 white, 0px 1px 0 white, 0px 2px 0 white,
+    1px -2px 0 white, 1px -1px 0 white, 1px 0px 0 white, 1px 1px 0 white,
+    1px 2px 0 white, 2px -2px 0 white, 2px -1px 0 white, 2px 0px 0 white,
+    2px 1px 0 white, 2px 2px 0 white;
+}

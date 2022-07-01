@@ -1,0 +1,9 @@
+.react-html5-camera-photo {
+  height: 100vh !important;
+  width: 100vw !important;
+}
+
+video {
+  height: 100vh !important;
+  width: 100vw !important;
+}

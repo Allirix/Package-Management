@@ -1,0 +1,74 @@
+.suburb-select {
+  display: flex;
+  height: 50px;
+}
+
+.suburb-select button {
+  width: 100%;
+  text-transform: uppercase;
+  font-family: "Montserrat", sans-serif;
+  border: none;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.5);
+  background-color: white;
+  font-size: 10px;
+}
+
+.suburb-select button:disabled {
+}
+
+.location {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1.5fr 70px 50px;
+  height: 50px;
+  background-color: white;
+}
+
+.l-names,
+.l-type,
+.l-priority,
+.l-remove {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 5px;
+  color: black;
+  font-size: 16px;
+  font-family: "Montserrat", sans-serif;
+}
+
+.location input {
+  border-radius: 0;
+  border: none;
+  outline: none;
+  border-right: 1px solid rgb(219, 219, 219);
+  padding: 0 10px;
+}
+
+/* gmnoprint a,
+.gmnoprint span {
+  display: none;
+}
+.gmnoprint div {
+  background: none !important;
+}
+#GMapsID div div a div img {
+  display: none;
+} */
+
+.l-remove img {
+  height: 30px;
+  padding: 4px;
+  filter: invert(100%);
+}
+
+.l-remove {
+  background-color: rgb(165, 85, 85, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 5px 15px -10px rgba(255, 255, 255, 1) !important;
+  border: 2px solid white;
+  margin: 2px;
+  border-radius: 10px;
+}
