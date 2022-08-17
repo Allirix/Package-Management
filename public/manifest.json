@@ -17,6 +17,10 @@
     },
     {
       "platform": "webapp",
+      "url": "https://parcelio.vercel.app/"
+    },
+    {
+      "platform": "webapp",
       "url": "http://localhost:3000/"
     }
   ],
