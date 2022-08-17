@@ -9,12 +9,23 @@ export function getLocation() {
 }
 // address=24%20Sussex%20Drive%20Ottawa%20ON
 export async function getLatLong({ number, name, type, suburb }) {
+  console.warn("Request made to Google Maps API for ", {
+    number,
+    name,
+    type,
+    suburb,
+  });
   const addressString = `${number} ${name} ${type} ${suburb} Queensland Australia`;
   const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${addressString}&key=AIzaSyDYWeSF4f4A-3gVJtrZdaRy7vfBF3Xq6TY`;
+  let data = "ERROR";
 
-  const data = await (await fetch(url)).json();
-
-  return data.results[0].geometry.location;
+  try {
+    data = await (await fetch(url)).json();
+    return data.results[0].geometry.location;
+  } catch (e) {
+    console.error(e);
+    return data;
+  }
 }
 
 export function getDistance(location1, location2) {
@@ -32,7 +43,7 @@ export function getDistance(location1, location2) {
       Math.sin(dLon / 2);
   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   var d = R * c; // Distance in km
-  return d;
+  return (1000 * Math.round(d * 1000)) / 1000;
 }
 
 function deg2rad(deg) {

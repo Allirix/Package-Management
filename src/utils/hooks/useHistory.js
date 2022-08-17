@@ -13,11 +13,15 @@ import useLocalStorage from "./useLocalStorage";
  * const { addHistory, undo } = useHistory(set, 10);
  */
 
-export default function useHistory(set, limit = 5) {
+export default function useHistory(set, limit = 10) {
   // Local Storage State to store an array of previous values
   const [history, setH] = useLocalStorage("history", []);
   return {
-    addHistory: (s) => setH((h) => [s].concat(h.slice(0, limit + 1))),
+    addHistory: (s) => {
+      console.log(s);
+      setH((h) => [s, ...h.slice(0, limit + 1)]);
+      return s;
+    },
     undo: () => {
       if (history.length > 1 && history[1] !== {}) {
         //0 is current, 1 is previous

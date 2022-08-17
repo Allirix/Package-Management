@@ -1,16 +1,10 @@
 import { createContext, useContext } from "react";
-import { useDeliveryLocations } from "../hooks/useDeliveryLocations";
+import { useDeliveryLocations as _useDeliveryLocations } from "../hooks/useDeliveryLocations";
 
-export const LocationContext = createContext();
-
-export const useDeliveryLocationsContext = () => useContext(LocationContext);
+const Location = createContext();
+export const useDeliveryLocations = () => useContext(Location);
 
 export default function LocationProvider({ children }) {
-  const locations = useDeliveryLocations();
-
-  return (
-    <LocationContext.Provider value={locations}>
-      {children}
-    </LocationContext.Provider>
-  );
+  const value = _useDeliveryLocations();
+  return <Location.Provider value={value}>{children}</Location.Provider>;
 }

@@ -2,13 +2,10 @@ import init from "../../data/streets.json";
 import useLocalStorage from "./useLocalStorage";
 
 export const useDeliveryLocations = () => {
-  const [deliveryLocations, setLocations] = useLocalStorage(
-    "all-streets",
-    init
-  );
+  const [locations, setLocations] = useLocalStorage("all-streets", init);
 
   return {
-    deliveryLocations,
+    locations,
 
     reset: () => setLocations(init),
 

@@ -1,30 +1,11 @@
-import { LoadScript } from "@react-google-maps/api";
-// import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
-import { BrowserRouter } from "react-router-dom";
+import { register } from "./service-worker/serviceWorkerRegistration";
 
 import App from "./App";
-import "./styles.css";
-import Provider from "./utils/providers";
+import "./index.css";
 
-const rootElement = document.getElementById("root");
-const root = createRoot(rootElement);
+// render react app to <div id="root"/>
+createRoot(document.getElementById("root")).render(<App />);
 
-console.log(process.env.GOOGLE_KEY);
-
-root.render(
-  <BrowserRouter>
-    <Provider>
-      <LoadScript
-        googleMapsApiKey={
-          process.env.GOOGLE_KEY || "AIzaSyDYWeSF4f4A-3gVJtrZdaRy7vfBF3Xq6TY"
-        }
-      >
-        <App />
-      </LoadScript>
-    </Provider>
-  </BrowserRouter>
-);
-
-serviceWorkerRegistration.register();
+// register service worker
+register();

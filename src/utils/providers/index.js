@@ -1,21 +1,30 @@
-import LocationProvider, {
-  useDeliveryLocationsContext,
-} from "./LocationProvider";
-import StreetProvider, { useStreetContext } from "./StreetProvider";
-import MyPositionProvider, { useMyPositionContext } from "./MyPositionProvider";
+import { ChakraProvider } from "@chakra-ui/react";
+
+import LocationProvider, { useDeliveryLocations } from "./LocationProvider";
+import DeliveryDbProvider, { useDeliveryDb } from "./DeliveryDbProvider";
+import MyPositionProvider, { useMyPosition } from "./MyPositionProvider";
+
+import SortedDeliveryProvider, {
+  useSortedDelivery,
+} from "./SortedDeliveryDataProvider";
 
 export default function Provider({ children }) {
   return (
-    <MyPositionProvider>
-      <LocationProvider>
-        <StreetProvider>{children}</StreetProvider>
-      </LocationProvider>
-    </MyPositionProvider>
+    <ChakraProvider resetCSS={true}>
+      <DeliveryDbProvider>
+        <MyPositionProvider>
+          <LocationProvider>
+            <SortedDeliveryProvider>{children}</SortedDeliveryProvider>
+          </LocationProvider>
+        </MyPositionProvider>
+      </DeliveryDbProvider>
+    </ChakraProvider>
   );
 }
 
 export {
-  useDeliveryLocationsContext as useLocationsContext,
-  useStreetContext,
-  useMyPositionContext,
+  useDeliveryLocations,
+  useDeliveryDb,
+  useMyPosition,
+  useSortedDelivery,
 };

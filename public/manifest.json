@@ -4,8 +4,22 @@
   "display": "fullscreen",
   "scope": "/",
   "start_url": "/",
-  "name": "Parcel Management",
-  "short_name": "Parcels",
+  "name": "Parcelio",
+  "short_name": "Parcelio",
+  "related_applications": [
+    {
+      "platform": "webapp",
+      "url": "https://parcel-management.netlify.app/"
+    },
+    {
+      "platform": "webapp",
+      "url": "https://parcelio.netlify.app/"
+    },
+    {
+      "platform": "webapp",
+      "url": "http://localhost:3000/"
+    }
+  ],
   "icons": [
     {
       "src": "/icon-192x192.png",
@@ -24,6 +38,16 @@
     },
     {
       "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
       "sizes": "512x512",
       "type": "image/png"
     },

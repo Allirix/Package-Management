@@ -1,0 +1,170 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap");
+
+@import url("https://fonts.googleapis.com/css2?family=VT323&display=swap");
+
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu+Mono:wght@700&display=swap");
+
+@import url("https://fonts.googleapis.com/css2?family=Nunito&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans&display=swap");
+
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&family=Open+Sans&family=Quicksand&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap");
+* {
+  box-sizing: border-box !important;
+  /* outline: 1px solid black !important; */
+  /* background-color: rgba(0, 0, 0, 0.1); */
+  font-family: "Quicksand" !important;
+}
+
+*::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
+html {
+  scrollbar-width: none;
+  margin: 0;
+  padding: 0;
+  --primary-color: #d9263e;
+  --primary-color-light: hsl(352, 70%, 55%);
+  --primary-color-lightest: hsl(352, 70%, 60%);
+  /* https://codepen.io/sosuke/pen/Pjoqqp */
+  --primary-filter: invert(10%) sepia(91%) saturate(4630%) hue-rotate(346deg)
+    brightness(86%) contrast(90%);
+  --secondary-color: hsl(0, 0%, 0%);
+  --secondary-color-light: hsl(0, 0%, 10%);
+  --secondary-color-lightest: hsl(208, 89%, 15%);
+  --secondary-filter: invert(10%) sepia(10%) saturate(4357%) hue-rotate(170deg)
+    brightness(97%) contrast(104%);
+  --ternary-color: hsl(100, 50%, 50%);
+  --ternary-color-light: hsl(100, 50%, 50%);
+  --ternary-color-lightest: hsl(100, 50%, 50%);
+  --ternary-filter: invert(70%) sepia(21%) saturate(778%) hue-rotate(89deg)
+    brightness(89%) contrast(88%);
+
+  --white-dark: rgb(240, 230, 230);
+  --white: rgb(250, 245, 245);
+  --white-light: rgb(255, 250, 250);
+
+  --white-gradient: linear-gradient(
+    0deg,
+    var(--secondary-color) 0%,
+    var(--secondary-color-light) 100%
+  );
+
+  min-height: calc(100vh - 70px);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+a,
+button {
+  -webkit-tap-highlight-color: transparent !important;
+  -webkit-touch-callout: none !important;
+  -webkit-user-select: none !important;
+  -khtml-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+
+a:focus {
+  outline: none !important;
+}
+
+.App {
+  font-family: "Open Sans", sans-serif;
+  text-align: center;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+nav {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 60px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: var(--white-gradient);
+  color: black;
+  z-index: 100;
+  border-top: 1px solid var(--white-gradient);
+}
+nav button span {
+  font-size: 10px;
+  font-weight: 600;
+  font-family: "Montserrat", sans-serif;
+}
+nav button {
+  width: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  background-color: transparent;
+  color: var(--ternary-color-lightest);
+  padding: 5px;
+  border: none;
+  transition: all 0.5s;
+}
+
+.bottom-nav button {
+  padding-bottom: 3px;
+  filter: var(--ternary-filter);
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+.selected img {
+  filter: white;
+}
+.selected span {
+}
+
+.top-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  color: var(--ternary-color-lightest);
+
+  z-index: 100;
+  background: var(--white-gradient);
+}
+
+.top-nav img {
+  height: 50px;
+  padding: 15px;
+  filter: var(--ternary-filter);
+}
+
+.top-nav a {
+  height: 50px;
+}

@@ -1,0 +1,298 @@
+.suburbs {
+  margin: auto;
+
+  margin-bottom: 130px;
+  max-width: 800px;
+}
+
+.suburbs .suburb:nth-of-type(1) {
+}
+
+.suburb {
+  display: flex;
+  flex-direction: column;
+
+  font-family: "Montserrat", sans-serif;
+
+  margin: 0;
+  border: none;
+}
+
+.suburb-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: white;
+  padding: 1rem 0.5rem !important;
+}
+
+.suburb-header img {
+  color: black;
+  width: 20px;
+  margin-left: 0.3rem;
+  transition: all 0.2s;
+  filter: var(--ternary-filter);
+}
+
+.suburb-header span {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ternary-color-lightest);
+}
+
+.suburb-header div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.suburb-header div span {
+}
+
+.streets {
+  display: flex;
+  flex-direction: column;
+  transform-origin: top;
+  will-change: height, opacity;
+  padding: 0 !important;
+}
+
+.delivery:nth-child(2n) {
+  background: var(--secondary-color);
+}
+
+.street {
+  display: grid;
+  grid-template-columns: fit-content(100%) 1fr fit-content(100%);
+  flex-direction: row;
+  justify-items: center;
+  align-items: center;
+
+  width: 100%;
+}
+
+#first {
+  z-index: 3;
+  border-bottom: 2px solid var(--ternary-color);
+  border-top: 2px solid var(--ternary-color);
+  /* background-color: var(--secondary-color-lightest); */
+}
+
+.street-location {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: column;
+
+  width: 100%;
+}
+
+.street-controls {
+  display: flex;
+  flex-direction: row;
+  align-items: space-between;
+  justify-content: center;
+  height: 100%;
+  width: fit-content;
+}
+
+.street-name {
+  width: 100%;
+  font-size: 1.1em;
+  font-weight: 600;
+  text-align: left;
+  font-family: "Montserrat", sans-serif;
+  text-transform: uppercase;
+  color: white;
+}
+
+.street-notes {
+  font-size: 10px;
+  color: white;
+  text-transform: uppercase;
+  text-align: left;
+  word-break: break-all;
+}
+
+.parcels {
+  display: flex;
+  flex-wrap: wrap;
+  width: fit-content;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.parcel {
+  font-family: "Montserrat", sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 2px;
+  width: 60px;
+  height: 30px;
+  border-radius: 0.5rem;
+  margin: 0.25rem 0.2rem 0.25rem 0.2rem;
+}
+
+.p-size {
+  font-size: 0.9em;
+  width: 1.5em;
+  height: 1.5em;
+
+  background-color: hsl(0, 0%, 50%);
+  text-align: center;
+}
+
+.p-type {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background-color: white;
+  width: 2.2em;
+  color: white;
+  font-weight: 900;
+  border-radius: 5px;
+}
+
+.p-type img {
+  height: 1.5em;
+  width: 1.5em;
+
+  padding: 5px;
+  /* filter: invert(100%); */
+}
+
+.show-street {
+}
+
+.p-delivered {
+  width: 2.5rem;
+  height: 100%;
+  color: var(--ternary-color-lightest);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-weight: 600;
+}
+
+.name {
+  font-size: 18px;
+}
+
+.distance {
+  font-size: 10px;
+  font-weight: 100;
+  color: rgba(0, 0, 0, 0.5);
+  width: 3rem;
+  text-align: left;
+}
+
+.name,
+.distance,
+.address-notes {
+  color: rgba(0, 0, 0, 1);
+  font-family: "Montserrat", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.distance,
+.address-notes {
+  font-size: 0.7em;
+  font-weight: 200 !important;
+  color: rgba(0, 0, 0, 0.85);
+  padding-right: 0.5em;
+}
+
+.delivered {
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-family: "Montserrat", sans-serif;
+}
+.incomplete {
+  color: red;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60px;
+  width: 60px;
+  border-radius: 10px;
+  /* box-shadow: inset 1px 1px 3px -2px white; */
+}
+
+.button img {
+  border: none;
+  width: 28px;
+  padding: 5px;
+  filter: var(--ternary-filter);
+}
+
+.deliver {
+  background-color: var(--ternary-color);
+  font-size: 20px;
+  border: none;
+}
+
+.deliver img {
+  filter: var(--secondary-filter);
+}
+
+.delete {
+  background-color: var(--primary-color);
+}
+
+.deliver img,
+.delete img {
+  border: none;
+  width: 28px;
+  padding: 5px;
+  filter: invert(100%);
+}
+
+.start-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.start-page div h2 {
+  padding-bottom: 0.5em;
+}
+/* Tutorial on https://fossheim.io/writing/posts/css-text-gradient. */
+
+.gradient-text {
+  /* Fallback: Set a background color. */
+
+  /* Create the gradient. */
+
+  /* Set the background size and repeat properties. */
+  background-size: 100%;
+  background-repeat: repeat;
+
+  /* Use the text as a mask for the background. */
+  /* This will show the gradient as a text color rather than element bg. */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-background-clip: text;
+  -moz-text-fill-color: transparent;
+  /* -webkit-text-stroke: 1px white; */
+  stroke: white;
+  stroke-width: 1px;
+}
+
+svg {
+  background: linear-gradient(
+    90deg,
+    #ff3b3b 50%,
+    rgba(55, 66, 253, 1) 50%
+  ) !important;
+  -moz-text-fill-color: transparent !important;
+  -moz-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+}
