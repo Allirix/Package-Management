@@ -1,8 +1,8 @@
 import { Button, Flex } from "@chakra-ui/react";
 
 export const atlStates = {
-  0: { name: "ATL", color: "rgba(0,200,0,0.7)" },
-  1: { name: "UNK", color: "rgba(200,100,0,0.7)" },
+  0: { name: "UNK", color: "rgba(200,100,0,0.7)" },
+  1: { name: "ATL", color: "rgba(0,200,0,0.7)" },
   2: { name: "SIG", color: "rgba(200,0,0,0.7)" },
 };
 

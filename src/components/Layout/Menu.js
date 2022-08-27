@@ -8,12 +8,28 @@ import {
   Button,
   Stack,
   Flex,
+  useClipboard,
 } from "@chakra-ui/react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { menu } from "../../routes";
+import { useDeliveryDb } from "../../utils/providers";
+
+import {
+  compressToEncodedURIComponent,
+  decompressFromEncodedURIComponent,
+} from "lz-string";
+import { useCopyToClipboard } from "react-use";
 
 export default () => {
+  const [state, copyToClipboard] = useCopyToClipboard();
+
+  const { selected, dispatch } = useDeliveryDb();
+
+  const url = compressToEncodedURIComponent(JSON.stringify(selected));
+
+  console.log({ state, url });
+
   return (
     <Flex justifyContent="center">
       <Popover placement="bottom" isLazy>
@@ -35,6 +51,23 @@ export default () => {
                   </Button>
                 </Link>
               ))}
+              <Button onClick={() => copyToClipboard(url)}>Export</Button>
+              <Button
+                onClick={() =>
+                  navigator.clipboard.readText().then((text) => {
+                    const data = JSON.parse(
+                      decompressFromEncodedURIComponent(text)
+                    );
+                    if (!data)
+                      alert(
+                        `Invalid data - ${text}. Attempted to convert to: ${data}`
+                      );
+                    dispatch("overwrite", data);
+                  })
+                }
+              >
+                Import
+              </Button>
             </Stack>
           </PopoverBody>
         </PopoverContent>
