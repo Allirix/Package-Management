@@ -417,11 +417,7 @@
     "name": "Princess",
     "suburb": "Mitchelton"
   },
-  {
-    "type": "Rd",
-    "name": "Prospect",
-    "suburb": "Mitchelton"
-  },
+
   {
     "type": "Pde",
     "name": "Railway",
@@ -645,11 +641,6 @@
   {
     "type": "St",
     "name": "Blackbutt",
-    "suburb": "Keperra"
-  },
-  {
-    "type": "Rd",
-    "name": "Blaker",
     "suburb": "Keperra"
   },
   {
@@ -1211,11 +1202,7 @@
     "name": "Dunkirk",
     "suburb": "Gaythorne"
   },
-  {
-    "type": "St",
-    "name": "Elbury",
-    "suburb": "Gaythorne"
-  },
+
   {
     "type": "St",
     "name": "Ernest",
@@ -1508,11 +1495,6 @@
   {
     "type": "Cr",
     "name": "Forbes",
-    "suburb": "Upper Kedron"
-  },
-  {
-    "type": "Rd",
-    "name": "Glengarry",
     "suburb": "Upper Kedron"
   },
   {

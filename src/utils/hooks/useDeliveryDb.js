@@ -86,6 +86,8 @@ export const actions = {
     );
   },
 
+  overwrite: (deliveries, payload) => payload,
+
   editParcel: (deliveries, { id, index, parcel }) => {
     let parcels = deliveries.find((d) => d.id === id).parcels.slice(0);
     parcels[index] = parcel;
