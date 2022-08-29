@@ -88,7 +88,11 @@ const Header = ({ setShowDelivered, showDelivered }) => {
       />
       <InfoCard Icon={BsSquareHalf} value={parcels} title="Parcels" />
       <InfoCard value={locations} title="Places" Icon={FiMapPin} />
-      <InfoCard value={[average, "hr"]} title="Speed" Icon={BiRun} />
+      <InfoCard
+        value={[Math.round(average * 10) / 10, "hr"]}
+        title="Speed"
+        Icon={BiRun}
+      />
       <B
         onClick={() => setShowDelivered((s) => !s)}
         Icon={showDelivered ? ImShrink : FaExpandArrowsAlt}
