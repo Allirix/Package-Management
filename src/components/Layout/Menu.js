@@ -60,7 +60,7 @@ export default () => {
                       decompressFromEncodedURIComponent(text)
                     );
 
-                    alert(data);
+                    alert(JSON.stringify(data));
                     if (!data)
                       alert(
                         `Invalid data - ${text}. Attempted to convert to: ${data}`
