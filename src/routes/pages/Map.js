@@ -20,8 +20,9 @@ import {
   useMyPosition,
   useSortedDelivery,
 } from "../../utils/providers";
-import FirstDelivery from "../../components/Deliveries/FirstDelivery";
+import FirstDelivery from "../../components/FirstDelivery";
 import useLocalStorage from "../../utils/hooks/useLocalStorage";
+import { Loading } from "../../components/Layout/Layout";
 
 // const subs = ["Mitchelton", "Upper Kedron", "Keperra", "Gaythorne"];
 const mapColors = ["red", "blue", "magenta", "green"]; // red, green, blue, yellow, cyan
@@ -226,16 +227,6 @@ const Overlay = () => {
 
   return <Flex p="0">{street}</Flex>;
 };
-
-const Loading = () => (
-  <Spinner
-    thickness="4px"
-    speed="0.65s"
-    emptyColor="gray.200"
-    color="blue.500"
-    size="xl"
-  />
-);
 
 const generateWaypoints = (undelivered) =>
   undelivered

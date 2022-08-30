@@ -55,9 +55,12 @@ export default () => {
               <Button
                 onClick={() =>
                   navigator.clipboard.readText().then((text) => {
+                    alert(text);
                     const data = JSON.parse(
                       decompressFromEncodedURIComponent(text)
                     );
+
+                    alert(data);
                     if (!data)
                       alert(
                         `Invalid data - ${text}. Attempted to convert to: ${data}`

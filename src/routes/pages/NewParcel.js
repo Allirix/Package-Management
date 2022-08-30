@@ -1,6 +1,6 @@
 import {
   useNewParcel,
-  Street,
+  Street as Place,
   FinalStep,
   NameInput,
   NumberInput,
@@ -81,11 +81,7 @@ export default function NewParcel() {
       boxShadow="0 0 10px black"
     >
       <Caption title={titles[np.step] ?? "Error 404"} />
-      <Street
-        street={np.newStreet}
-        toggle={np.complete("/deliveries")}
-        editATL={np.setATL}
-      />
+      <Place street={np.newStreet} editATL={np.setATL} show={false} />
       {step}
     </Flex>
   );

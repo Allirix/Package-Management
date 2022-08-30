@@ -1,6 +1,7 @@
 import { Flex } from "@chakra-ui/react";
+import { useMemo } from "react";
 import Parcel from "./Parcel";
-import { useParcelPopup } from "./PopupProvider";
+import { useParcelPopup } from "../Popup/PopupProvider";
 
 export default ({ parcels, id }) => {
   const popup = useParcelPopup();

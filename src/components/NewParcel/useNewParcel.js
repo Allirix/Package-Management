@@ -4,10 +4,10 @@ import useLocalStorage from "../../utils/hooks/useLocalStorage";
 
 export const defaultStreet = {
   parcels: [],
-  suburb: "",
+  suburb: "Suburb auto added",
   type: "",
   number: null,
-  name: "",
+  name: "<insert-street>",
   count: 0,
   delivered: false,
   atl: 0,
@@ -27,7 +27,7 @@ export const useNewParcel = () => {
   const setValue = (key) => (value) =>
     setNewStreet((s) => ({ ...s, [key]: value }));
 
-  const setATL = (value) => setValue("atl")(value);
+  const setATL = () => setValue("atl")((newStreet.atl + 1) % 3);
 
   const setNumber = (value) => [setValue("number")(value), next()];
 
@@ -69,7 +69,6 @@ export const useNewParcel = () => {
         ...newStreet,
         parcels: newStreet.parcels,
       };
-      console.log(payload);
 
       dispatch("add", payload);
       reset();

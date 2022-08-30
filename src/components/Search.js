@@ -2,7 +2,7 @@ import { Button, Flex, Input } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { ImUndo } from "react-icons/im";
 import { BsPlusLg } from "react-icons/bs";
-import { useDeliveryDb, useSortedDelivery } from "../../utils/providers";
+import { useDeliveryDb, useSortedDelivery } from "../utils/providers";
 
 export default function Search() {
   const { search, setSearch } = useSortedDelivery();

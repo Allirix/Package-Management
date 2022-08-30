@@ -3,9 +3,9 @@ import { BiRun } from "react-icons/bi";
 import { BsSquareHalf } from "react-icons/bs";
 import { FiMapPin } from "react-icons/fi";
 
-import FirstParcel from "../Deliveries/FirstDelivery";
+import FirstParcel from "../src/components/FirstDelivery";
 import PercentageCard from "./PercentageCard";
-import useStatCard from "./useStatCard";
+import useStatCard from "../src/utils/hooks/useStatCard";
 import ClosestPlace from "./ClosestPlace";
 import InfoCard from "./InfoCard";
 

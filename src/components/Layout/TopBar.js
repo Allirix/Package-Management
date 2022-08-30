@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Flex } from "@chakra-ui/react";
 import { HiOutlineChevronLeft } from "react-icons/hi";
-import Search from "../Deliveries/Search";
+import Search from "../Search";
 import Menu from "./Menu";
 
 export default () => {

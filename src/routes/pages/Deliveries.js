@@ -7,19 +7,21 @@ import { BiReset } from "react-icons/bi";
 import { ImShrink } from "react-icons/im";
 import { FaExpandArrowsAlt } from "react-icons/fa";
 
-import AddFirstParcel from "../../components/Deliveries/FirstDelivery";
-import "../../components/Deliveries/DisplayStreets.css";
+import AddFirstParcel from "../../components/FirstDelivery";
+import "../../components/Deliveries/Delivery.css";
 
-import ParcelPopup from "../../components/Deliveries/Parcel/Popup";
-import { ParcelPopupProvider } from "../../components/Deliveries/Parcel/PopupProvider";
-import InfoCard from "../../components/Home/InfoCard";
-import useStatCard from "../../components/Home/useStatCard";
+import { FiDatabase } from "react-icons/fi";
+
+import ParcelPopup from "../../components/Deliveries/Popup/Popup";
+import { ParcelPopupProvider } from "../../components/Deliveries/Popup/PopupProvider";
+import InfoCard from "../../components/InfoCard";
+import useStatCard from "../../utils/hooks/useStatCard";
 import { useMemo, useState } from "react";
 import { useDeliveryDb, useSortedDelivery } from "../../utils/providers";
 import Place from "../../components/Deliveries/Place";
+import FirstDelivery from "../../components/FirstDelivery";
 
 export default function Deliveries() {
-  const { dispatch } = useDeliveryDb();
   const { undelivered, isEmpty, delivered } = useSortedDelivery();
 
   const [showDelivered, setShowDelivered] = useState(false);
@@ -27,21 +29,9 @@ export default function Deliveries() {
   // memoise list to ignore rerendering from parent updates
   const suburbList = useMemo(() => {
     const values = showDelivered ? delivered : undelivered;
-    return values.map((street) => (
-      <Place
-        key={street.id}
-        i={street.id}
-        street={street}
-        remove={() => dispatch("remove", street.id)}
-        toggle={() => dispatch("toggle", street.id)}
-        editATL={(value) =>
-          dispatch("edit", { id: street.id, key: "atl", value })
-        }
-      />
-    ));
-  }, [undelivered, delivered, showDelivered, dispatch]);
-
-  console.log(showDelivered);
+    if (values.length === 0) return <FirstDelivery />;
+    return values.map((street) => <Place key={street.id} street={street} />);
+  }, [undelivered, delivered, showDelivered]);
 
   if (isEmpty && !showDelivered)
     return (
@@ -78,14 +68,14 @@ const Header = ({ setShowDelivered, showDelivered }) => {
       alignItems="space-between"
       w="100%"
       bg="var(--secondary-color)"
-      borderBottom="1px solid rgba(255,255,255,0.4)"
+      borderBottom="1px solid var(--ternary-color)"
       p="12px"
     >
-      <B
+      {/* <B
         onClick={() => dispatch("reset")}
         Icon={BiReset}
         color="var(--primary-color)"
-      />
+      /> */}
       <InfoCard Icon={BsSquareHalf} value={parcels} title="Parcels" />
       <InfoCard value={locations} title="Places" Icon={FiMapPin} />
       <InfoCard
@@ -93,10 +83,7 @@ const Header = ({ setShowDelivered, showDelivered }) => {
         title="Speed"
         Icon={BiRun}
       />
-      <B
-        onClick={() => setShowDelivered((s) => !s)}
-        Icon={showDelivered ? ImShrink : FaExpandArrowsAlt}
-      ></B>
+      <B onClick={() => setShowDelivered((s) => !s)} Icon={FiDatabase}></B>
     </Flex>
   );
 };

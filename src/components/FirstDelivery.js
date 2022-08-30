@@ -1,17 +1,17 @@
 import { Link } from "react-router-dom";
 import { BsPlusLg } from "react-icons/bs";
 import { Button, Flex, Text } from "@chakra-ui/react";
-import { useDeliveryDb } from "../../utils/providers";
+// import { useDeliveryDb } from "../utils/providers";
 
 export default () => {
-  const { set } = useDeliveryDb();
+  // const { set } = useDeliveryDb();
 
   return (
     <Link to="/new/0">
       <Flex justifyContent="center" alignItems="center" h="60vh">
         <Flex flexDir="column" alignItems="center" gap="1rem">
           <Text
-            color="var(--secondary-color)"
+            color="var(--ternary-color-lightest)"
             fontSize="32px"
             fontWeight="900"
             fontFamily="'Montserrat', sans-serif"
@@ -21,7 +21,7 @@ export default () => {
           <Button transform="scale(2)" bg="var(--)">
             <BsPlusLg color="var(--ternary-color)" />
           </Button>
-          <Button
+          {/* <Button
             onClick={(e) => {
               e.stopPropagation();
               e.preventDefault();
@@ -29,7 +29,7 @@ export default () => {
             }}
           >
             {"Load test Data".toUpperCase()}
-          </Button>
+          </Button> */}
         </Flex>
       </Flex>
     </Link>

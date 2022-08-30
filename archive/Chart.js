@@ -2,8 +2,8 @@ import React from "react";
 import { Chart } from "react-google-charts";
 
 import { Flex } from "@chakra-ui/react";
-import { useDeliveryDb } from "../../utils/providers";
-import { countHours } from "../../utils/hooks/utils";
+import { useDeliveryDb } from "../src/utils/providers";
+import { countHours } from "../src/utils/hooks/utils";
 
 export const options = {
   backgroundColor: "transparent",

@@ -24,8 +24,8 @@ export default ({ color, type, size, onClick }) => {
       w="60px"
       padding="0px"
       gap={"4px"}
-      borderRadius={"5px"}
-      boxShadow={`inset 1px 1px 3px -2px white, 0px 0px 4px ${pColor}, 2px 2px 5px -2px black`}
+      borderRadius={"4px"}
+      boxShadow={`inset 1px 1px 3px -2px white, 0px 0px 3px white, 2px 2px 5px -2px black`}
       background={pColor}
     >
       <Flex

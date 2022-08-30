@@ -49,9 +49,8 @@ export const nonColor = {
   BLUE: "#1D45CC",
   GREEN: "#24BD24",
   YELLOW: "#e6ba00",
+  PICKUP: "radial-gradient(circle, yellow 19%, red 100%)",
 };
-
-export const options = [7, 8, 9, 4, 5, 6, 1, 2, 3, "Reset", 0, "Next"];
 
 export const popular = [
   { color: "TARGET", type: "BOX", size: "S" },
@@ -66,9 +65,14 @@ export const popular = [
   { color: "TP", type: "BOX", size: "S" },
   { color: "TP", type: "BOX", size: "M" },
   { color: "TP", type: "BOX", size: "L" },
+  { color: "PICKUP", type: "PICKUP", size: "P" },
+
   { color: "BROWN", type: "BOX", size: "S" },
   { color: "BROWN", type: "BOX", size: "M" },
   { color: "BROWN", type: "BOX", size: "L" },
 ];
 
-export const TYPE = { BOX: "rgba(100,50,0,0.5)", BAG: "rgba(255,255,255,0.5)" };
+export const TYPE = {
+  BOX: "rgba(100,50,0,0.5)",
+  BAG: "rgba(255,255,255,0.5)",
+};

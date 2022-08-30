@@ -6,6 +6,7 @@ export const ControlButton = ({
   title,
   color = "var(--ternary-color-lightest)",
   background = "var(--secondary-color)",
+  ...styles
 }) => {
   return (
     <Button
@@ -19,6 +20,7 @@ export const ControlButton = ({
         `2px 2px 10px -8px black, -2px -2px 10px -8px ${color}, inset 2px 2px 2px -3px white, 0 0 10px -5px black, inset 0 0 4px -2px ` +
         color
       }
+      {...{ ...styles }}
     >
       <Flex flexDir="column" alignItems="center" gap="4px">
         {Icon && <Icon size="30px" filter={`drop-shadow(0 0 2px ${color} )`} />}

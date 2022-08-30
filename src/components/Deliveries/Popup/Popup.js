@@ -1,6 +1,6 @@
 import { Button, Flex, Select, Stack, Text } from "@chakra-ui/react";
 
-import Parcel from "./Parcel";
+import Parcel from "../Parcel/Parcel";
 import { colors } from "../utils";
 import { useParcelPopup } from "./PopupProvider";
 import MainModal from "../../Modal";

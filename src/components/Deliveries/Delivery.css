@@ -1,0 +1,9 @@
+.delivery:nth-child(2n) {
+  background: var(--secondary-color);
+}
+
+#first {
+  z-index: 3;
+  border-bottom: 2px solid var(--ternary-color);
+  border-top: 2px solid var(--ternary-color);
+}
