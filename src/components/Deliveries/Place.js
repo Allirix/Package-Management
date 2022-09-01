@@ -9,7 +9,15 @@ import { useDeliveryDb } from "../../utils/providers";
 export default ({ street: place, editATL, show = true }) => {
   const { dispatch } = useDeliveryDb();
 
-  if (!place?.number) return <EmptyPlace />;
+  console.log(!place?.number ^ !place?.name, !place?.number, !place?.name);
+
+  // true when no number, but false if name
+  // always true when no name
+
+  // false when number
+  // false when name
+
+  if (!place?.number && !place?.name) return <EmptyPlace />;
 
   return (
     <Flex
@@ -92,7 +100,7 @@ const DeliveryInformation = ({ editATL, place }) => {
   const { name, number, atl, distance, parcels } = place;
   return (
     <Flex alignItems="center" gap="4px" justifyContent="flex-start" h="72px">
-      {number && name && (
+      {(number || name) && (
         <Flex
           flexDirection="column"
           w="50px"

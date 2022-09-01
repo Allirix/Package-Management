@@ -9,7 +9,7 @@ import {
   Caption,
 } from "../../components/NewParcel";
 import "../../components/NewParcel/NewParcel.css";
-import { Flex } from "@chakra-ui/react";
+import { Flex, useToast } from "@chakra-ui/react";
 import {
   useSearchParams,
   createSearchParams,
@@ -86,6 +86,8 @@ const useNewParcel = () => {
 
   const [place, setPlace] = useState(getInitialState(p, selected));
 
+  const toast = useToast();
+
   function reset() {
     console.log(getInitialState(p, selected)(), p, placeProp);
     setPlace(placeProp);
@@ -129,7 +131,20 @@ const useNewParcel = () => {
     place,
     setParam,
     nextParcel: () => nav(getUrlParamsFromPlace("2", place)),
-    complete: (url) => (nav(url), dispatch("add", place), reset()),
+    complete: (url) => (
+      nav(url),
+      dispatch("add", place),
+      reset(),
+      toast({
+        title: "Place added.",
+        description: `Added ${place.parcels.length} parcels to ${place.name} ${
+          place.type
+        }, ${place.suburb}. (${place?.lat ? "append" : "add"})`,
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      })
+    ),
   };
   // number, name, type, suburb,
 };
