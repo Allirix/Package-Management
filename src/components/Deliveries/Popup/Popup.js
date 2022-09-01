@@ -1,4 +1,4 @@
-import { Button, Flex, Select, Stack, Text } from "@chakra-ui/react";
+import { Button, Flex, Input, Select, Stack, Text } from "@chakra-ui/react";
 
 import Parcel from "../Parcel/Parcel";
 import { colors } from "../utils";
@@ -23,11 +23,11 @@ export default () => {
 
 const Header = () => {
   const { selected } = useParcelPopup();
-  const { type, size, color } = selected.parcel;
+  const { type, size, color, count } = selected.parcel;
 
   return (
     <Text>
-      {type} {color} {size}
+      {type} {color} {size} {count ? count : 1}
     </Text>
   );
 };
@@ -53,7 +53,7 @@ const Footer = () => {
 
 const Body = () => {
   const { selected, handleChange } = useParcelPopup();
-  const { type, size, color } = selected.parcel;
+  const { type, size, color, count } = selected.parcel;
 
   return (
     <Stack>
@@ -63,7 +63,9 @@ const Body = () => {
         onChange={handleChange("type")}
       >
         {["BAG", "BOX"].map((option) => (
-          <option value={option}>{option}</option>
+          <option value={option} key={option}>
+            {option}
+          </option>
         ))}
       </Select>
       <Select
@@ -72,7 +74,9 @@ const Body = () => {
         onChange={handleChange("size")}
       >
         {["L", "M", "S"].map((option) => (
-          <option value={option}>{option}</option>
+          <option value={option} key={option}>
+            {option}
+          </option>
         ))}
       </Select>
       <Select
@@ -81,11 +85,14 @@ const Body = () => {
         onChange={handleChange("color")}
       >
         {colors.map((option) => (
-          <option value={option}>{option}</option>
+          <option value={option} key={option}>
+            {option}
+          </option>
         ))}
       </Select>
+      <Input onBlur={handleChange("count")} defaultValue={count} />
       <Flex justifyContent={"center"}>
-        <Parcel {...{ type, size, color }} />
+        <Parcel {...{ type, size, color, count: count ? count : 1 }} />
       </Flex>
     </Stack>
   );

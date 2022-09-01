@@ -6,10 +6,10 @@ import { atlStates } from "../../data/constants";
 import Controls from "./Controls";
 import { useDeliveryDb } from "../../utils/providers";
 
-export default ({ street, editATL, show = true }) => {
+export default ({ street: place, editATL, show = true }) => {
   const { dispatch } = useDeliveryDb();
 
-  if (!street?.number) return <EmptyPlace />;
+  if (!place?.number) return <EmptyPlace />;
 
   return (
     <Flex
@@ -19,15 +19,13 @@ export default ({ street, editATL, show = true }) => {
       w="calc(100%)"
       background="var(--secondary-color-light)"
       p="12px"
-      id={street.id}
+      id={place.id}
     >
-      <Flex flexDir="column" w="calc(100%)">
-        <LocationInformation {...{ ...street }} />
-        <DeliveryInformation {...{ ...street, editATL }} />
+      <Flex flexDir="column" w="calc(100%)" overflowX="auto">
+        <LocationInformation {...{ ...place }} />
+        <DeliveryInformation {...{ place, editATL }} />
       </Flex>
-      {show && (
-        <Controls street={street} showCheck={street.parcels.length > 0} />
-      )}
+      {show && <Controls street={place} showCheck={place.parcels.length > 0} />}
     </Flex>
   );
 };
@@ -90,16 +88,8 @@ const LocationInformation = ({ number, name, suburb, notes }) => (
   </Flex>
 );
 
-const DeliveryInformation = ({
-  name,
-  number,
-  atl,
-  editATL,
-  distance,
-  parcels,
-  id,
-}) => {
-  console.log(atl, atlStates[atl]);
+const DeliveryInformation = ({ editATL, place }) => {
+  const { name, number, atl, distance, parcels } = place;
   return (
     <Flex alignItems="center" gap="4px" justifyContent="flex-start" h="72px">
       {number && name && (
@@ -116,7 +106,7 @@ const DeliveryInformation = ({
           p="4px"
           bg="rgba(0, 0, 0, 0.2)"
         >
-          <ATL atl={atl} id={id} editATL={editATL} />
+          <ATL atl={atl} id={place.id} editATL={editATL} />
           <Text
             color="rgba(255,255,255,0.7)"
             fontSize="10px"
@@ -127,7 +117,7 @@ const DeliveryInformation = ({
           </Text>
         </Flex>
       )}
-      <Parcels parcels={parcels} id={id} />
+      <Parcels parcels={parcels} place={place} />
     </Flex>
   );
 };
@@ -135,7 +125,7 @@ const DeliveryInformation = ({
 function ATL({ atl, id, editATL = null }) {
   const { dispatch } = useDeliveryDb();
   const onClick = editATL
-    ? editATL
+    ? () => editATL((atl + 1) % 3)
     : () => dispatch("edit", { id, key: "atl", value: (atl + 1) % 3 });
   return (
     <Button

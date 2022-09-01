@@ -1,6 +1,7 @@
 import { nonColor } from "./constants";
 import { BasicForm, Button } from "./shared";
 import { Flex } from "@chakra-ui/react";
+import { colors } from "./constants";
 
 const ParcelStep = ({ list, title, onClick }) => {
   const up = (e) => e.toUpperCase();
@@ -9,10 +10,10 @@ const ParcelStep = ({ list, title, onClick }) => {
     <>
       <BasicForm title={title}></BasicForm>
       <Flex wrap="wrap" gap="4px">
-        {list.map((item, i) => (
+        {colors.map((item, i) => (
           <Button
             key={up(item) + i}
-            onClick={onClick(item)}
+            onClick={() => onClick(item)}
             width={"calc(50% - 2px)"}
             background={up(item) in nonColor ? nonColor[up(item)] : item}
           >

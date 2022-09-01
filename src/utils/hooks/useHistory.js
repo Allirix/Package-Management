@@ -18,7 +18,6 @@ export default function useHistory(set, limit = 10) {
   const [history, setH] = useLocalStorage("history", []);
   return {
     addHistory: (s) => {
-      console.log(s);
       setH((h) => [s, ...h.slice(0, limit + 1)]);
       return s;
     },

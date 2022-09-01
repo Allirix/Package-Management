@@ -2,13 +2,18 @@ import {
   BsFillBagFill,
   BsBox,
   BsQuestion,
+  BsPlusLg,
   BsFillSquareFill,
 } from "react-icons/bs";
+
+import { TbLetterP } from "react-icons/tb";
 
 export const TYPE_IMAGES = {
   BAG: BsFillBagFill,
   BOX: BsFillSquareFill,
-  OTHER: BsQuestion,
+  PICKUP: TbLetterP,
+  PLUS: BsPlusLg,
+  OTHER: TbLetterP,
 };
 
 export const colors = [
@@ -65,7 +70,9 @@ export const popular = [
   { color: "TP", type: "BOX", size: "S" },
   { color: "TP", type: "BOX", size: "M" },
   { color: "TP", type: "BOX", size: "L" },
-  { color: "PICKUP", type: "PICKUP", size: "P" },
+  { color: "PICKUP", type: "PICKUP", size: "A" },
+  { color: "PICKUP", type: "PICKUP", size: "B" },
+  { color: "PICKUP", type: "PICKUP", size: "C" },
 
   { color: "BROWN", type: "BOX", size: "S" },
   { color: "BROWN", type: "BOX", size: "M" },

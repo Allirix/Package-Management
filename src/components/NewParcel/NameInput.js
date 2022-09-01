@@ -16,8 +16,15 @@ const NameStep = ({ set }) => {
 
   const onChange = (e) => setValue(e.target.value);
 
-  const onSubmit = () => set(displayedLocations[0]);
-  const onClick = (location) => () => set(location);
+  const onSubmit = () => {
+    const { name, type, suburb } = displayedLocations[0];
+    set({ name, type, suburb });
+  };
+
+  const onClick =
+    ({ name, type, suburb }) =>
+    () =>
+      set({ name, type, suburb });
 
   return (
     <SingleInputForm

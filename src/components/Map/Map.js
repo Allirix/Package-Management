@@ -29,7 +29,7 @@ const options = (i) => ({
   fillColor: mapColors[i],
   fillOpacity: 0.05,
   strokeColor: "black",
-  strokeOpacity: 0.5,
+  strokeOpacity: 0.2,
   strokeWeight: 1,
   clickable: false,
   draggable: false,
@@ -135,8 +135,6 @@ const Markers = ({ setHighlighted }) => {
       }
     }
   };
-
-  console.log({ streets });
 
   return useMemo(() => {
     return (

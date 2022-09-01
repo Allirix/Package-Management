@@ -81,8 +81,17 @@ export const actions = {
 
   toggle: (deliveries, id) => {
     // remove parcels array.
+    const time = new Date().getTime();
+
     return deliveries.map((d) =>
-      d.id === id ? { ...d, parcels: [], deliveredAt: new Date().getTime() } : d
+      d.id === id
+        ? {
+            ...d,
+            parcelsArchive: { ...d?.parcelsArchive, [time]: d.parcels },
+            parcels: [],
+            deliveredAt: time,
+          }
+        : d
     );
   },
 

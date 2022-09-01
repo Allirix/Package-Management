@@ -29,10 +29,17 @@ export const useSortedDelivery = () => {
   };
 };
 
-const bySearch = (search) => (e) =>
-  (e.name.toUpperCase() + " " + e.type.toLowerCase()).includes(search.trim()) ||
-  e.suburb.toUpperCase().includes(search.trim()) ||
-  e.number.toString().toUpperCase().includes(search.trim());
+const bySearch = (search) => (e) => {
+  const s = search.split(" ");
+  return s.some(
+    (search) =>
+      (e.name.toUpperCase() + " " + e.type.toLowerCase()).includes(
+        search.trim()
+      ) ||
+      e.suburb.toUpperCase().includes(search.trim()) ||
+      e.number.toString().toUpperCase().includes(search.trim())
+  );
+};
 
 const addDistance = (myLocation) => (street) => ({
   ...street,

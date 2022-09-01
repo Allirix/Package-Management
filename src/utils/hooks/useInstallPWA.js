@@ -23,8 +23,8 @@ const InstallPWA = () => {
 export default InstallPWA;
 
 const relatedApplicationLog = async () => {
-  console.log(
-    "PWA related Applications" +
-      JSON.stringify(await navigator.getInstalledRelatedApps())
-  );
+  // console.log(
+  //   "PWA related Applications" +
+  //     JSON.stringify(await navigator.getInstalledRelatedApps())
+  // );
 };

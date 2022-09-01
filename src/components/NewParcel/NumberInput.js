@@ -4,9 +4,7 @@ import { SingleInputForm } from "./shared";
 
 const NumberStep = ({ set }) => {
   const [value, setValue] = useState("");
-
   const onChange = (e) => setValue(e.target.value);
-
   const onSubmit = () => set(value);
 
   return (
@@ -18,9 +16,7 @@ const NumberStep = ({ set }) => {
         inputMode: "numeric",
         helperText: "Enter a number",
       }}
-    >
-      <Text>THIS IS TEXT</Text>
-    </SingleInputForm>
+    ></SingleInputForm>
   );
 };
 

@@ -27,7 +27,9 @@ export default function AppRoutes() {
 
         {/* Menu screens */}
         <Route path="/streets" element={<Streets />} />
-        <Route path="/settings" element={<Settings />} />
+        <Route path="/settings" element={<Settings />}>
+          <Route path=":id" element={<Settings />} />
+        </Route>
 
         {/* Parameter screens */}
         <Route path="/new" element={<NewParcel />}>

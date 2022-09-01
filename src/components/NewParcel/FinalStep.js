@@ -1,14 +1,15 @@
+import { useState } from "react";
 import { Navigation, SingleInputForm } from "./shared";
 
-const FinalStep = ({ setValue, complete, nextParcel, notes }) => {
+const FinalStep = ({ setNotes, complete, nextParcel, notes }) => {
   return (
     <SingleInputForm
-      onSubmit={complete("/deliveries")}
+      onSubmit={() => complete("/deliveries")}
       input={{
         value: notes,
         autoFocus: false,
         helperText: "Enter notes",
-        onChange: (e) => setValue("notes")(e.target.value),
+        onChange: (e) => setNotes(e.target.value),
       }}
     >
       <Navigation
@@ -19,7 +20,7 @@ const FinalStep = ({ setValue, complete, nextParcel, notes }) => {
             color: "var(--secondary-color)",
           },
           {
-            onClick: complete(0 + ""),
+            onClick: () => complete(0 + ""),
             text: "NEXT",
             color: "var(--primary-color)",
           },
@@ -28,7 +29,7 @@ const FinalStep = ({ setValue, complete, nextParcel, notes }) => {
       <Navigation
         buttons={[
           {
-            onClick: complete("/deliveries"),
+            onClick: () => complete("/deliveries"),
             text: "COMPLETE",
             color: "var(--ternary-color)",
           },

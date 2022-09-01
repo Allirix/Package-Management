@@ -90,6 +90,8 @@ export const BigInput = ({
   inputMode = null,
   autoFocus = true,
   helperText,
+
+  ...styles
 }) => {
   const isNumeric = inputMode === "numeric";
   const id = isNumeric ? "numeric" : "location";
@@ -109,6 +111,7 @@ export const BigInput = ({
         fontFamily={`"Montserrat", sans-serif`}
         fontWeight="bold"
         autoComplete="off"
+        {...{ ...styles }}
       />
     </FormControl>
   );

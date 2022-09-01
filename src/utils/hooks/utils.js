@@ -13,3 +13,10 @@ export const timed = (f) => {
   console.log(`function ${f.name} took ${performance.now() - start}ms`);
   return ret;
 };
+
+export function getUrlParamsFromPlace(to, place) {
+  const params = Object.keys(place)
+    .filter((e) => place[e])
+    .map((e) => `${e}=${JSON.stringify(place[e])}`);
+  return to.toString() + "?" + params.join("&");
+}

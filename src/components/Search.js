@@ -1,7 +1,7 @@
 import { Button, Flex, Input } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { ImUndo } from "react-icons/im";
-import { BsPlusLg } from "react-icons/bs";
+import { BsGearFill } from "react-icons/bs";
 import { useDeliveryDb, useSortedDelivery } from "../utils/providers";
 
 export default function Search() {
@@ -19,9 +19,9 @@ export default function Search() {
       <Button onClick={undo} background="transparent">
         <ImUndo />
       </Button>
-      <Link to="/new/0">
+      <Link to="/settings">
         <Button background="transparent">
-          <BsPlusLg />
+          <BsGearFill />
         </Button>
       </Link>
     </Flex>

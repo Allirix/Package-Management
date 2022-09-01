@@ -1,11 +1,18 @@
 import { getParcelShape, imgs, nonColor } from "../utils";
 import { Flex, Text, Box } from "@chakra-ui/react";
 
-export default ({ color, type, size, onClick }) => {
+export default ({
+  color = "OTHER",
+  type = "BAG",
+  size = "U",
+  count,
+  onClick,
+  isPlus = false,
+}) => {
   const t = type?.toUpperCase();
   const c = color?.toUpperCase();
   const s = size?.toUpperCase();
-  const isBag = t === "BAG";
+  const isBag = t === "BOX";
 
   const pColor = c in nonColor ? nonColor[c] : color;
   const pType = {
@@ -25,8 +32,17 @@ export default ({ color, type, size, onClick }) => {
       padding="0px"
       gap={"4px"}
       borderRadius={"4px"}
-      boxShadow={`inset 1px 1px 3px -2px white, 0px 0px 3px white, 2px 2px 5px -2px black`}
+      boxShadow={
+        isPlus
+          ? "inset -1px -1px 3px -2px white"
+          : `inset 1px 1px 3px -2px white, 0px 0px 3px white, 2px 2px 5px -2px black`
+      }
       background={pColor}
+      _hover={{
+        transform: "scale(1.1)",
+        cursor: "pointer",
+        transition: "all 0.1s ease",
+      }}
     >
       <Flex
         background={pType.contrastBg}
@@ -36,18 +52,37 @@ export default ({ color, type, size, onClick }) => {
         padding="4px"
         boxShadow="inset 2px 2px 3px -1px white, 0px px 5px black"
         gap={"2px"}
+        overflow="auto"
       >
-        <Icon color={pType.contrast} size={"22px"} />
-        <Text
-          fontSize={"25px"}
-          lineHeight="0px"
-          fontFamily={"'Open Sans', sans-serif"}
-          zIndex={"99"}
-          fontWeight="900"
-          color={pType.contrast}
+        <Flex
+          flexDirection="column"
+          alignItems={"center"}
+          justifyContent={"center"}
         >
-          {s}
-        </Text>
+          <Flex alignItems={"center"} justifyContent={"center"}>
+            <Icon color={pType.contrast} size={"22px"} />
+            <Text
+              fontSize={"25px"}
+              lineHeight="0px"
+              fontFamily={"'Open Sans', sans-serif"}
+              zIndex={"99"}
+              fontWeight="900"
+              color={pType.contrast}
+            >
+              {s}
+            </Text>
+          </Flex>
+          <Text
+            fontSize={"15px"}
+            lineHeight="10px"
+            fontFamily={"'Open Sans', sans-serif"}
+            zIndex={"99"}
+            fontWeight="600"
+            color={pType.contrast}
+          >
+            {count && `x${count}`}
+          </Text>
+        </Flex>
       </Flex>
     </Flex>
   );
