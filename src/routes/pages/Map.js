@@ -65,6 +65,7 @@ const colors = {
   U: "blue",
   K: "magenta",
   M: "red",
+  PICKUP: "cyan",
 };
 
 const containerStyle = {
@@ -171,16 +172,18 @@ const Markers = () => {
     return undelivered
       .filter((e, i) => i < 22)
       .map((street, i) => {
-        console.log(street);
+        const isPickup = street.parcels.some((e) => e.color === "PICKUP");
+
         const label = {
           className:
             "marker-label marker-label--" + street.suburb[0].toLowerCase(),
           text: i + "",
         };
         const position = { lat: street.lat, lng: street.lng };
+
         const markerIcon = {
           path: icons.dot,
-          fillColor: colors[street.suburb[0]],
+          fillColor: isPickup ? colors.PICKUP : colors[street.suburb[0]],
           fillOpacity: 0.9,
           scale: 0.3,
           strokeWeight: 0,
