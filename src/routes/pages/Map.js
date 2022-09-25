@@ -65,7 +65,7 @@ const colors = {
   U: "blue",
   K: "magenta",
   M: "red",
-  PICKUP: "cyan",
+  PICKUP: "green",
 };
 
 const containerStyle = {
@@ -176,7 +176,8 @@ const Markers = () => {
 
         const label = {
           className:
-            "marker-label marker-label--" + street.suburb[0].toLowerCase(),
+            "marker-label marker-label--" +
+            (isPickup ? "p" : street.suburb[0].toLowerCase()),
           text: i + "",
         };
         const position = { lat: street.lat, lng: street.lng };
@@ -188,6 +189,8 @@ const Markers = () => {
           scale: 0.3,
           strokeWeight: 0,
         };
+
+        console.log({ markerIcon });
         return (
           <Marker
             onClick={onClick}
