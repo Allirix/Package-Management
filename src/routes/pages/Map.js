@@ -178,7 +178,7 @@ const Markers = () => {
           className:
             "marker-label marker-label--" +
             (isPickup ? "p" : street.suburb[0].toLowerCase()),
-          text: i + "",
+          text: i + 1 + "",
         };
         const position = { lat: street.lat, lng: street.lng };
 
