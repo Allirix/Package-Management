@@ -11,10 +11,18 @@ export default () => {
       .filter(({ parcelsArchive }) => parcelsArchive)
       .flatMap((e) => {
         const keys = Object.keys(e.parcelsArchive);
-        return keys.map((key) => ({
-          key,
-          length: e.parcelsArchive[key].length,
-        }));
+        return keys.map((key) => {
+          console.log({
+            e: e.parcelsArchive[key].reduce((a, ee) => a + Number(ee.count), 0),
+          });
+          return {
+            key,
+            length: e.parcelsArchive[key].reduce(
+              (a, ee) => a + Number(ee.count),
+              0
+            ),
+          };
+        });
       })
       .filter((e) => isToday(e.key))
       .reduce((acc, e) => acc + e.length, 0);
@@ -23,7 +31,7 @@ export default () => {
     const totalParcels =
       deliveredParcels +
       undelivered.reduce(
-        (acc, e) => acc + e.parcels.reduce((a, p) => a + p.count, 0),
+        (acc, e) => acc + e.parcels.reduce((a, p) => a + Number(p.count), 0),
         0
       );
 
