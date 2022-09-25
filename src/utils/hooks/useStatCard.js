@@ -22,7 +22,12 @@ export default () => {
     const totalLocations = deliveredLocations + undelivered.length;
     const totalParcels =
       deliveredParcels +
-      undelivered.reduce((acc, e) => acc + e.parcels.length, 0);
+      undelivered.reduce(
+        (acc, e) => acc + e.parcels.reduce((a, p) => a + p.count, 0),
+        0
+      );
+
+    console.log(undelivered);
 
     const t = delivered.map((e) => e.deliveredAt).sort();
     const shiftLength = (t[t.length - 1] - t[0]) / (1000 * 3600);

@@ -89,7 +89,6 @@ const useNewParcel = () => {
   const toast = useToast();
 
   function reset() {
-    console.log(getInitialState(p, selected)(), p, placeProp);
     setPlace(placeProp);
   }
 
