@@ -10,7 +10,7 @@ import { TbLetterP } from "react-icons/tb";
 
 export const TYPE_IMAGES = {
   BAG: BsFillBagFill,
-  BOX: BsFillSquareFill,
+  BOX: () => null,
   PICKUP: TbLetterP,
   PLUS: BsPlusLg,
   OTHER: TbLetterP,
