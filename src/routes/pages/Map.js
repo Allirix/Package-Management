@@ -59,7 +59,7 @@ const currentPositionIcon = {
   scale: 0.6,
   strokeWeight: 2,
   strokeColor: "white",
-  anchor: new window.google.maps.Point(15, 15),
+  anchor: window.google?.maps && new window.google.maps.Point(15, 15),
 };
 
 const colors = {
