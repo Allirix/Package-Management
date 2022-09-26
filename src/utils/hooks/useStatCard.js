@@ -43,8 +43,8 @@ export default () => {
         isNaN(shiftLength) || shiftLength === 0
           ? 0
           : deliveredParcels / shiftLength,
-      locations: [deliveredLocations, totalLocations],
-      parcels: [deliveredParcels, totalParcels],
+      locations: [totalLocations - deliveredLocations, totalLocations],
+      parcels: [totalParcels - deliveredParcels, totalParcels],
     };
   }, [delivered, undelivered]);
 };

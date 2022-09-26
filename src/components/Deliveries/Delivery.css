@@ -2,8 +2,9 @@
   background: var(--secondary-color);
 }
 
-#first {
+.h {
   z-index: 3;
   border-bottom: 2px solid var(--ternary-color);
   border-top: 2px solid var(--ternary-color);
+  box-shadow: inset 0 0 10px var(--ternary-color);
 }

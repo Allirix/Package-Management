@@ -23,6 +23,7 @@ import {
 import FirstDelivery from "../../components/FirstDelivery";
 import useLocalStorage from "../../utils/hooks/useLocalStorage";
 import { Loading } from "../../components/Layout/Layout";
+import { useNavigate } from "react-router-dom";
 
 // const subs = ["Mitchelton", "Upper Kedron", "Keperra", "Gaythorne"];
 const mapColors = ["red", "blue", "magenta", "green"]; // red, green, blue, yellow, cyan
@@ -58,6 +59,7 @@ const currentPositionIcon = {
   scale: 0.6,
   strokeWeight: 2,
   strokeColor: "white",
+  anchor: new window.google.maps.Point(15, 15),
 };
 
 const colors = {
@@ -65,7 +67,7 @@ const colors = {
   U: "blue",
   K: "magenta",
   M: "red",
-  PICKUP: "green",
+  PICKUP: "orange",
 };
 
 const containerStyle = {
@@ -162,14 +164,16 @@ export default function Map() {
 const Markers = () => {
   const { undelivered } = useSortedDelivery();
 
-  const onClick = (e) => {
-    console.log(e);
-  };
+  const navigate = useNavigate();
 
   return useMemo(() => {
     return undelivered
       .filter((e, i) => i < 22)
       .map((street, i) => {
+        const onClick = (e) => {
+          navigate(`/deliveries#${street.id}`);
+        };
+
         const isPickup = street.parcels.some((e) => e.color === "PICKUP");
 
         const label = {
@@ -184,8 +188,10 @@ const Markers = () => {
           path: icons.dot,
           fillColor: isPickup ? colors.PICKUP : colors[street.suburb[0]],
           fillOpacity: 0.9,
-          scale: 0.3,
+          scale: 1,
           strokeWeight: 0,
+          labelOrigin: new window.google.maps.Point(10, 10),
+          anchor: new window.google.maps.Point(15, 15),
         };
 
         return (

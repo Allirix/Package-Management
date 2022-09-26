@@ -20,17 +20,34 @@ import { useMemo, useState } from "react";
 import { useDeliveryDb, useSortedDelivery } from "../../utils/providers";
 import Place from "../../components/Deliveries/Place";
 import FirstDelivery from "../../components/FirstDelivery";
+import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
 
 export default function Deliveries() {
   const { undelivered, isEmpty, delivered } = useSortedDelivery();
 
   const [showDelivered, setShowDelivered] = useState(false);
 
+  let location = useLocation();
+
+  useEffect(() => {
+    if (location.hash) {
+      let elem = document.getElementById(location.hash.slice(1));
+      if (elem) elem.scrollIntoView({ behavior: "smooth" });
+    } else window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  }, [location]);
+
   // memoise list to ignore rerendering from parent updates
   const suburbList = useMemo(() => {
     const values = showDelivered ? delivered : undelivered;
     if (values.length === 0) return <FirstDelivery />;
-    return values.map((street) => <Place key={street.id} street={street} />);
+    return values.map((street) => (
+      <Place
+        key={street.id}
+        street={street}
+        isHighlighted={location.hash === `#${street.id}`}
+      />
+    ));
   }, [undelivered, delivered, showDelivered]);
 
   if (isEmpty && !showDelivered)

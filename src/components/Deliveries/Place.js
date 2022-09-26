@@ -6,7 +6,12 @@ import { atlStates } from "../../data/constants";
 import Controls from "./Controls";
 import { useDeliveryDb } from "../../utils/providers";
 
-export default ({ street: place, editATL, show = true }) => {
+export default ({
+  street: place,
+  editATL,
+  show = true,
+  isHighlighted = false,
+}) => {
   const { dispatch } = useDeliveryDb();
 
   // true when no number, but false if name
@@ -19,7 +24,7 @@ export default ({ street: place, editATL, show = true }) => {
 
   return (
     <Flex
-      className="delivery"
+      className={"delivery" + (isHighlighted ? " h" : "")}
       alignItems="space-between"
       justifyContent="space-between"
       w="calc(100%)"

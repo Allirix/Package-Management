@@ -3,15 +3,21 @@
   width: 100%;
 }
 
+#map button {
+  display: none;
+}
+
 .marker-label {
-  font-family: "Montserrat", sans-serif !important;
+  font-family: "Open Sans", sans-serif !important;
   text-align: center;
   color: white !important;
-  transform: translate(25%, -0.5em);
-  font-size: 0.7em !important;
-  font-weight: 400 !important;
-  padding: 4px;
+  font-size: 1em !important;
+  font-weight: 900 !important;
+  padding: 0;
   border-radius: 100px;
+  padding: 1px 6px 3px 6px;
+
+  box-shadow: 0 0 5px white;
 }
 
 .gmnoprint {
