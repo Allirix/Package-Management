@@ -19,6 +19,13 @@ const ParcelTypeStep = ({ title, onClick, skip }) => {
   return (
     <>
       <BasicForm title={title}></BasicForm>
+      <BigInput
+        inputMode="numeric"
+        autoFocus={false}
+        placeholder="number of parcels"
+        value={number === "" ? "" : number}
+        onChange={(e) => setNumber(e.target.value)}
+      />
       <Flex w="calc(100%)" gap="4px">
         <ButtonGroup
           onClick={onClickTypeSize("BAG")}
@@ -34,13 +41,6 @@ const ParcelTypeStep = ({ title, onClick, skip }) => {
       <PopularButtonGroup
         onClick={popularSelect}
         count={number === "" ? 1 : number}
-      />
-      <BigInput
-        inputMode="numeric"
-        autoFocus={false}
-        placeholder="number of parcels"
-        value={number === "" ? "" : number}
-        onChange={(e) => setNumber(e.target.value)}
       />
     </>
   );
