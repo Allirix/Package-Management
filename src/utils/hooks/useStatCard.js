@@ -12,9 +12,6 @@ export default () => {
       .flatMap((e) => {
         const keys = Object.keys(e.parcelsArchive);
         return keys.map((key) => {
-          console.log({
-            e: e.parcelsArchive[key].reduce((a, ee) => a + Number(ee.count), 0),
-          });
           return {
             key,
             length: e.parcelsArchive[key].reduce(
@@ -35,8 +32,6 @@ export default () => {
         0
       );
 
-    console.log(undelivered);
-
     const t = delivered.map((e) => e.deliveredAt).sort();
     const shiftLength = (t[t.length - 1] - t[0]) / (1000 * 3600);
 
@@ -55,7 +50,9 @@ export default () => {
 };
 
 function isEqualDate(d1, d2) {
-  return d1.toISOString().startsWith(d2.toISOString().substring(0, 10));
+  return d1.toLocaleString().startsWith(d2.toLocaleString().substring(0, 10));
 }
 
-const isToday = (str) => isEqualDate(new Date(parseInt(str)), new Date());
+const isToday = (str) => {
+  return isEqualDate(new Date(parseInt(str)), new Date());
+};

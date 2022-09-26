@@ -9,8 +9,6 @@ import { useDeliveryDb } from "../../utils/providers";
 export default ({ street: place, editATL, show = true }) => {
   const { dispatch } = useDeliveryDb();
 
-  console.log(!place?.number ^ !place?.name, !place?.number, !place?.name);
-
   // true when no number, but false if name
   // always true when no name
 

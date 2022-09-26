@@ -166,8 +166,6 @@ const Markers = () => {
     console.log(e);
   };
 
-  console.log({ undelivered });
-
   return useMemo(() => {
     return undelivered
       .filter((e, i) => i < 22)
@@ -190,7 +188,6 @@ const Markers = () => {
           strokeWeight: 0,
         };
 
-        console.log({ markerIcon });
         return (
           <Marker
             onClick={onClick}
