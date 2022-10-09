@@ -55,7 +55,7 @@ export default function NewParcel() {
       margin="0 auto"
       background="var(--secondary-color-light)"
       minHeight="100vh"
-      boxShadow="0 0 10px black"
+      // boxShadow="0 0 10px black"
     >
       <Caption title={titles[step] ?? "Error 404"} />
       <Place street={place} editATL={setParam("atl", 4)} show={false} />
@@ -130,20 +130,31 @@ const useNewParcel = () => {
     place,
     setParam,
     nextParcel: () => nav(getUrlParamsFromPlace("2", place)),
-    complete: (url) => (
-      nav(url),
-      dispatch("add", place),
-      reset(),
-      toast({
-        title: "Place added.",
-        description: `Added ${place.parcels.length} parcels to ${place.name} ${
-          place.type
-        }, ${place.suburb}. (${place?.lat ? "append" : "add"})`,
-        status: "success",
-        duration: 5000,
-        isClosable: true,
-      })
-    ),
+    complete: (url) => {
+      const callback = () => {
+        try {
+          reset();
+          toast({
+            position: "top",
+            title: "Place added.",
+            description: `Added ${place.parcels.length} parcels to ${
+              place.number
+            } ${place.name} ${place.type}, ${place.suburb}. (${
+              place?.lat ? "append" : "add"
+            })`,
+            status: "success",
+            duration: 5000,
+            isClosable: true,
+          });
+          nav(url);
+          return true;
+        } catch (e) {
+          alert(JSON.stringify(e));
+          return false;
+        }
+      };
+      dispatch("add", place, callback);
+    },
   };
   // number, name, type, suburb,
 };

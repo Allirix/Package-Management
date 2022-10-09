@@ -1,6 +1,8 @@
-import { Button, Flex, Input } from "@chakra-ui/react";
+import { Button, Flex, Input, Text } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
 import { useDeliveryLocations } from "../../utils/providers/LocationProvider";
+
+import { RiCloseFill, RiCheckFill } from "react-icons/ri";
 
 const suburbNames = ["Mitchelton", "Upper Kedron", "Gaythorne", "Keperra"];
 
@@ -27,47 +29,76 @@ export default function Street() {
     <Flex flexDirection="column" width="100%">
       <Flex flexDirection="row" width="100%">
         {suburbNames.map((name, i) => (
-          <Button
-            key={i + "suburb-option"}
+          <LocationTitle
+            key={name}
+            name={name}
             onClick={() => setSelectedSuburb(name)}
             disabled={selectedSuburb === name}
             style={
-              selectedSuburb === name ? { borderBottom: "2px solid blue" } : {}
+              selectedSuburb === name
+                ? { borderBottom: "2px solid var(--ternary-color)" }
+                : {}
             }
-            w="100%"
-          >
-            {name}
-          </Button>
+          />
         ))}
       </Flex>
 
-      <Flex flexDirection="column" width="100%">
+      <Flex flexDirection="column" width="100%" gap="4px" p="4px">
         <AddLocation add={add} selectedSuburb={selectedSuburb} />
-
         {suburbs[selectedSuburb]
           .sort((a, b) => a.name.localeCompare(b.name))
           .sort((a, b) => a.priority - b.priority)
-          .map((location) => (
-            <Location
-              key={location.id + "location"}
-              {...{ location, remove, edit }}
-            />
+          .map((location, i) => (
+            <Location key={i} {...{ location, remove, edit, i }} />
           ))}
       </Flex>
     </Flex>
   );
 }
 
-const Location = ({ location }) => {
+const Location = ({ location, i }) => {
   const { remove, edit } = location;
   const onEdit = (key) => (e) => edit(key, e.target.value);
   const onRemove = () => remove();
 
   return (
-    <Flex width="100%">
-      <Input value={location.name} onChange={onEdit("name")} />
-      <Input value={location.type} onChange={onEdit("type")} />
-      <Button className="l-remove" onClick={onRemove}></Button>
+    <Flex width="100%" gap="4px" color="white" alignItems="center">
+      <Text
+        pr="8px"
+        color="var(--ternary-color)"
+        minW="40px"
+        textAlign="center"
+      >
+        {i}
+      </Text>
+      <Input
+        value={location.name}
+        onChange={onEdit("name")}
+        borderRadius="0"
+        h="50px"
+        border="1px solid rgba(255,255,255,0.3) !important"
+      />
+      <Input
+        value={location.type}
+        onChange={onEdit("type")}
+        borderRadius="0"
+        w="20%"
+        h="50px"
+        minW="40px"
+        border="1px solid rgba(255,255,255,0.3) !important"
+      />
+      <Button
+        onClick={onRemove}
+        variant="solid"
+        type="button"
+        colorScheme="red"
+        fontSize="25px"
+        p="0"
+        h="50px"
+        w="70px"
+      >
+        <RiCloseFill />
+      </Button>
     </Flex>
   );
 };
@@ -92,30 +123,50 @@ const AddLocation = ({ add, selectedSuburb }) => {
   };
 
   return (
-    <Flex>
-      {/* <input
-        className="l-priority"
-        value={state.priority}
-        type="text"
-        placeholder="n"
-        onChange={onChange("priority")}
-      /> */}
+    <Flex gap="8px" color="white">
       <Input
         value={state.name}
         type="text"
         placeholder={`Add ${selectedSuburb} location...`}
         onChange={onChange("name")}
+        h="70px"
+        borderRadius="0"
       />
       <Input
         value={state.type}
         type="text"
         placeholder="Type?"
         onChange={onChange("type")}
+        h="70px"
+        variant="outline"
+        w="15%"
+        borderRadius="0"
+        minWidth="70px"
       />
       <Button
         onClick={onClick}
-        style={{ background: "rgb(49, 49, 156)" }}
-      ></Button>
+        colorScheme="blue"
+        w="80px"
+        h="70px"
+        disabled={state.name.length === 0}
+      >
+        <RiCheckFill size="30px" />
+      </Button>
     </Flex>
+  );
+};
+
+const LocationTitle = ({ name, ...props }) => {
+  return (
+    <Button
+      w="25%"
+      {...{ ...props }}
+      variant="unstyled"
+      color="var(--ternary-color)"
+      h="60px"
+      borderRadius="0"
+    >
+      {name}
+    </Button>
   );
 };

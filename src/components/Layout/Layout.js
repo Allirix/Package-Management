@@ -17,7 +17,7 @@ export default ({ children }) => {
       maxWidth={"800px"}
       flexDir="column"
       m="0 auto"
-      boxShadow={"0px 0px 10px var(--ternary-color)"}
+      boxShadow={"0px 0px 5px var(--ternary-color)"}
     >
       {/* cover  */}
       {loading}

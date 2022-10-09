@@ -9,27 +9,10 @@
   "related_applications": [
     {
       "platform": "webapp",
-      "url": "https://parcel-management.netlify.app/"
-    },
-    {
-      "platform": "webapp",
-      "url": "https://parcelio.netlify.app/"
-    },
-    {
-      "platform": "webapp",
       "url": "https://parcelio.vercel.app/"
-    },
-    {
-      "platform": "webapp",
-      "url": "http://localhost:3000/"
     }
   ],
   "icons": [
-    {
-      "src": "/icon-192x192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
     {
       "src": "/icon-256x256.png",
       "sizes": "256x256",

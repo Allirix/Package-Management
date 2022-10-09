@@ -1,6 +1,36 @@
-import { Flex, Text } from "@chakra-ui/react";
+import {
+  Flex,
+  Stat,
+  StatHelpText,
+  StatLabel,
+  StatNumber,
+  Text,
+} from "@chakra-ui/react";
 
-export default ({ Icon, value, title, bg = "transparant" }) => {
+export default ({
+  Icon,
+  value,
+  title,
+  bg = "transparant",
+  divider = "/",
+  helperText = "",
+}) => {
+  return (
+    <Stat color="white" textAlign="center">
+      <StatLabel color="var(--ternary-color)">{title}</StatLabel>
+      <StatNumber>
+        {value[0]}
+        <strong style={{ fontSize: "14px", color: "rgba(255,255,255,0.3)" }}>
+          {divider}
+          {value[1]}
+        </strong>
+      </StatNumber>
+      <StatHelpText opacity="0.6" color="var(--ternary-color)">
+        {helperText}
+      </StatHelpText>
+    </Stat>
+  );
+
   return (
     <Flex
       h="50px"
@@ -14,7 +44,7 @@ export default ({ Icon, value, title, bg = "transparant" }) => {
       <Icon size="28px" color="white" />
 
       <Flex flexDir={"column"} justifyContent="center" alignItems="flex-start">
-        <Text
+        <Flex
           fontSize={"20px"}
           fontWeight="700"
           p="0"
@@ -29,7 +59,7 @@ export default ({ Icon, value, title, bg = "transparant" }) => {
           ) : (
             value
           )}
-        </Text>
+        </Flex>
         <Text fontSize={"10px"} fontWeight="900" textTransform={"uppercase"}>
           {title}
         </Text>

@@ -10,6 +10,10 @@ export default ({ parcels, place }) => {
   const popup = useParcelPopup();
   const navigator = useNavigate();
 
+  function newParcel() {
+    return navigator(getUrlParamsFromPlace("/new/2", place));
+  }
+
   return (
     <Flex
       className="parcels"
@@ -25,8 +29,8 @@ export default ({ parcels, place }) => {
         />
       ))}
       <Parcel
-        onClick={() => navigator(getUrlParamsFromPlace("/new/2", place))}
-        color="rgba(100,100,100, 0.3)"
+        onClick={newParcel}
+        color="rgba(50,50,50,0.1)"
         isPlus={true}
         type="PLUS"
         size=""

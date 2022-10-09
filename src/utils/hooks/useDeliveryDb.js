@@ -31,8 +31,20 @@ export default function useDeliveryData() {
     selected: db,
     undo,
     set,
-    dispatch: (type, payload) =>
-      set((d) => addHistory(reducer(d, { type, payload }))),
+    dispatch: (type, payload, callback = () => true) =>
+      set((d) => {
+        const data = reducer(d, { type, payload });
+        if (!callback(data)) {
+          alert(
+            `Unable to add ${JSON.stringify(
+              payload
+            )} due to error callback error`
+          );
+          return d;
+        }
+        addHistory(data);
+        return data;
+      }),
   };
 }
 
@@ -47,14 +59,18 @@ export const actions = {
   remove: (deliveries, id) => {
     return deliveries.map((s) => (s.id !== id ? s : { ...s, parcels: [] }));
   },
+  removeLocation: (deliveries, id) => deliveries.filter((e) => e.id !== id),
   edit: (deliveries, { id, key, value }) =>
     deliveries.map((d) => (d.id === id ? { ...d, [key]: value } : d)),
   add: (deliveries, place) => {
     const { name, number, type, suburb } = place;
     const newHash = hash({ name, number, type, suburb });
 
-    if (place.id) {
-      const existing = deliveries.filter((e) => e.id === newHash)[0];
+    console.log({ place });
+
+    const existing = deliveries.filter((e) => e.id === place.id)[0];
+
+    if (existing) {
       return deliveries.map((d) =>
         d.id === existing.id
           ? {

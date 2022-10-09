@@ -1,24 +1,41 @@
-import { RiTruckFill, RiTruckLine } from "react-icons/ri";
-import { BsMap, BsMapFill } from "react-icons/bs";
+import { AiFillHome, AiOutlineHome } from "react-icons/ai";
+import {
+  RiRoadMapLine,
+  RiRoadMapFill,
+  RiFolderHistoryFill,
+  RiFolderHistoryLine,
+  RiCollageFill,
+  RiCollageLine,
+  RiMapPinRangeFill,
+  RiMapPinRangeLine,
+  RiBus2Fill,
+  RiBus2Line,
+} from "react-icons/ri";
 
 import { GoLocation, GoGear } from "react-icons/go";
 
 export const pages = {
   deliveries: {
-    Icon: RiTruckLine,
-    Selected: RiTruckFill,
+    Icon: RiBus2Line,
+    Selected: RiBus2Fill,
     type: "main",
   },
-
-  map: {
-    Icon: BsMap,
-    Selected: BsMapFill,
+  history: {
+    Icon: RiFolderHistoryLine,
+    Selected: RiFolderHistoryFill,
     type: "main",
   },
   streets: {
-    Icon: GoLocation,
-    type: "menu",
+    Icon: RiCollageLine,
+    Selected: RiCollageFill,
+    type: "main",
   },
+  map: {
+    Icon: RiMapPinRangeLine,
+    Selected: RiMapPinRangeFill,
+    type: "main",
+  },
+
   settings: {
     Icon: GoGear,
     type: "menu",

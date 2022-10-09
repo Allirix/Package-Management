@@ -22,53 +22,34 @@ import Place from "../../components/Deliveries/Place";
 import FirstDelivery from "../../components/FirstDelivery";
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import { Suspense } from "react";
+import { lazy } from "react";
+import DeliveryList from "../../components/Deliveries/DeliveryList";
+
+// const DeliveryList = lazy(() =>
+//   import("../../components/Deliveries/DeliveryList.js")
+// );
 
 export default function Deliveries() {
   const { undelivered, isEmpty, delivered } = useSortedDelivery();
-
-  const [showDelivered, setShowDelivered] = useState(false);
 
   let location = useLocation();
 
   useEffect(() => {
     if (location.hash) {
       let elem = document.getElementById(location.hash.slice(1));
-      if (elem) elem.scrollIntoView({ behavior: "smooth" });
-    } else window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+      if (elem) elem.scrollIntoView();
+    }
   }, [location]);
-
-  // memoise list to ignore rerendering from parent updates
-  const suburbList = useMemo(() => {
-    const values = showDelivered ? delivered : undelivered;
-    if (values.length === 0) return <FirstDelivery />;
-    return values.map((street) => (
-      <Place
-        key={street.id}
-        street={street}
-        isHighlighted={location.hash === `#${street.id}`}
-      />
-    ));
-  }, [undelivered, delivered, showDelivered]);
-
-  if (isEmpty && !showDelivered)
-    return (
-      <Flex flexDirection="column" w="100%" h="100vh">
-        <Header
-          setShowDelivered={setShowDelivered}
-          showDelivered={showDelivered}
-        />
-        <AddFirstParcel />
-      </Flex>
-    );
 
   return (
     <ParcelPopupProvider>
-      <Flex direction="column" w="800px" minW="100%">
-        <Header
-          setShowDelivered={setShowDelivered}
-          showDelivered={showDelivered}
-        />
-        {suburbList}
+      <Flex direction="column" w="800px" minW="100%" p="4px" gap="4px">
+        {(undelivered?.length > 0 || delivered?.length > 0) && <Header />}
+        {/* <Suspense fallback={<>Loading...</>}> */}
+        <DeliveryList list={undelivered} canDeliver={true} />
+        {/* </Suspense> */}
+
         <ParcelPopup />
       </Flex>
     </ParcelPopupProvider>
@@ -77,45 +58,69 @@ export default function Deliveries() {
 
 const Header = ({ setShowDelivered, showDelivered }) => {
   const { dispatch } = useDeliveryDb();
-  const { average, locations, parcels } = useStatCard();
+  const { average, locations, parcels, pickups } = useStatCard();
+
+  const eta = parcels[0] / average;
+
+  const etaTime =
+    new Date().getTime() + eta !== Infinity ? 1000 * 60 * 60 * eta : 0;
+
+  const etaMessage =
+    eta !== Infinity
+      ? new Date(etaTime)
+          ?.toLocaleString()
+          ?.split(",")[1]
+          ?.split(":")
+          ?.slice(0, 2)
+          ?.join(":") + " ETA"
+      : "-";
 
   return (
     <Flex
-      justifyContent="space-between"
-      alignItems="space-between"
+      justifyContent="center"
+      alignItems="center"
       w="100%"
       bg="var(--secondary-color)"
-      borderBottom="1px solid var(--ternary-color)"
-      p="12px"
+      p="4px"
+      position="sticky"
+      top="0px"
+      left="0px"
+      zIndex="100"
     >
-      {/* <B
-        onClick={() => dispatch("reset")}
-        Icon={BiReset}
-        color="var(--primary-color)"
-      /> */}
-      <InfoCard Icon={BsSquareHalf} value={parcels} title="Parcels" />
-      <InfoCard value={locations} title="Places" Icon={FiMapPin} />
+      <InfoCard
+        value={locations}
+        title="Places"
+        Icon={FiMapPin}
+        helperText={
+          Math.round((10 * parcels[1]) / locations[1]) / 10 + "/place"
+        }
+      />
+      <InfoCard
+        Icon={BsSquareHalf}
+        value={parcels}
+        title="Parcels"
+        helperText={pickups + " Pickups"}
+      />
+
       <InfoCard
         value={[Math.round(average * 10) / 10, "hr"]}
         title="Speed"
         Icon={BiRun}
+        helperText="+/-10%"
       />
-      <B onClick={() => setShowDelivered((s) => !s)} Icon={FiDatabase}></B>
+      <InfoCard
+        value={[Math.round(10 * eta) / 10, "hrs"]}
+        title="Time Left"
+        Icon={BiRun}
+        divider=" "
+        helperText={etaMessage}
+      />
     </Flex>
   );
 };
 
 const B = ({ onClick, Icon, color = "white" }) => (
-  <Button
-    onClick={onClick}
-    background="var(--secondary-color)"
-    h="50px"
-    p="0"
-    boxShadow={
-      `2px 2px 10px -8px black, -2px -2px 10px -8px ${color}, inset 2px 2px 2px -3px white, 0 0 10px -5px black, inset 0 0 4px -2px ` +
-      color
-    }
-  >
+  <Button onClick={onClick} background="var(--secondary-color)" h="50px" p="0">
     <Icon size="25px" color={color} />
   </Button>
 );

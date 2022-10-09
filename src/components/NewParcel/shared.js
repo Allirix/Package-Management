@@ -18,32 +18,37 @@ export const preventDefault = (fn) => (e) => {
 };
 
 // { onClick, text, Icon, width: "100%", background: "" }
-export const Button = (P) => (
-  <ChButton
-    leftIcon={P.Icon && <P.Icon />}
-    onClick={P.onClick}
-    fontSize="40px"
-    textShadow="3px 3px 1px black"
-    color={P.color ? P.color : "white"}
-    width={P.width}
-    minHeight="67px"
-    background={P.background}
-    fontFamily={"Montserrat"}
-    fontWeight="800"
-    {...P}
-  >
-    {P.children}
-  </ChButton>
-);
+export const Button = (P) => {
+  const { icon: Icon, ...props } = P;
+
+  return (
+    <ChButton
+      leftIcon={Icon && <Icon />}
+      onClick={props.onClick}
+      fontSize="40px"
+      textShadow="1px 1px 1px black"
+      color={props.color ? props.color : "white"}
+      width={props.width}
+      minHeight="67px"
+      background={props.background}
+      fontFamily={"Montserrat"}
+      fontWeight="800"
+      {...props}
+    >
+      {props.children}
+    </ChButton>
+  );
+};
 
 export const Navigation = ({ buttons }) => (
   <Flex justifyContent="space-around">
-    {buttons.map((button) => (
+    {buttons.map((button, i) => (
       <Button
         onClick={button.onClick}
         text={button.text}
         background={button.color}
         width="100%"
+        key={i}
       >
         {button.text}
       </Button>

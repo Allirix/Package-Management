@@ -25,10 +25,19 @@ export default () => {
       .reduce((acc, e) => acc + e.length, 0);
 
     const totalLocations = deliveredLocations + undelivered.length;
+
+    let pickups = 0;
+
     const totalParcels =
       deliveredParcels +
       undelivered.reduce(
-        (acc, e) => acc + e.parcels.reduce((a, p) => a + Number(p.count), 0),
+        (acc, e) =>
+          acc +
+          e.parcels.reduce((a, p) => {
+            if (p.type === "PICKUP") pickups += Number(p.count);
+
+            return a + Number(p.count);
+          }, 0),
         0
       );
 
@@ -39,6 +48,7 @@ export default () => {
     // const time = timeArray.reduce((acc, e) => acc + e, 0);
 
     return {
+      pickups,
       average:
         isNaN(shiftLength) || shiftLength === 0
           ? 0

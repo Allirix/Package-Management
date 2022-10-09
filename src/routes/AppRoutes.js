@@ -5,6 +5,7 @@ import { Deliveries, NewParcel, Map, Settings, Streets } from "./pages";
 import useInstallPWA from "../utils/hooks/useInstallPWA";
 import { useEffect, useState } from "react";
 import { Flex, Spinner, Text } from "@chakra-ui/react";
+import History from "./pages/History";
 
 export default function AppRoutes() {
   const { supportsPWA, promptInstall } = useInstallPWA();
@@ -22,11 +23,20 @@ export default function AppRoutes() {
         <Route path="/new" element={<Navigate to="/new/0" replace={true} />} />
 
         {/* Main Screens */}
-        <Route path="/deliveries" element={<Deliveries />} />
-        <Route path="/map" element={<Map />} />
+        <Route path="/deliveries" element={<Deliveries />}>
+          <Route path=":id" element={<Deliveries />} />
+        </Route>
+        <Route path="/history" element={<History />}>
+          <Route path=":id" element={<History />} />
+        </Route>
+        <Route path="/streets" element={<Streets />}>
+          <Route path=":id" element={<Streets />} />
+        </Route>
+        <Route path="/map" element={<Map />}>
+          <Route path=":id" element={<Map />} />
+        </Route>
 
         {/* Menu screens */}
-        <Route path="/streets" element={<Streets />} />
         <Route path="/settings" element={<Settings />}>
           <Route path=":id" element={<Settings />} />
         </Route>

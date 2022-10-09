@@ -114,8 +114,6 @@ form {
 
   font-size: 40px;
 
-  text-shadow: 1px 1px 2px black;
-
   width: 100%;
   filter: sepia(10%);
   min-height: 80px;

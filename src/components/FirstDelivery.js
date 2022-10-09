@@ -3,6 +3,8 @@ import { BsPlusLg } from "react-icons/bs";
 import { Button, Flex, Text } from "@chakra-ui/react";
 import { useDeliveryDb } from "../utils/providers";
 
+import d from "../data/data.json";
+
 export default () => {
   const { set } = useDeliveryDb();
 
@@ -59,6 +61,6 @@ const data = (id) => ({
 });
 
 const loadData = (set) => {
-  const db = new Array(300).fill(0).map((e, i) => data(i));
+  const db = d; //new Array(300).fill(0).map((e, i) => data(i));
   set(db);
 };

@@ -32,8 +32,8 @@ html {
   /* https://codepen.io/sosuke/pen/Pjoqqp */
   --primary-filter: invert(10%) sepia(91%) saturate(4630%) hue-rotate(346deg)
     brightness(86%) contrast(90%);
-  --secondary-color: hsl(0, 0%, 0%);
-  --secondary-color-light: hsl(0, 0%, 10%);
+  --secondary-color: hsl(0, 0%, 0.5%);
+  --secondary-color-light: hsl(0, 0%, 5%);
   --secondary-color-lightest: hsl(208, 89%, 15%);
   --secondary-filter: invert(10%) sepia(10%) saturate(4357%) hue-rotate(170deg)
     brightness(97%) contrast(104%);

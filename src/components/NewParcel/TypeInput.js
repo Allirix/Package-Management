@@ -56,14 +56,14 @@ const ButtonGroup = ({ onClick, item, count }) => {
   return (
     <Stack w="100%" direction="row" alignItems={"center"} fontSize={"1.3rem"}>
       <Stack w="100%" gap="4px">
-        {["L", "M", "S"].map((size, ii) => (
+        {["L", "M", "S"].map((size) => (
           <Button
             onClick={onClick(size, count)}
             color={color}
-            Icon={ParcelIcon}
+            icon={ParcelIcon}
             background={bgColor}
-            key={ii}
-            boxShadow={`inset 1px 1px 3px -2px white`}
+            key={size}
+            // boxShadow={`inset 1px 1px 3px -2px white`}
             margin={"0 0 0 0 !important"}
           >
             {size}
@@ -77,12 +77,13 @@ const ButtonGroup = ({ onClick, item, count }) => {
 const PopularButtonGroup = ({ onClick, count }) => {
   return (
     <Flex direction={"row"} w="100%" justifyContent="flex-end" wrap={"wrap"}>
-      {popular.map((parcel) => (
+      {popular.map((parcel, i) => (
         <ChButton
           height="80px"
           padding={"4px 2px"}
           background={"rgba(255,255,255,0.1)"}
           m="0"
+          key={i}
         >
           <Parcel onClick={onClick({ ...parcel, count })} {...{ ...parcel }} />
         </ChButton>
