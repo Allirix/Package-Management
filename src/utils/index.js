@@ -16,14 +16,17 @@ export async function getLatLong({ number, name, type, suburb }) {
     suburb,
   });
   const addressString = `${number} ${name} ${type} ${suburb} Queensland Australia`;
-  const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${addressString}&key=AIzaSyDYWeSF4f4A-3gVJtrZdaRy7vfBF3Xq6TY`;
+  const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${addressString}&key=AIzaSyAWuB8zx2ieDSXqH3oTBuDUw9pcO_9HwlA`;
   let data = "ERROR";
 
   try {
     data = await (await fetch(url)).json();
+
+    if ("error_message" in data) alert(data.error_message);
+
     return data.results[0].geometry.location;
   } catch (e) {
-    console.error(e);
+    alert.error(e);
     return data;
   }
 }

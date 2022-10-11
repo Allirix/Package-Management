@@ -84,12 +84,14 @@ const MapOptions = {
   ],
 };
 
+const googleMapsApiKey =
+  process.env.GOOGLE_KEY || "AIzaSyAWuB8zx2ieDSXqH3oTBuDUw9pcO_9HwlA";
+
 const fallbackPosition = { lat: 152.96693758699996, lng: -27.42390230222802 };
 
 export default function MapView() {
   const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey:
-      process.env.GOOGLE_KEY || "AIzaSyDYWeSF4f4A-3gVJtrZdaRy7vfBF3Xq6TY",
+    googleMapsApiKey,
   });
   const location = useMyPosition();
   const centre = useMemo(
