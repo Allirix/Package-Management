@@ -25,6 +25,8 @@ import useLocalStorage from "../../utils/hooks/useLocalStorage";
 import { Loading } from "../../components/Layout/Layout";
 import { useNavigate } from "react-router-dom";
 
+console.log(process.env);
+
 // const subs = ["Mitchelton", "Upper Kedron", "Keperra", "Gaythorne"];
 const mapColors = ["red", "blue", "magenta", "green"]; // red, green, blue, yellow, cyan
 const mapData = map.features.map((e) =>

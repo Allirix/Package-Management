@@ -22,7 +22,7 @@ export async function getLatLong({ number, name, type, suburb }) {
   try {
     data = await (await fetch(url)).json();
 
-    if ("error_message" in data) alert(data.error_message);
+    if ("error_message" in data) console.error(data.error_message);
 
     return data.results[0].geometry.location;
   } catch (e) {
