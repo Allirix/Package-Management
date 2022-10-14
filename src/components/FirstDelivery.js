@@ -23,7 +23,7 @@ export default () => {
           <Button transform="scale(2)" bg="var(--)">
             <BsPlusLg color="var(--ternary-color)" />
           </Button>
-          <Button
+          {/* <Button
             onClick={(e) => {
               e.stopPropagation();
               e.preventDefault();
@@ -31,7 +31,7 @@ export default () => {
             }}
           >
             {"Load test Data".toUpperCase()}
-          </Button>
+          </Button> */}
         </Flex>
       </Flex>
     </Link>

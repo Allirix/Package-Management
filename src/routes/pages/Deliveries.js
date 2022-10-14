@@ -58,34 +58,31 @@ export default function Deliveries() {
 
 const Header = ({ setShowDelivered, showDelivered }) => {
   const { dispatch } = useDeliveryDb();
-  const { average, locations, parcels, pickups } = useStatCard();
+  const { average, locations, parcels, pickups, averageParcels } =
+    useStatCard();
 
-  const eta = parcels[0] / average;
+  const eta = locations[0] / average;
 
   const etaTime =
-    new Date().getTime() + eta !== Infinity ? 1000 * 60 * 60 * eta : 0;
+    new Date().getTime() + (eta !== Infinity ? 1000 * 60 * 60 * eta : 0);
 
+  console.log(etaTime);
   const etaMessage =
-    eta !== Infinity
-      ? new Date(etaTime)
-          ?.toLocaleString()
-          ?.split(",")[1]
-          ?.split(":")
-          ?.slice(0, 2)
-          ?.join(":") + " ETA"
-      : "-";
+    eta !== Infinity ? new Date(etaTime)?.toLocaleString().split(",")[1] : "-";
 
   return (
     <Flex
       justifyContent="center"
       alignItems="center"
-      w="100%"
-      bg="var(--secondary-color)"
-      p="4px"
+      w="calc(100%)"
+      bg="var(--secondary-color-light)"
+      p="8px 0"
       position="sticky"
       top="0px"
       left="0px"
       zIndex="100"
+      borderRadius="8px"
+      border="1px solid rgba( 255, 255, 255, 0.05 )"
     >
       <InfoCard
         value={locations}
@@ -101,19 +98,18 @@ const Header = ({ setShowDelivered, showDelivered }) => {
         title="Parcels"
         helperText={pickups + " Pickups"}
       />
-
       <InfoCard
         value={[Math.round(average * 10) / 10, "hr"]}
         title="Speed"
         Icon={BiRun}
-        helperText="+/-10%"
+        helperText={Math.round(averageParcels * 10) / 10 + "/hr (p)"}
       />
       <InfoCard
-        value={[Math.round(10 * eta) / 10, "hrs"]}
+        value={[eta === Infinity ? "_" : Math.round(10 * eta) / 10, "hrs"]}
         title="Time Left"
         Icon={BiRun}
         divider=" "
-        helperText={etaMessage}
+        helperText={etaMessage ? etaMessage : "-"}
       />
     </Flex>
   );

@@ -169,3 +169,14 @@ nav button {
 .top-nav a {
   height: 50px;
 }
+
+.login {
+  border: 0px solid var(--ternary-color) !important;
+  text-align: center;
+}
+
+.login::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: var(--ternary-color);
+  opacity: 0.3; /* Firefox */
+}

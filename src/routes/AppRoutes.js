@@ -1,4 +1,10 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  Navigate,
+  redirect,
+  useLocation,
+} from "react-router-dom";
 
 import { Deliveries, NewParcel, Map, Settings, Streets } from "./pages";
 
@@ -6,15 +12,25 @@ import useInstallPWA from "../utils/hooks/useInstallPWA";
 import { useEffect, useState } from "react";
 import { Flex, Spinner, Text } from "@chakra-ui/react";
 import History from "./pages/History";
+import Login from "../components/Login";
+
+import { auth } from "../model";
+import { useAuth } from "../utils/providers/AuthProvider";
 
 export default function AppRoutes() {
   const { supportsPWA, promptInstall } = useInstallPWA();
+
+  const location = useLocation();
+
+  const { isLoggedIn } = useAuth();
 
   if (supportsPWA) promptInstall?.prompt();
 
   return (
     <>
       <Routes>
+        <Route path="/login" element={<Login />} />
+
         {/* Redirect Screens */}
         <Route
           path="/"
@@ -45,6 +61,8 @@ export default function AppRoutes() {
         <Route path="/new" element={<NewParcel />}>
           <Route path=":step" element={<NewParcel />} />
         </Route>
+
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </>
   );

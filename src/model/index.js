@@ -3,18 +3,26 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAnalytics } from "firebase/analytics";
 import { enableIndexedDbPersistence } from "firebase/firestore";
+
+import {
+  getAuth,
+  setPersistence,
+  signInWithPopup,
+  inMemoryPersistence,
+  GoogleAuthProvider,
+} from "firebase/auth";
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 import create, { createStreet } from "./create";
 import update from "./update";
-
 import data from "../data/streets.json";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyDYWeSF4f4A-3gVJtrZdaRy7vfBF3Xq6TY",
+  apiKey: "AIzaSyAUFzKs-pqfT5PUFMfkI0lmPMCoefHB7xo",
   authDomain: "package-organiser.firebaseapp.com",
   projectId: "package-organiser",
   storageBucket: "package-organiser.appspot.com",
@@ -43,6 +51,9 @@ enableIndexedDbPersistence(db).catch((err) => {
 // Initialize Firebase
 const analytics = getAnalytics(firebaseApp);
 
-export { firebaseApp, analytics, db };
+// Initialize Firebase Authentication and get a reference to the service
+const auth = getAuth(firebaseApp);
+
+export { firebaseApp, analytics, db, auth };
 
 // data.map((e) => createStreet(e));

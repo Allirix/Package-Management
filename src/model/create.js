@@ -10,7 +10,7 @@ const create = (collectionName, payload) => {
   const at = new Date().getTime();
   const data = { ...payload, updatedAt: at, createdAt: at };
   const ref = collection(db, collectionName);
-  console.log(`Adding data to ${collectionName}`, { data });
+  console.log(`Adding data to ${collectionName}`, { data, ref });
   return addDoc(ref, data);
 };
 

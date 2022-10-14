@@ -52,6 +52,10 @@ export default () => {
       average:
         isNaN(shiftLength) || shiftLength === 0
           ? 0
+          : deliveredLocations / shiftLength,
+      averageParcels:
+        isNaN(shiftLength) || shiftLength === 0
+          ? 0
           : deliveredParcels / shiftLength,
       locations: [totalLocations - deliveredLocations, totalLocations],
       parcels: [totalParcels - deliveredParcels, totalParcels],

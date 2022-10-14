@@ -20,103 +20,36 @@ import {
 import { useCopyToClipboard } from "react-use";
 import { useDeliveryDb } from "../../utils/providers";
 
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
+import { signout } from "../../utils/firebase/signout";
+import { createPlace } from "../../model/create";
+import { useAuth } from "../../utils/providers/AuthProvider";
 
 export default function Settings() {
   let { id } = useParams();
+  const navigate = useNavigate();
+
   const location = useLocation();
 
-  const [{ value: isCoppied }, copyToClipboard] = useCopyToClipboard();
-  const clipboard = useClipboard();
+  const { logout } = useAuth();
+
   const { selected, dispatch } = useDeliveryDb();
 
   const [importValue, setImportValue] = useState("");
 
-  useEffect(() => {
-    const value = decompressFromEncodedURIComponent(clipboard);
-    setImportValue(value);
-  }, [clipboard]);
-
-  let [exportValue, setExportValue] = useMemo(() => {
-    let value;
-    try {
-      value = compressToEncodedURIComponent(JSON.stringify(selected));
-    } catch (e) {
-      value = JSON.stringify(selected);
-    }
-
-    return [
-      value,
-      () => copyToClipboard(`${window.location.origin}/settings/${value}`),
-    ];
-  }, [selected]);
-
-  function importJSON(v) {
-    let value = tryParse(importValue);
-
-    if (value.error) value = tryParse(decompressFromEncodedURIComponent(v));
-    if (value === null || value?.error)
-      return alert(`Cannot parse or decompress ${v}`);
-
-    dispatch("overwrite", value);
-  }
-
   return (
     <Flex flexDirection="column" width="100%" p="1rem" gap="16px">
-      <Flex flexDirection="column">
-        <Text mb="8px" color="var(--ternary-color)">
-          Import JSON or compressed JSON:
-        </Text>
-        <InputGroup>
-          <Input
-            value={importValue}
-            variant="filled"
-            onChange={(e) => setImportValue(e.target.value)}
-          />
-          <InputRightElement width="50px">
-            <Button onClick={() => importJSON(importValue)} color="black">
-              <BiImport size="50px" />
-            </Button>
-          </InputRightElement>
-        </InputGroup>
-      </Flex>
+      <Button
+        onClick={() => (logout(), navigate("/login"))}
+        color="white"
+        background="var(--ternary-color)"
+      >
+        Logout
+      </Button>
 
-      <Flex flexDirection="column">
-        <Text mb="8px" color="var(--ternary-color)">
-          Export compressed JSON:
-        </Text>
-        <InputGroup>
-          <Input value={exportValue} disabled variant="filled" />
-
-          <InputRightElement width="50px">
-            <Button onClick={setExportValue} color="black">
-              <FiCopy size="50px" />
-            </Button>
-          </InputRightElement>
-        </InputGroup>
-
-        {isCoppied && (
-          <Text color="var(--primary-color-lightest)">
-            Value coppied to clipoard!
-          </Text>
-        )}
-      </Flex>
-
-      {id && (
-        <Flex flexDirection="column">
-          <Text mb="8px" color="var(--ternary-color)">
-            Import External:
-          </Text>
-          <InputGroup>
-            <Input value={id} variant="filled" />
-            <InputRightElement width="50px" disabled>
-              <Button onClick={() => importJSON(id)} color="black">
-                <BiImport size="50px" />
-              </Button>
-            </InputRightElement>
-          </InputGroup>
-        </Flex>
-      )}
+      <Button onClick={() => createPlace({ test: "test" })} color="black">
+        Create Place
+      </Button>
     </Flex>
   );
 }

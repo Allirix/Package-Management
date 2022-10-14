@@ -10,7 +10,12 @@ export default ({ children }) => {
   const loading = useLoading();
 
   // remove layout elements on new package screen
-  if (pathname.includes("new")) return children;
+  if (
+    pathname.includes("new") ||
+    pathname.includes("register") ||
+    pathname.includes("login")
+  )
+    return children;
 
   return (
     <Flex

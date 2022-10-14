@@ -66,7 +66,7 @@ export default function History() {
         >
           {Object.keys(dates).length > 0 &&
             Object.keys(dates).map((e) => (
-              <option style={{ color: "white", background: "black" }}>
+              <option style={{ color: "white", background: "black" }} key={e}>
                 {e}
               </option>
             ))}

@@ -38,7 +38,6 @@ export default function DeliveryList({
   const [count, setCount] = useState([0, itemsPerPage - 1]);
 
   useEffect(() => {
-    console.log(list);
     if (list.length < itemsPerPage) setCount([0, list.length - 1]);
     if (list.length >= itemsPerPage) setCount([0, itemsPerPage - 1]);
   }, [list]);
@@ -78,7 +77,7 @@ export default function DeliveryList({
           leftIcon={<AiFillCaretLeft />}
           variant="WhatsApp"
           h="20px"
-          disable={count[0] === 0}
+          disable={(count[0] === 0).toString()}
         >
           {count[0] + 1}
         </Button>
@@ -88,7 +87,7 @@ export default function DeliveryList({
           rightIcon={<AiFillCaretRight />}
           variant="WhatsApp"
           h="20px"
-          disable={count[1] >= list?.length}
+          disable={(count[1] >= list?.length).toString()}
         >
           {count[1] + 1}
         </Button>

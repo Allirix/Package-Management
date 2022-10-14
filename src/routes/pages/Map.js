@@ -25,8 +25,6 @@ import useLocalStorage from "../../utils/hooks/useLocalStorage";
 import { Loading } from "../../components/Layout/Layout";
 import { useNavigate } from "react-router-dom";
 
-console.log(process.env);
-
 // const subs = ["Mitchelton", "Upper Kedron", "Keperra", "Gaythorne"];
 const mapColors = ["red", "blue", "magenta", "green"]; // red, green, blue, yellow, cyan
 const mapData = map.features.map((e) =>
@@ -96,12 +94,9 @@ const MapOptions = {
 
 const fallbackPosition = { lat: 152.96693758699996, lng: -27.42390230222802 };
 
-const googleMapsApiKey =
-  process.env.GOOGLE_KEY || "AIzaSyAWuB8zx2ieDSXqH3oTBuDUw9pcO_9HwlA";
-
 export default function Map() {
   const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey,
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_KEY,
   });
 
   const location = useMyPosition();
