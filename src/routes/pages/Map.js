@@ -317,48 +317,52 @@ const Markers = ({ setSelected, selected }) => {
   const navigate = useNavigate();
 
   return useMemo(() => {
-    return undelivered
-      .filter((e, i) => i < 22)
-      .map((street, i) => {
-        const onClick = (e) => navigate(`/deliveries#${street.id}`);
+    return (
+      undelivered
+        // .filter((e, i) => i < 22)
+        .map((street, i) => {
+          const onClick = (e) => navigate(`/deliveries#${street.id}`);
 
-        const isPickup = street.parcels.some((e) => e.color === "PICKUP");
+          const isPickup = street.parcels.some((e) => e.color === "PICKUP");
 
-        const label = {
-          className:
-            "marker-label marker-label--" +
-            (isPickup ? "p" : street.suburb[0].toLowerCase()),
-          text: street.number,
-        };
-        const position = { lat: street.lat, lng: street.lng };
+          console.log({ n: street.number });
 
-        const markerIcon = {
-          path: icons.dot,
-          fillColor: isPickup ? colors.PICKUP : colors[street.suburb[0]],
-          fillOpacity: 0,
-          scale: 2,
-          strokeWeight: 0,
-          labelOrigin: new window.google.maps.Point(10, 10),
-          anchor: new window.google.maps.Point(15, 15),
-        };
+          const label = {
+            className:
+              "marker-label marker-label--" +
+              (isPickup ? "p" : street.suburb[0].toLowerCase()),
+            text: street.number === "" ? "_" : street.number,
+          };
+          const position = { lat: street.lat, lng: street.lng };
 
-        return (
-          <Marker
-            onDblClick={onClick}
-            onClick={() => {
-              setSelected((s) => {
-                console.log({ s });
-                return [...s.filter((e) => e.id !== street.id), street];
-              });
-            }}
-            key={street.id}
-            options={{ optimized: true }}
-            icon={markerIcon}
-            position={position}
-            label={label}
-          />
-        );
-      });
+          const markerIcon = {
+            path: icons.dot,
+            fillColor: isPickup ? colors.PICKUP : colors[street.suburb[0]],
+            fillOpacity: 0,
+            scale: 2,
+            strokeWeight: 0,
+            labelOrigin: new window.google.maps.Point(10, 10),
+            anchor: new window.google.maps.Point(15, 15),
+          };
+
+          return (
+            <Marker
+              onDblClick={onClick}
+              onClick={() => {
+                setSelected((s) => {
+                  console.log({ s });
+                  return [...s.filter((e) => e.id !== street.id), street];
+                });
+              }}
+              key={street.id}
+              options={{ optimized: true }}
+              icon={markerIcon}
+              position={position}
+              label={label}
+            />
+          );
+        })
+    );
   }, [undelivered]);
 };
 
