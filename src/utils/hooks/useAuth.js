@@ -26,7 +26,6 @@ export default function useAuth() {
       const user = await signInWithEmailAndPassword(auth, email, password);
       setUser({ ...user, email, password });
       redirectToHome();
-      console.log({ user });
     } catch (e) {
       console.error(e);
       setError(e.message);
@@ -47,7 +46,6 @@ export default function useAuth() {
 
   useEffect(() => {
     if (user) {
-      console.log({ user });
       login(user.email, user.password);
       redirectToHome();
     } else redirectToLogin();

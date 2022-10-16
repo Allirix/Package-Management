@@ -33,7 +33,7 @@ import { useNavigate } from "react-router-dom";
 import { useLocalStorage } from "react-use";
 import { FaCross } from "react-icons/fa";
 import { MdClose } from "react-icons/md";
-import { BiMinus, BiNavigation, BiPlus } from "react-icons/bi";
+import { BiMinus, BiNavigation, BiPlus, BiReset } from "react-icons/bi";
 
 // const subs = ["Mitchelton", "Upper Kedron", "Keperra", "Gaythorne"];
 const mapColors = ["red", "blue", "magenta", "green"]; // red, green, blue, yellow, cyan
@@ -120,6 +120,12 @@ export default function Map() {
     []
   );
   const { isEmpty, undelivered } = useSortedDelivery();
+
+  useEffect(() => {
+    setSelected((s) => {
+      return s.filter((e) => undelivered.some(({ id }) => id === e.id));
+    });
+  }, [undelivered]);
 
   const [waypoints, setWaypoints] = useLocalStorage(
     "waypoints",
@@ -214,6 +220,7 @@ export default function Map() {
         style={containerStyle}
         id="map"
         options={MapOptions}
+        on
       >
         <Marker icon={currentPositionIcon} position={location} />
         <Markers setSelected={setSelected} selected={selected} />
@@ -233,60 +240,79 @@ const Route = ({ selected = [], location, setSelected }) => {
       top="110px"
       left="2px"
       flexDirection="column"
-      background="rgba(0,0,0,0.7)"
+      background="rgba(0,0,0,0.9)"
       zIndex="10000"
       p="4px"
-      borderRadius="4px"
       gap="4px"
       alignItems="flex-end"
     >
       {selected.map((e, i) => (
         <Flex
+          cursor="pointer"
           justifyContent="space-between"
           alignItems="center"
-          gap="4px"
+          gap="8px"
           w="100%"
           key={e.id}
+          background="black"
+          p="4px"
+          borderRadius="4px"
+          fontFamily='"Open Sans"'
+          onClick={() => setSelected((s) => s.filter(({ id }) => e.id !== id))}
         >
-          <Flex gap="4px">
+          <Flex
+            h="25px"
+            w="25px"
+            textAlign="center"
+            borderRadius="4px"
+            bg="white"
+            justifyContent="center"
+            alignItems="center"
+            fontWeight="900"
+          >
+            {i + 1}
+          </Flex>
+
+          <Flex gap="8px">
             <Text
               fontWeight="900"
               color="var(--ternary-color)"
-              fontSize="14px"
+              fontSize="16px"
               lineHeight="16px"
             >
               {e.number}
             </Text>
             <Text color="white" fontSize="12px" opacity="0.7">
-              {e.name}
+              {e.name.toUpperCase()}
             </Text>
           </Flex>
-
-          <Button
-            p="0"
-            onClick={() =>
-              setSelected((s) => s.filter(({ id }) => e.id !== id))
-            }
-            background="transparent"
-            border="1px solid red"
-          >
-            <MdClose color="red" size="20px" />
-          </Button>
+          <MdClose color="red" />
         </Flex>
       ))}
-      <Button
-        background="transparent"
-        onClick={() =>
-          window.open(getGoogleDirectionsLink(location, selected), "_blank")
-        }
-        border="1px solid var(--ternary-color)"
-        w="fit-content"
-        h="50px"
-        w="50px"
-        p="0"
-      >
-        <BiNavigation color="var(--ternary-color)" size="25px" />
-      </Button>
+      <Flex gap="4px">
+        <Button
+          background="transparent"
+          onClick={() => setSelected([])}
+          w="fit-content"
+          h="50px"
+          w="50px"
+          p="0"
+        >
+          <BiReset color="red" size="25px" />
+        </Button>
+        <Button
+          background="transparent"
+          onClick={() =>
+            window.open(getGoogleDirectionsLink(location, selected), "_blank")
+          }
+          w="fit-content"
+          h="50px"
+          w="50px"
+          p="0"
+        >
+          <BiNavigation color="var(--ternary-color)" size="25px" />
+        </Button>
+      </Flex>
     </Flex>
   );
 };
@@ -322,22 +348,28 @@ const Markers = ({ setSelected, selected }) => {
         // .filter((e, i) => i < 22)
         .map((street, i) => {
           const onClick = (e) => navigate(`/deliveries#${street.id}`);
+          const num = selected
+            .map(({ id }, i) => ({ id, i }))
+            .find(({ id }) => id === street.id)?.i;
 
           const isPickup = street.parcels.some((e) => e.color === "PICKUP");
-
-          console.log({ n: street.number });
+          const isSelected = typeof num === "undefined";
 
           const label = {
             className:
               "marker-label marker-label--" +
-              (isPickup ? "p" : street.suburb[0].toLowerCase()),
-            text: street.number === "" ? "_" : street.number,
+              (isPickup ? "p" : isSelected ? "black" : "red"),
+            text: isSelected ? "_" : num + 1 + "",
           };
           const position = { lat: street.lat, lng: street.lng };
 
           const markerIcon = {
             path: icons.dot,
-            fillColor: isPickup ? colors.PICKUP : colors[street.suburb[0]],
+            fillColor: isPickup
+              ? colors.PICKUP
+              : isSelected
+              ? "black"
+              : colors[street.suburb[0]],
             fillOpacity: 0,
             scale: 2,
             strokeWeight: 0,
@@ -350,7 +382,6 @@ const Markers = ({ setSelected, selected }) => {
               onDblClick={onClick}
               onClick={() => {
                 setSelected((s) => {
-                  console.log({ s });
                   return [...s.filter((e) => e.id !== street.id), street];
                 });
               }}
@@ -363,7 +394,7 @@ const Markers = ({ setSelected, selected }) => {
           );
         })
     );
-  }, [undelivered]);
+  }, [undelivered, selected]);
 };
 
 const Suburbs = () =>

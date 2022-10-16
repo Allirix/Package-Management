@@ -20,7 +20,6 @@ export const signIn = (setUser) => async (email, password) => {
 
     return { ...user, error: false };
   } catch (e) {
-    console.log(e);
     setUser(null);
 
     return { ...e, error: true };

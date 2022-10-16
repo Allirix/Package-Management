@@ -66,7 +66,6 @@ const Header = ({ setShowDelivered, showDelivered }) => {
   const etaTime =
     new Date().getTime() + (eta !== Infinity ? 1000 * 60 * 60 * eta : 0);
 
-  console.log(etaTime);
   const etaMessage =
     eta !== Infinity ? new Date(etaTime)?.toLocaleString().split(",")[1] : "-";
 

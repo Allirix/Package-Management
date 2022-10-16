@@ -66,8 +66,6 @@ export const actions = {
     const { name, number, type, suburb } = place;
     const newHash = hash({ name, number, type, suburb });
 
-    console.log({ place });
-
     const existing = deliveries.filter((e) => e.id === place.id)[0];
 
     if (existing) {
