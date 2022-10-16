@@ -223,6 +223,15 @@ export default function Map() {
         on
       >
         <Marker icon={currentPositionIcon} position={location} />
+        <Marker
+          icon={currentPositionIcon}
+          position={{ lat: -27.328031268580506, lng: 152.98566355337306 }}
+        />
+        <Marker
+          icon={currentPositionIcon}
+          position={{ lat: -27.461804985800843, lng: 153.02571603974496 }}
+        />
+
         <Markers setSelected={setSelected} selected={selected} />
         <Suburbs />
       </GoogleMap>
@@ -344,7 +353,21 @@ const Markers = ({ setSelected, selected }) => {
 
   return useMemo(() => {
     return (
-      undelivered
+      [
+        ...undelivered,
+        {
+          lat: -27.328031268580506,
+          lng: 152.98566355337306,
+          id: "1",
+          name: "Brendale Depo CourierPlease",
+        },
+        {
+          lat: -27.461804985800843,
+          lng: 153.02571603974496,
+          id: "2",
+          name: "170 Liechhardt St",
+        },
+      ]
         // .filter((e, i) => i < 22)
         .map((street, i) => {
           const onClick = (e) => navigate(`/deliveries#${street.id}`);
@@ -352,7 +375,7 @@ const Markers = ({ setSelected, selected }) => {
             .map(({ id }, i) => ({ id, i }))
             .find(({ id }) => id === street.id)?.i;
 
-          const isPickup = street.parcels.some((e) => e.color === "PICKUP");
+          const isPickup = street?.parcels?.some((e) => e.color === "PICKUP");
           const isSelected = typeof num === "undefined";
 
           const label = {
@@ -365,11 +388,11 @@ const Markers = ({ setSelected, selected }) => {
 
           const markerIcon = {
             path: icons.dot,
-            fillColor: isPickup
-              ? colors.PICKUP
-              : isSelected
-              ? "black"
-              : colors[street.suburb[0]],
+            // fillColor: isPickup
+            //   ? colors.PICKUP
+            //   : isSelected
+            //   ? "black"
+            //   : colors[street.suburb[0]],
             fillOpacity: 0,
             scale: 2,
             strokeWeight: 0,
