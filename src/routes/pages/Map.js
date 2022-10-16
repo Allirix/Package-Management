@@ -33,7 +33,13 @@ import { useNavigate } from "react-router-dom";
 import { useLocalStorage } from "react-use";
 import { FaCross } from "react-icons/fa";
 import { MdClose } from "react-icons/md";
-import { BiMinus, BiNavigation, BiPlus, BiReset } from "react-icons/bi";
+import {
+  BiChevronRight,
+  BiMinus,
+  BiNavigation,
+  BiPlus,
+  BiReset,
+} from "react-icons/bi";
 
 // const subs = ["Mitchelton", "Upper Kedron", "Keperra", "Gaythorne"];
 const mapColors = ["red", "blue", "magenta", "green"]; // red, green, blue, yellow, cyan
@@ -119,7 +125,8 @@ export default function Map() {
         : fallbackPosition,
     []
   );
-  const { isEmpty, undelivered } = useSortedDelivery();
+  const { isEmpty, undelivered, closest } = useSortedDelivery();
+  const [highlighted, setHighlighted] = useState(closest);
 
   useEffect(() => {
     setSelected((s) => {
@@ -211,6 +218,7 @@ export default function Map() {
           selected={selected}
           setSelected={setSelected}
           location={location}
+          setHighlighted={setHighlighted}
         />
       )}
 
@@ -223,26 +231,18 @@ export default function Map() {
         on
       >
         <Marker icon={currentPositionIcon} position={location} />
-        <Marker
-          icon={currentPositionIcon}
-          position={{ lat: -27.328031268580506, lng: 152.98566355337306 }}
-        />
-        <Marker
-          icon={currentPositionIcon}
-          position={{ lat: -27.461804985800843, lng: 153.02571603974496 }}
-        />
 
         <Markers setSelected={setSelected} selected={selected} />
         <Suburbs />
       </GoogleMap>
-      <Overlay />
+      <Overlay displayed={highlighted} />
 
       {/* {distanceMatrix} */}
     </Flex>
   );
 }
 
-const Route = ({ selected = [], location, setSelected }) => {
+const Route = ({ selected = [], location, setSelected, setHighlighted }) => {
   return (
     <Flex
       position="absolute"
@@ -257,7 +257,6 @@ const Route = ({ selected = [], location, setSelected }) => {
     >
       {selected.map((e, i) => (
         <Flex
-          cursor="pointer"
           justifyContent="space-between"
           alignItems="center"
           gap="8px"
@@ -267,14 +266,13 @@ const Route = ({ selected = [], location, setSelected }) => {
           p="4px"
           borderRadius="4px"
           fontFamily='"Open Sans"'
-          onClick={() => setSelected((s) => s.filter(({ id }) => e.id !== id))}
         >
           <Flex
             h="25px"
             w="25px"
             textAlign="center"
             borderRadius="4px"
-            bg="white"
+            bg="rgb(255, 229, 229)"
             justifyContent="center"
             alignItems="center"
             fontWeight="900"
@@ -295,7 +293,18 @@ const Route = ({ selected = [], location, setSelected }) => {
               {e.name.toUpperCase()}
             </Text>
           </Flex>
-          <MdClose color="red" />
+          <MdClose
+            color="red"
+            onClick={() =>
+              setSelected((s) => s.filter(({ id }) => e.id !== id))
+            }
+          />
+          {!e?.manual && (
+            <BiChevronRight
+              color="var(--ternary-color)"
+              onClick={() => setHighlighted((h) => e)}
+            />
+          )}
         </Flex>
       ))}
       <Flex gap="4px">
@@ -346,7 +355,7 @@ function appendLocation({ number, name, type, suburb }) {
   return `${number}+${name}+${type},+${suburb}+QLD`;
 }
 
-const Markers = ({ setSelected, selected }) => {
+const Markers = ({ setSelected, selected, setHighlighted }) => {
   const { undelivered } = useSortedDelivery();
 
   const navigate = useNavigate();
@@ -360,12 +369,18 @@ const Markers = ({ setSelected, selected }) => {
           lng: 152.98566355337306,
           id: "1",
           name: "Brendale Depo CourierPlease",
+          manual: true,
+          parcels: [],
         },
         {
           lat: -27.461804985800843,
           lng: 153.02571603974496,
           id: "2",
-          name: "170 Liechhardt St",
+          number: "170",
+          name: "Leichhardt",
+          type: "st",
+          manual: true,
+          parcels: [],
         },
       ]
         // .filter((e, i) => i < 22)
@@ -396,8 +411,8 @@ const Markers = ({ setSelected, selected }) => {
             fillOpacity: 0,
             scale: 2,
             strokeWeight: 0,
-            labelOrigin: new window.google.maps.Point(10, 10),
-            anchor: new window.google.maps.Point(15, 15),
+            labelOrigin: new window.google.maps.Point(10, 15),
+            anchor: new window.google.maps.Point(10, 15),
           };
 
           return (
@@ -429,21 +444,20 @@ const Suburbs = () =>
     []
   );
 
-const Overlay = () => {
+const Overlay = ({ displayed }) => {
   const { dispatch } = useDeliveryDb();
-  const { closest } = useSortedDelivery();
 
   const street = useMemo(
     () => (
       <Street
-        street={closest}
+        street={displayed}
         toggle={() => {
-          dispatch("toggle", closest.id);
+          dispatch("toggle", displayed.id);
         }}
-        remove={() => dispatch("remove", closest.id)}
+        remove={() => dispatch("remove", displayed.id)}
       />
     ),
-    [closest, dispatch]
+    [displayed, dispatch]
   );
 
   return <Flex p="0">{street}</Flex>;

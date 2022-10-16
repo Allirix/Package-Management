@@ -69,13 +69,11 @@ export default function Login() {
           </Flex>
 
           <Flex
-            maxWidth="800px"
             onClick={attemptLogin}
             color="white"
             position="fixed"
             bottom="0px"
-            left="50%"
-            transform="translateX(-50%)"
+            left="0"
             flexDirection="column"
             gap="4px"
           >
