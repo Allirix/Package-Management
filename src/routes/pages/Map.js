@@ -35,6 +35,7 @@ import { FaCross, FaInfoCircle } from "react-icons/fa";
 import { MdCheck, MdClose, MdInfoOutline } from "react-icons/md";
 import {
   BiCheck,
+  BiChevronLeft,
   BiChevronRight,
   BiChevronUp,
   BiMinus,
@@ -253,6 +254,7 @@ export default function Map() {
 
 const Route = ({ selected = [], location, setSelected, setHighlighted }) => {
   const { dispatch } = useDeliveryDb();
+  const [isExpanded, setIsExpanded] = useState(true);
   return (
     <Flex
       position="absolute"
@@ -277,7 +279,7 @@ const Route = ({ selected = [], location, setSelected, setHighlighted }) => {
           borderRadius="4px"
           fontFamily='"Open Sans"'
         >
-          <Flex
+          {/* <Flex
             h="15px"
             w="15px"
             textAlign="center"
@@ -289,7 +291,7 @@ const Route = ({ selected = [], location, setSelected, setHighlighted }) => {
             fontSize="10px"
           >
             {i + 1}
-          </Flex>
+          </Flex> */}
 
           <Flex gap="4px">
             <Text
@@ -305,63 +307,87 @@ const Route = ({ selected = [], location, setSelected, setHighlighted }) => {
             </Text>
           </Flex>
 
-          <Flex gap="4px" alignItems="center" justifyContent="center">
-            <MdClose
-              cursor="pointer"
-              color="red"
-              opacity="0.5"
-              onClick={() =>
-                setSelected((s) => s.filter(({ id }) => e.id !== id))
-              }
-              size="35px"
-            />
-            {!e?.manual && (
-              <>
-                <MdInfoOutline
-                  cursor="pointer"
-                  color="blue"
-                  onClick={() => setHighlighted((h) => e)}
-                  size="30px"
-                  opacity="0.5"
-                />
-                <MdCheck
-                  cursor="pointer"
-                  opacity="0.5"
-                  color="white"
-                  onClick={() => {
-                    dispatch("toggle", e.id);
-                    setHighlighted((s) => (s.id === e.id ? {} : s));
-                  }}
-                  size="30px"
-                />
-              </>
-            )}
-          </Flex>
+          {isExpanded && (
+            <Flex gap="4px" alignItems="center" justifyContent="flex-end">
+              <MdClose
+                cursor="pointer"
+                color="red"
+                opacity="0.5"
+                onClick={() =>
+                  setSelected((s) => s.filter(({ id }) => e.id !== id))
+                }
+                size="35px"
+              />
+              {!e?.manual && (
+                <>
+                  <MdInfoOutline
+                    cursor="pointer"
+                    color="blue"
+                    onClick={() => setHighlighted((h) => e)}
+                    size="30px"
+                    opacity="0.5"
+                  />
+                  <MdCheck
+                    cursor="pointer"
+                    opacity="0.5"
+                    color="white"
+                    onClick={() => {
+                      dispatch("toggle", e.id);
+                      setHighlighted((s) => (s.id === e.id ? {} : s));
+                    }}
+                    size="30px"
+                  />
+                </>
+              )}
+            </Flex>
+          )}
         </Flex>
       ))}
-      <Flex gap="4px">
+      <Flex
+        gap="4px"
+        justifyContent="space-between"
+        alignItems="center"
+        w="100%"
+      >
         <Button
           background="transparent"
-          onClick={() => setSelected([])}
+          onClick={() => setIsExpanded((e) => !e)}
           w="fit-content"
           h="50px"
           w="50px"
           p="0"
         >
-          <BiReset color="red" size="25px" />
+          {isExpanded ? (
+            <BiChevronLeft color="red" size="25px" />
+          ) : (
+            <BiChevronRight color="red" size="25px" />
+          )}
         </Button>
-        <Button
-          background="transparent"
-          onClick={() =>
-            window.open(getGoogleDirectionsLink(location, selected), "_blank")
-          }
-          w="fit-content"
-          h="50px"
-          w="50px"
-          p="0"
-        >
-          <BiNavigation color="var(--ternary-color)" size="25px" />
-        </Button>
+
+        <Flex>
+          <Button
+            background="transparent"
+            onClick={() => setSelected([])}
+            w="fit-content"
+            h="50px"
+            w="50px"
+            p="0"
+          >
+            <BiReset color="red" size="25px" />
+          </Button>
+          <Button
+            background="transparent"
+            onClick={() =>
+              window.open(getGoogleDirectionsLink(location, selected), "_blank")
+            }
+            w="fit-content"
+            h="50px"
+            w="50px"
+            p="0"
+          >
+            <BiNavigation color="var(--ternary-color)" size="25px" />
+          </Button>
+        </Flex>
       </Flex>
     </Flex>
   );
