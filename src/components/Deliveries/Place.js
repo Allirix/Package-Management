@@ -12,6 +12,7 @@ export default ({
   show = true,
   isHighlighted = false,
   showCheck = true,
+  onComplete = () => {},
 }) => {
   const { dispatch } = useDeliveryDb();
 
@@ -43,6 +44,7 @@ export default ({
         <Controls
           street={place}
           showCheck={place.parcels.length > 0 && showCheck}
+          onComplete={onComplete}
         />
       )}
     </Flex>

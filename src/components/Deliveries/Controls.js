@@ -6,7 +6,7 @@ import { BsArrowReturnLeft, BsFillCheckCircleFill } from "react-icons/bs";
 import { getGoogleMapsDirURL } from "./utils";
 import { useDeliveryDb, useMyPosition } from "../../utils/providers";
 
-export default function Controls({ street, showCheck = true }) {
+export default function Controls({ street, showCheck = true, onComplete }) {
   const { dispatch } = useDeliveryDb();
 
   return (
@@ -22,7 +22,7 @@ export default function Controls({ street, showCheck = true }) {
       <ControlButton
         onClick={
           showCheck
-            ? () => dispatch("toggle", street.id)
+            ? () => dispatch("toggle", street.id, onComplete(street))
             : () => dispatch("removeLocation", street.id)
         }
         Icon={showCheck ? BsFillCheckCircleFill : RiCloseFill}

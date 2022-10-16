@@ -34,12 +34,17 @@ import { useLocalStorage } from "react-use";
 import { FaCross } from "react-icons/fa";
 import { MdClose } from "react-icons/md";
 import {
+  BiCheck,
   BiChevronRight,
+  BiChevronUp,
   BiMinus,
   BiNavigation,
   BiPlus,
   BiReset,
 } from "react-icons/bi";
+import { BsFillCheckCircleFill, BsFillInfoCircleFill } from "react-icons/bs";
+import { RiInformationFill } from "react-icons/ri";
+import { AiFillCloseCircle } from "react-icons/ai";
 
 // const subs = ["Mitchelton", "Upper Kedron", "Keperra", "Gaythorne"];
 const mapColors = ["red", "blue", "magenta", "green"]; // red, green, blue, yellow, cyan
@@ -126,7 +131,7 @@ export default function Map() {
     []
   );
   const { isEmpty, undelivered, closest } = useSortedDelivery();
-  const [highlighted, setHighlighted] = useState(closest);
+  const [highlighted, setHighlighted] = useState(false);
 
   useEffect(() => {
     setSelected((s) => {
@@ -235,7 +240,7 @@ export default function Map() {
         <Markers setSelected={setSelected} selected={selected} />
         <Suburbs />
       </GoogleMap>
-      <Overlay displayed={highlighted} />
+      <Overlay displayed={highlighted} setDisplayed={setHighlighted} />
 
       {/* {distanceMatrix} */}
     </Flex>
@@ -267,7 +272,7 @@ const Route = ({ selected = [], location, setSelected, setHighlighted }) => {
           borderRadius="4px"
           fontFamily='"Open Sans"'
         >
-          <Flex
+          {/* <Flex
             h="25px"
             w="25px"
             textAlign="center"
@@ -278,7 +283,7 @@ const Route = ({ selected = [], location, setSelected, setHighlighted }) => {
             fontWeight="900"
           >
             {i + 1}
-          </Flex>
+          </Flex> */}
 
           <Flex gap="8px">
             <Text
@@ -293,17 +298,26 @@ const Route = ({ selected = [], location, setSelected, setHighlighted }) => {
               {e.name.toUpperCase()}
             </Text>
           </Flex>
-          <MdClose
+          <AiFillCloseCircle
             color="red"
             onClick={() =>
               setSelected((s) => s.filter(({ id }) => e.id !== id))
             }
+            size="35px"
           />
           {!e?.manual && (
-            <BiChevronRight
-              color="var(--ternary-color)"
-              onClick={() => setHighlighted((h) => e)}
-            />
+            <>
+              <BsFillInfoCircleFill
+                color="var(--ternary-color)"
+                onClick={() => setHighlighted((h) => e)}
+                size="35px"
+              />
+              <BsFillCheckCircleFill
+                color="var(--ternary-color)"
+                onClick={() => setHighlighted((h) => e)}
+                size="35px"
+              />
+            </>
           )}
         </Flex>
       ))}
@@ -444,23 +458,21 @@ const Suburbs = () =>
     []
   );
 
-const Overlay = ({ displayed }) => {
+const Overlay = ({ displayed, setDisplayed }) => {
   const { dispatch } = useDeliveryDb();
+  const { closest } = useSortedDelivery();
 
-  const street = useMemo(
-    () => (
+  const street = useMemo(() => {
+    console.log({ displayed, closest, setDisplayed });
+    return (
       <Street
-        street={displayed}
-        toggle={() => {
-          dispatch("toggle", displayed.id);
-        }}
-        remove={() => dispatch("remove", displayed.id)}
+        street={Object.keys(displayed).length > 0 ? displayed : closest}
+        onComplete={() => setDisplayed({})}
       />
-    ),
-    [displayed, dispatch]
-  );
+    );
+  }, [displayed, dispatch, setDisplayed, closest]);
 
-  return <Flex p="0">{street}</Flex>;
+  return street;
 };
 
 const generateWaypoints = (undelivered) =>
