@@ -8,7 +8,6 @@ import useLocalStorage from "./useLocalStorage";
 export default function useAuth() {
   const [user, setUser] = useLocalStorage("user", null);
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -23,8 +22,6 @@ export default function useAuth() {
 
   async function login(email, password) {
     try {
-      setLoading(true);
-
       console.log("Attempting login", { email, password });
       const user = await signInWithEmailAndPassword(auth, email, password);
       setUser({ ...user, email, password });
@@ -33,7 +30,6 @@ export default function useAuth() {
     } catch (e) {
       console.error(e);
       setError(e.message);
-      setLoading(false);
       setUser(null);
     }
   }
@@ -57,5 +53,5 @@ export default function useAuth() {
     } else redirectToLogin();
   }, []);
 
-  return { loading, login, logout, error, ...user, isLoggedIn: user === null };
+  return { login, logout, error, ...user, isLoggedIn: user === null };
 }

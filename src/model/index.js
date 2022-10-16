@@ -37,7 +37,9 @@ const db = getFirestore(firebaseApp);
 
 enableIndexedDbPersistence(db).catch((err) => {
   if (err.code == "failed-precondition") {
-    alert("Multiple tabs open, please close all tabs and try again.");
+    alert(
+      "Multiple tabs open. Firebase DB failed. Please close all tabs and try again."
+    );
   } else if (err.code == "unimplemented") {
     // The current browser does not support all of the
     // features required to enable persistence

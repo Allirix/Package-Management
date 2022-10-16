@@ -8,22 +8,32 @@ import {
 
 import map from "../../data/map.json";
 
-import { Flex, Spinner, useConst } from "@chakra-ui/react";
+import { Button, Flex, Spinner, Text, useConst } from "@chakra-ui/react";
+
+import {
+  RangeSlider,
+  RangeSliderTrack,
+  RangeSliderFilledTrack,
+  RangeSliderThumb,
+} from "@chakra-ui/react";
 
 import Street from "../../components/Deliveries/Place";
 
 import "../../components/Map/Map.css";
 
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   useDeliveryDb,
   useMyPosition,
   useSortedDelivery,
 } from "../../utils/providers";
 import FirstDelivery from "../../components/FirstDelivery";
-import useLocalStorage from "../../utils/hooks/useLocalStorage";
 import { Loading } from "../../components/Layout/Layout";
 import { useNavigate } from "react-router-dom";
+import { useLocalStorage } from "react-use";
+import { FaCross } from "react-icons/fa";
+import { MdClose } from "react-icons/md";
+import { BiMinus, BiNavigation, BiPlus } from "react-icons/bi";
 
 // const subs = ["Mitchelton", "Upper Kedron", "Keperra", "Gaythorne"];
 const mapColors = ["red", "blue", "magenta", "green"]; // red, green, blue, yellow, cyan
@@ -99,6 +109,8 @@ export default function Map() {
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_KEY,
   });
 
+  const [selected, setSelected] = useState([]);
+
   const location = useMyPosition();
   const centre = useConst(
     () =>
@@ -113,6 +125,8 @@ export default function Map() {
     "waypoints",
     generateWaypoints(undelivered)
   );
+
+  const [zoom, setZoom] = useState(15);
 
   useEffect(() => {
     if (waypoints.length <= 10) setWaypoints(generateWaypoints(undelivered));
@@ -143,24 +157,161 @@ export default function Map() {
 
   return (
     <Flex flexDir="column" w="100%">
+      <Flex p="4px" gap="4px" alignItems="center" h="48px">
+        <Button
+          onClick={() => setZoom((z) => Math.round(10 * (z - 0.1)) / 10)}
+          p="0"
+          variant="outline"
+        >
+          <BiMinus color="white" />
+        </Button>
+        <Flex flexDirection="column" w="100%">
+          <Text fontSize="10px" color="white" fontWeight="900">
+            Zoom
+          </Text>
+          <RangeSlider
+            aria-label={["min", "max"]}
+            defaultValue={[0, 30]}
+            onChange={(val) => setZoom(12 + (8 * val[1]) / 100)}
+          >
+            <RangeSliderTrack>
+              <RangeSliderFilledTrack bg="var(--ternary-color)" />
+            </RangeSliderTrack>
+            <RangeSliderThumb index={1} />
+          </RangeSlider>
+        </Flex>
+
+        <Text
+          fontSize="10px"
+          color="white"
+          fontWeight="900"
+          width="25px"
+          textAlign="center"
+        >
+          {Math.round(zoom * 10) / 10}
+        </Text>
+
+        <Button
+          variant="outline"
+          onClick={() => setZoom((z) => Math.round(10 * (z + 0.1)) / 10)}
+          p="0"
+        >
+          <BiPlus color="white" />
+        </Button>
+      </Flex>
+
+      {selected.length > 0 && (
+        <Route
+          selected={selected}
+          setSelected={setSelected}
+          location={location}
+        />
+      )}
+
       <GoogleMap
         center={centre}
-        zoom={15}
+        zoom={zoom}
         style={containerStyle}
         id="map"
         options={MapOptions}
       >
         <Marker icon={currentPositionIcon} position={location} />
-        <Markers />
+        <Markers setSelected={setSelected} selected={selected} />
         <Suburbs />
       </GoogleMap>
       <Overlay />
+
       {/* {distanceMatrix} */}
     </Flex>
   );
 }
 
-const Markers = () => {
+const Route = ({ selected = [], location, setSelected }) => {
+  return (
+    <Flex
+      position="absolute"
+      top="110px"
+      left="2px"
+      flexDirection="column"
+      background="rgba(0,0,0,0.7)"
+      zIndex="10000"
+      p="4px"
+      borderRadius="4px"
+      gap="4px"
+      alignItems="flex-end"
+    >
+      {selected.map((e, i) => (
+        <Flex
+          justifyContent="space-between"
+          alignItems="center"
+          gap="4px"
+          w="100%"
+          key={e.id}
+        >
+          <Flex gap="4px">
+            <Text
+              fontWeight="900"
+              color="var(--ternary-color)"
+              fontSize="14px"
+              lineHeight="16px"
+            >
+              {e.number}
+            </Text>
+            <Text color="white" fontSize="12px" opacity="0.7">
+              {e.name}
+            </Text>
+          </Flex>
+
+          <Button
+            p="0"
+            onClick={() =>
+              setSelected((s) => s.filter(({ id }) => e.id !== id))
+            }
+            background="transparent"
+            border="1px solid red"
+          >
+            <MdClose color="red" size="20px" />
+          </Button>
+        </Flex>
+      ))}
+      <Button
+        background="transparent"
+        onClick={() =>
+          window.open(getGoogleDirectionsLink(location, selected), "_blank")
+        }
+        border="1px solid var(--ternary-color)"
+        w="fit-content"
+        h="50px"
+        w="50px"
+        p="0"
+      >
+        <BiNavigation color="var(--ternary-color)" size="25px" />
+      </Button>
+    </Flex>
+  );
+};
+
+/*
+
+https://www.google.com/maps/dir/-27.4974534,153.0503714/1+Andover+St,+Mitchelton+QLD+4053/12+Andover+Street,+Mitchelton+QLD
+
+*/
+
+function getGoogleDirectionsLink({ lat, lng }, arr) {
+  let url = `https://www.google.com/maps/dir/${lat},${lng}`;
+
+  arr.forEach((element) => {
+    url += "/" + appendLocation(element);
+  });
+
+  return url;
+}
+
+function appendLocation({ number, name, type, suburb }) {
+  return `${number}+${name}+${type},+${suburb}+QLD`;
+}
+
+const Markers = ({ setSelected, selected }) => {
   const { undelivered } = useSortedDelivery();
 
   const navigate = useNavigate();
@@ -169,9 +320,7 @@ const Markers = () => {
     return undelivered
       .filter((e, i) => i < 22)
       .map((street, i) => {
-        const onClick = (e) => {
-          navigate(`/deliveries#${street.id}`);
-        };
+        const onClick = (e) => navigate(`/deliveries#${street.id}`);
 
         const isPickup = street.parcels.some((e) => e.color === "PICKUP");
 
@@ -179,15 +328,15 @@ const Markers = () => {
           className:
             "marker-label marker-label--" +
             (isPickup ? "p" : street.suburb[0].toLowerCase()),
-          text: i + 1 + "",
+          text: street.number,
         };
         const position = { lat: street.lat, lng: street.lng };
 
         const markerIcon = {
           path: icons.dot,
           fillColor: isPickup ? colors.PICKUP : colors[street.suburb[0]],
-          fillOpacity: 0.9,
-          scale: 1,
+          fillOpacity: 0,
+          scale: 2,
           strokeWeight: 0,
           labelOrigin: new window.google.maps.Point(10, 10),
           anchor: new window.google.maps.Point(15, 15),
@@ -195,8 +344,14 @@ const Markers = () => {
 
         return (
           <Marker
-            onClick={onClick}
-            key={i}
+            onDblClick={onClick}
+            onClick={() => {
+              setSelected((s) => {
+                console.log({ s });
+                return [...s.filter((e) => e.id !== street.id), street];
+              });
+            }}
+            key={street.id}
             options={{ optimized: true }}
             icon={markerIcon}
             position={position}
