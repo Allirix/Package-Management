@@ -31,8 +31,8 @@ import FirstDelivery from "../../components/FirstDelivery";
 import { Loading } from "../../components/Layout/Layout";
 import { useNavigate } from "react-router-dom";
 import { useLocalStorage } from "react-use";
-import { FaCross } from "react-icons/fa";
-import { MdClose } from "react-icons/md";
+import { FaCross, FaInfoCircle } from "react-icons/fa";
+import { MdCheck, MdClose, MdInfoOutline } from "react-icons/md";
 import {
   BiCheck,
   BiChevronRight,
@@ -42,9 +42,13 @@ import {
   BiPlus,
   BiReset,
 } from "react-icons/bi";
-import { BsFillCheckCircleFill, BsFillInfoCircleFill } from "react-icons/bs";
+import {
+  BsFillCheckCircleFill,
+  BsFillInfoCircleFill,
+  BsFillInfoSquareFill,
+} from "react-icons/bs";
 import { RiInformationFill } from "react-icons/ri";
-import { AiFillCloseCircle } from "react-icons/ai";
+import { AiFillCloseCircle, AiFillCloseSquare } from "react-icons/ai";
 
 // const subs = ["Mitchelton", "Upper Kedron", "Keperra", "Gaythorne"];
 const mapColors = ["red", "blue", "magenta", "green"]; // red, green, blue, yellow, cyan
@@ -248,6 +252,7 @@ export default function Map() {
 }
 
 const Route = ({ selected = [], location, setSelected, setHighlighted }) => {
+  const { dispatch } = useDeliveryDb();
   return (
     <Flex
       position="absolute"
@@ -264,7 +269,7 @@ const Route = ({ selected = [], location, setSelected, setHighlighted }) => {
         <Flex
           justifyContent="space-between"
           alignItems="center"
-          gap="8px"
+          gap="4px"
           w="100%"
           key={e.id}
           background="black"
@@ -272,20 +277,21 @@ const Route = ({ selected = [], location, setSelected, setHighlighted }) => {
           borderRadius="4px"
           fontFamily='"Open Sans"'
         >
-          {/* <Flex
-            h="25px"
-            w="25px"
+          <Flex
+            h="15px"
+            w="15px"
             textAlign="center"
             borderRadius="4px"
             bg="rgb(255, 229, 229)"
             justifyContent="center"
             alignItems="center"
             fontWeight="900"
+            fontSize="10px"
           >
             {i + 1}
-          </Flex> */}
+          </Flex>
 
-          <Flex gap="8px">
+          <Flex gap="4px">
             <Text
               fontWeight="900"
               color="var(--ternary-color)"
@@ -298,27 +304,39 @@ const Route = ({ selected = [], location, setSelected, setHighlighted }) => {
               {e.name.toUpperCase()}
             </Text>
           </Flex>
-          <AiFillCloseCircle
-            color="red"
-            onClick={() =>
-              setSelected((s) => s.filter(({ id }) => e.id !== id))
-            }
-            size="35px"
-          />
-          {!e?.manual && (
-            <>
-              <BsFillInfoCircleFill
-                color="var(--ternary-color)"
-                onClick={() => setHighlighted((h) => e)}
-                size="35px"
-              />
-              <BsFillCheckCircleFill
-                color="var(--ternary-color)"
-                onClick={() => setHighlighted((h) => e)}
-                size="35px"
-              />
-            </>
-          )}
+
+          <Flex gap="4px" alignItems="center" justifyContent="center">
+            <MdClose
+              cursor="pointer"
+              color="red"
+              opacity="0.5"
+              onClick={() =>
+                setSelected((s) => s.filter(({ id }) => e.id !== id))
+              }
+              size="35px"
+            />
+            {!e?.manual && (
+              <>
+                <MdInfoOutline
+                  cursor="pointer"
+                  color="blue"
+                  onClick={() => setHighlighted((h) => e)}
+                  size="30px"
+                  opacity="0.5"
+                />
+                <MdCheck
+                  cursor="pointer"
+                  opacity="0.5"
+                  color="white"
+                  onClick={() => {
+                    dispatch("toggle", e.id);
+                    setHighlighted((s) => (s.id === e.id ? {} : s));
+                  }}
+                  size="30px"
+                />
+              </>
+            )}
+          </Flex>
         </Flex>
       ))}
       <Flex gap="4px">
