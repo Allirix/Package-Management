@@ -24,7 +24,10 @@ const NameStep = ({ set, setNumber, number }) => {
   }
 
   function setParams({ name, type, suburb }) {
-    const number = value.split(" ")[0].replace("/", "-").replace("\\", "-");
+    const number =
+      value.split(" ").length > 1
+        ? value.split(" ")[0].replace("/", "-").replace("\\", "-")
+        : "";
     set({ name, type, suburb, number });
   }
 
