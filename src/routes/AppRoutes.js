@@ -36,7 +36,7 @@ export default function AppRoutes() {
           path="/"
           element={<Navigate to="/deliveries" replace={true} />}
         />
-        <Route path="/new" element={<Navigate to="/new/0" replace={true} />} />
+        <Route path="/new" element={<Navigate to="/new/1" replace={true} />} />
 
         {/* Main Screens */}
         <Route path="/deliveries" element={<Deliveries />}>

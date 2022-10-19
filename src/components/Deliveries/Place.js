@@ -78,7 +78,7 @@ const LocationInformation = ({ number, name, suburb, notes }) => (
       fontWeight="600"
       display="inline-block"
     >
-      {number}
+      {number.replace("-", "/")}
     </Text>
     <Flex direction="column" w="100%" textAlign="left">
       <Text

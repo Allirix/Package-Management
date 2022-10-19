@@ -5,9 +5,10 @@ import TopBar from "./TopBar";
 import BottomBar from "./BottomBar";
 import { useEffect, useState } from "react";
 
+import { Helmet } from "react-helmet";
+
 export default ({ children }) => {
   const { pathname } = useLocation();
-  const loading = useLoading();
 
   // remove layout elements on new package screen
   if (
@@ -17,15 +18,15 @@ export default ({ children }) => {
   )
     return children;
 
+  console.log({ pathname });
   return (
     <Flex
-      maxWidth={"800px"}
+      maxWidth="800px"
       flexDir="column"
       m="0 auto"
-      boxShadow={"0px 0px 5px var(--ternary-color)"}
+      boxShadow="0px 0px 5px var(--ternary-color)"
     >
-      {/* cover  */}
-      {loading}
+      <LoadingOverlay />
 
       <TopBar />
       <Container>{children}</Container>
@@ -48,7 +49,7 @@ const Container = ({ children }) => (
   </Flex>
 );
 
-const useLoading = () => {
+const LoadingOverlay = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -82,7 +83,7 @@ export const Loading = ({ show }) => {
         color="var(--ternary-color)"
       />
       <Text color="var(--ternary-color-lightest)" fontWeight="900">
-        ❤️
+        I LOVE YOU NUSHI
       </Text>
     </Flex>
   );

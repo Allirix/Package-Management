@@ -26,15 +26,21 @@ export default function NewParcel() {
 
   const Step = (() => {
     switch (step) {
+      // case "0":
+      //   return <NumberInput set={setParam("number")} />;
       case "0":
-        return <NumberInput set={setParam("number")} />;
+        return (
+          <NameInput
+            set={setParam("name")}
+            setNumber={setParam("number")}
+            number={place.number}
+          />
+        );
       case "1":
-        return <NameInput set={setParam("name")} />;
-      case "2":
         return <TypeInput onClick={setParam} />;
-      case "3":
+      case "2":
         return <ColorInput onClick={setParam("color", 4)} />;
-      case "4":
+      case "3":
         return (
           <FinalStep
             notes={place.notes}
