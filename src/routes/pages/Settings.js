@@ -37,18 +37,55 @@ export default function Settings() {
 
   const [importValue, setImportValue] = useState("");
 
+  const [input, setInput] = useState([]);
+
+  const readFile = (file) => {
+    console.log("reading file");
+    const a = new FileReader();
+    a.onloadend = () => {
+      const content = a.result;
+      console.log({ content: JSON.parse(content), file });
+
+      localStorage.setItem("db", content);
+    };
+    a.readAsText(file);
+  };
+
   return (
     <Flex flexDirection="column" width="100%" p="1rem" gap="16px">
+      {/* <Button onClick={() => createPlace({ test: "test" })} color="black">
+        Create Place
+      </Button> */}
+
+      {/* <Input value={localStorage.getItem("db")} />
+      <Input value={input} onChange={(e) => setInput(e.target.value)} />
+
+      <Button onClick={() => localStorage.setItem("db", input)} color="black">
+        Set DB
+      </Button> */}
+
+      <a
+        href={URL.createObjectURL(
+          new Blob([localStorage.getItem("db")], { type: "text/plain" })
+        )}
+        download="db.json"
+      >
+        <Button w="100%">Download State</Button>
+      </a>
+
+      <Text>Upload State</Text>
+      <Input type="file" onChange={(e) => readFile(e.target.files[0])} />
+
       <Button
         onClick={() => (logout(), navigate("/login"))}
         color="white"
         background="var(--ternary-color)"
+        position="fixed"
+        bottom="75px"
+        w="100%"
+        maxW="calc(800px - 32px)"
       >
         Logout
-      </Button>
-
-      <Button onClick={() => createPlace({ test: "test" })} color="black">
-        Create Place
       </Button>
     </Flex>
   );

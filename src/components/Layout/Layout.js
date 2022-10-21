@@ -63,7 +63,7 @@ export const Loading = ({ show }) => {
       left="0"
       w="100vw"
       h="100vh"
-      background="black"
+      background="gray.100"
       zIndex="200"
       alignItems="center"
       justifyContent="center"
@@ -77,7 +77,13 @@ export const Loading = ({ show }) => {
         emptyColor="white"
         color="var(--ternary-color)"
       />
-      <Text color="var(--ternary-color-lightest)" fontWeight="900">
+      <Text color="var(--ternary-color-lightest)" fontWeight="900"></Text>
+      <Text
+        bgGradient="linear(0deg, red.800, blue.800)"
+        bgClip="text"
+        fontSize="16px"
+        fontWeight="extrabold"
+      >
         I LOVE YOU NUSHI
       </Text>
     </Flex>

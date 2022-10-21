@@ -10,7 +10,7 @@ export default () => {
 
   return (
     <Link to="/new/0">
-      <Flex justifyContent="center" alignItems="center" h="60vh">
+      <Flex justifyContent="center" alignItems="center" h="60vh" w="100%">
         <Flex flexDir="column" alignItems="center" gap="1rem">
           <Text
             color="var(--ternary-color-lightest)"

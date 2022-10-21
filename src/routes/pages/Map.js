@@ -100,7 +100,7 @@ const colors = {
 
 const containerStyle = {
   width: "100%",
-  height: "100%",
+  height: "calc(100vh - 56px - 60px - 60px - 100px - 32px)",
 };
 
 const MapOptions = {
@@ -243,22 +243,33 @@ export default function Map() {
         />
       )}
 
-      <GoogleMap
-        center={centre}
-        zoom={zoom}
-        style={containerStyle}
-        id="map"
-        options={MapOptions}
-        on
+      {/* 56 + 60 + 60 + 100 */}
+      <Flex
+        h="calc(100vh - 56px - 60px - 60px - 100px - 32px)"
+        overflow="hidden"
+        minHeight="calc(100vh - 56px - 60px - 60px - 100px - 32px)"
+        mb="16px"
       >
-        <Marker icon={currentPositionIcon} position={location} />
+        <GoogleMap
+          center={centre}
+          zoom={zoom}
+          style={containerStyle}
+          id="map"
+          options={MapOptions}
+        >
+          <Marker icon={currentPositionIcon} position={location} />
 
-        <Markers setSelected={setSelected} selected={selected} />
-        <Suburbs />
-      </GoogleMap>
+          <Markers setSelected={setSelected} selected={selected} />
+          <Suburbs />
+        </GoogleMap>
+      </Flex>
 
       <Flex p="0 4px">
-        <Overlay displayed={highlighted} setDisplayed={setHighlighted} />
+        <Overlay
+          displayed={highlighted}
+          setDisplayed={setHighlighted}
+          selected={selected}
+        />
       </Flex>
 
       {/* {distanceMatrix} */}
@@ -563,7 +574,7 @@ const Suburbs = () =>
     []
   );
 
-const Overlay = ({ displayed, setDisplayed }) => {
+const Overlay = ({ displayed, setDisplayed, selected }) => {
   const { dispatch } = useDeliveryDb();
   const { closest } = useSortedDelivery();
 
@@ -577,7 +588,14 @@ const Overlay = ({ displayed, setDisplayed }) => {
     );
   }, [displayed, dispatch, setDisplayed, closest]);
 
-  return street;
+  return (
+    <Flex flexDirection="column" w="100%" gap="16px">
+      {selected.length < 1 && street}
+      {selected.map((e) => (
+        <Street street={e} onComplete={() => setDisplayed({})}></Street>
+      ))}
+    </Flex>
+  );
 };
 
 const generateWaypoints = (undelivered) =>
