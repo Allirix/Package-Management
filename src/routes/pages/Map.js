@@ -51,6 +51,7 @@ import {
 } from "react-icons/bs";
 import { RiInformationFill } from "react-icons/ri";
 import { AiFillCloseCircle, AiFillCloseSquare } from "react-icons/ai";
+import { Header } from "./Deliveries";
 
 // const subs = ["Mitchelton", "Upper Kedron", "Keperra", "Gaythorne"];
 const mapColors = ["red", "blue", "magenta", "green"]; // red, green, blue, yellow, cyan
@@ -127,6 +128,7 @@ export default function Map() {
   });
 
   const [selected, setSelected] = useState([]);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const location = useMyPosition();
   const centre = useConst(
@@ -136,7 +138,7 @@ export default function Map() {
         : fallbackPosition,
     []
   );
-  const { isEmpty, undelivered, closest } = useSortedDelivery();
+  const { isEmpty, undelivered, closest, delivered } = useSortedDelivery();
   const [highlighted, setHighlighted] = useState(false);
 
   useEffect(() => {
@@ -180,8 +182,14 @@ export default function Map() {
   if (loadError) return "error";
 
   return (
-    <Flex flexDir="column" w="100%">
-      <Flex p="4px" gap="4px" alignItems="center" h="48px">
+    <Flex flexDir="column" w="100%" p="2px" gap="2px">
+      <Flex p="0 4px">
+        {(undelivered?.length > 0 || delivered?.length > 0) && (
+          <Header isExpanded={isExpanded} setIsExpanded={setIsExpanded} />
+        )}
+      </Flex>
+
+      {/* <Flex p="4px" gap="4px" alignItems="center" h="48px">
         <Button
           onClick={() => setZoom((z) => Math.round(10 * (z - 0.1)) / 10)}
           p="0"
@@ -222,7 +230,7 @@ export default function Map() {
         >
           <BiPlus color="white" />
         </Button>
-      </Flex>
+      </Flex> */}
 
       {selected.length > 0 && (
         <Route
@@ -230,6 +238,8 @@ export default function Map() {
           setSelected={setSelected}
           location={location}
           setHighlighted={setHighlighted}
+          isExpanded={isExpanded}
+          setIsExpanded={setIsExpanded}
         />
       )}
 
@@ -246,27 +256,39 @@ export default function Map() {
         <Markers setSelected={setSelected} selected={selected} />
         <Suburbs />
       </GoogleMap>
-      <Overlay displayed={highlighted} setDisplayed={setHighlighted} />
+
+      <Flex p="0 4px">
+        <Overlay displayed={highlighted} setDisplayed={setHighlighted} />
+      </Flex>
 
       {/* {distanceMatrix} */}
     </Flex>
   );
 }
 
-const Route = ({ selected = [], location, setSelected, setHighlighted }) => {
+const Route = ({
+  selected = [],
+  location,
+  setSelected,
+  setHighlighted,
+  isExpanded,
+  setIsExpanded,
+}) => {
   const { dispatch } = useDeliveryDb();
-  const [isExpanded, setIsExpanded] = useState(false);
   return (
     <Flex
       position="absolute"
-      top="110px"
-      left="2px"
+      top="140px"
+      left="8px"
       flexDirection="column"
-      background="rgba(0,0,0,0.9)"
+      background="white"
       zIndex="10000"
       p="4px"
       gap="4px"
       alignItems="flex-end"
+      borderRadius="16px"
+      boxShadow="0 0 4px black"
+      background="green.800"
     >
       {selected.map((e, i) => (
         <Flex
@@ -275,16 +297,19 @@ const Route = ({ selected = [], location, setSelected, setHighlighted }) => {
           gap="4px"
           w="100%"
           key={e.id}
-          background="black"
+          background="white"
+          color="black"
           p="4px"
-          borderRadius="4px"
+          borderRadius="16px"
           fontFamily='"Open Sans"'
+          boxShadow="0 2px 4px gray"
+          outline="1px solid gray"
         >
           {isExpanded && (
             <Flex>
               <BiChevronDown
                 cursor="pointer"
-                color={i === selected.length - 1 ? "transparent" : "white"}
+                color={i === selected.length - 1 ? "transparent" : "black"}
                 opacity="0.5"
                 onClick={() => setSelected(moveDown(selected, e))}
                 size="25px"
@@ -292,7 +317,7 @@ const Route = ({ selected = [], location, setSelected, setHighlighted }) => {
 
               <BiChevronUp
                 cursor="pointer"
-                color={i === 0 ? "transparent" : "white"}
+                color={i === 0 ? "transparent" : "black"}
                 opacity="0.5"
                 onClick={() => setSelected(moveUp(selected, e))}
                 size="25px"
@@ -317,13 +342,13 @@ const Route = ({ selected = [], location, setSelected, setHighlighted }) => {
           <Flex gap="4px">
             <Text
               fontWeight="900"
-              color="var(--ternary-color)"
+              color="black"
               fontSize="16px"
               lineHeight="16px"
             >
               {e.number}
             </Text>
-            <Text color="white" fontSize="12px" opacity="0.7">
+            <Text color="black" fontSize="12px" opacity="0.7">
               {e.name.toUpperCase()}
             </Text>
           </Flex>
@@ -351,7 +376,7 @@ const Route = ({ selected = [], location, setSelected, setHighlighted }) => {
                   <MdCheck
                     cursor="pointer"
                     opacity="0.5"
-                    color="white"
+                    color="green"
                     onClick={() => {
                       dispatch("toggle", e.id);
                       setHighlighted((s) => (s.id === e.id ? {} : s));
@@ -365,52 +390,58 @@ const Route = ({ selected = [], location, setSelected, setHighlighted }) => {
         </Flex>
       ))}
       <Flex
-        gap="4px"
         justifyContent="space-between"
         alignItems="center"
         w="100%"
+        background="black"
+        borderRadius="16px"
+        overflow="hidden"
+        color="white"
+        h="40px"
       >
         <Button
-          background="transparent"
+          background="red.500"
           onClick={() => setIsExpanded((e) => !e)}
+          w="fit-content"
+          h="50px"
+          w="40%"
+          p="0"
+          borderRadius="0"
+        >
+          {isExpanded ? (
+            <BiChevronLeft color="white" size="25px" />
+          ) : (
+            <BiChevronRight color="white" size="25px" />
+          )}
+        </Button>
+
+        {isExpanded && (
+          <Button
+            background="red"
+            onClick={() => setSelected([])}
+            w="fit-content"
+            h="50px"
+            w="50%"
+            p="0"
+            borderRadius="0"
+          >
+            <BiReset color="white" size="25px" />
+          </Button>
+        )}
+        <Button
+          background="green"
+          onClick={() =>
+            window.open(getGoogleDirectionsLink(location, selected), "_blank")
+          }
           w="fit-content"
           h="50px"
           w="50px"
           p="0"
+          borderRadius="0"
+          width="100%"
         >
-          {isExpanded ? (
-            <BiChevronLeft color="red" size="25px" />
-          ) : (
-            <BiChevronRight color="red" size="25px" />
-          )}
+          <BiNavigation color="white" size="25px" />
         </Button>
-
-        <Flex>
-          {isExpanded && (
-            <Button
-              background="transparent"
-              onClick={() => setSelected([])}
-              w="fit-content"
-              h="50px"
-              w="50px"
-              p="0"
-            >
-              <BiReset color="red" size="25px" />
-            </Button>
-          )}
-          <Button
-            background="transparent"
-            onClick={() =>
-              window.open(getGoogleDirectionsLink(location, selected), "_blank")
-            }
-            w="fit-content"
-            h="50px"
-            w="50px"
-            p="0"
-          >
-            <BiNavigation color="var(--ternary-color)" size="25px" />
-          </Button>
-        </Flex>
       </Flex>
     </Flex>
   );
@@ -474,6 +505,9 @@ const Markers = ({ setSelected, selected, setHighlighted }) => {
           const isPickup = street?.parcels?.some((e) => e.color === "PICKUP");
           const isSelected = typeof num === "undefined";
 
+          //
+          //
+
           const label = {
             className:
               "marker-label marker-label--" +
@@ -490,7 +524,7 @@ const Markers = ({ setSelected, selected, setHighlighted }) => {
             //   ? "black"
             //   : colors[street.suburb[0]],
             fillOpacity: 0,
-            scale: 2,
+            scale: 1,
             strokeWeight: 0,
             labelOrigin: new window.google.maps.Point(10, 10),
             anchor: new window.google.maps.Point(10, 10),
@@ -501,7 +535,10 @@ const Markers = ({ setSelected, selected, setHighlighted }) => {
               onDblClick={onClick}
               onClick={() => {
                 setSelected((s) => {
-                  return [...s.filter((e) => e.id !== street.id), street];
+                  return [
+                    ...s.filter((e) => e.id !== street.id),
+                    { ...street },
+                  ];
                 });
               }}
               key={street.id}
@@ -509,6 +546,7 @@ const Markers = ({ setSelected, selected, setHighlighted }) => {
               icon={markerIcon}
               position={position}
               label={label}
+              zIndex={i}
             />
           );
         })

@@ -1,8 +1,10 @@
-import { Flex, Button, Select } from "@chakra-ui/react";
+import { Flex, Button, Select, Box } from "@chakra-ui/react";
 import { BiRun } from "react-icons/bi";
 import { BsSquareHalf } from "react-icons/bs";
 import { FiMapPin } from "react-icons/fi";
 import { BiReset } from "react-icons/bi";
+
+import Chart from "react-apexcharts";
 
 import { ImShrink } from "react-icons/im";
 import { FaExpandArrowsAlt } from "react-icons/fa";
@@ -55,14 +57,79 @@ export default function History() {
     return acc;
   }, {});
 
+  const list = date in dates ? dates[date] : [];
+
+  console.log({ list: list.map(({ deliveredAt }) => new Date(deliveredAt)) });
+
   return (
     <ParcelPopupProvider>
-      <Flex direction="column" maxWidth="800px" minW="calc(100% - 1px)" m="2px">
+      <Flex
+        direction="column"
+        maxWidth="800px"
+        minW="calc(100% - 1px)"
+        p="8px 8px"
+        gap="4px"
+        alignItems="flex-end"
+      >
+        {/* <Box bg="var(--secondary-color-light)">
+          <Chart
+            options={{
+              xaxis: {
+                type: "datetime",
+              },
+              // dataLabels: {
+              //   style: {
+              //     colors: ["#F44336", "#E91E63", "#9C27B0"],
+              //   },
+              // },
+              // fill: {
+              //   colors: ["#F44336", "#E91E63", "#9C27B0"],
+              // },
+              markers: {
+                colors: ["#F44336", "#E91E63", "#9C27B0"],
+              },
+              // grid: {
+              //   row: {
+              //     colors: ["#F44336", "#E91E63", "#9C27B0"],
+              //   },
+              //   column: {
+              //     colors: ["#F44336", "#E91E63", "#9C27B0"],
+              //   },
+              // },
+              // theme: {
+              //   monochrome: {
+              //     enabled: true,
+              //     color: "#255aee",
+              //     shadeTo: "light",
+              //     shadeIntensity: 0.65,
+              //   },
+              // },
+            }}
+            series={[
+              {
+                name: "series-1",
+                data: list.map(({ deliveredAt, parcels }) => ({
+                  x: new Date(deliveredAt),
+                  y: parcels.length,
+                })),
+              },
+            ]}
+            type="area"
+          />
+        </Box> */}
+
         <Select
           onChange={(e) => setDate(e.target.value)}
-          color="white"
+          color="blackAlpha.900"
+          fontWeight="900"
           border="none"
-          h="60px"
+          h="40px"
+          w="140px"
+          borderRadius="16px"
+          background="whiteAlpha.800"
+          boxShadow="0 1px 2px gray, inset 0 -1px 2px gray"
+          outline="1px solid rgba(100,100,100,0.4)"
+          fontWeight="900"
         >
           {Object.keys(dates).length > 0 &&
             Object.keys(dates).map((e) => (
@@ -72,7 +139,7 @@ export default function History() {
             ))}
         </Select>
         <Suspense fallback={<>Loading...</>}>
-          <DeliveryList list={date in dates ? dates[date] : []} />
+          <DeliveryList list={list} />
         </Suspense>
 
         <ParcelPopup />

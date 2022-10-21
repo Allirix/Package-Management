@@ -20,23 +20,22 @@ export default function Search() {
   const navigation = useNavigate();
   const { pathname } = useLocation();
 
+  const showBack = !["/home", "/", "/deliveries", "/map"].includes(pathname);
+
+  console.log({ showBack });
+
   return (
-    <Flex w="100%" gap="4px" alignItems={"center"}>
-      {!(
-        pathname === "/" ||
-        pathname === "/deliveries" ||
-        pathname === "/home"
-      ) ? (
-        <Button onClick={() => navigation(-1)} background="transparent">
+    <Flex w="100%" alignItems={"center"}>
+      {showBack && (
+        <Button
+          onClick={() => navigation(-1)}
+          background="transparent"
+          ml="-10px"
+        >
           <HiOutlineChevronLeft size="25px" />
         </Button>
-      ) : (
-        <Link to="/new">
-          <Button background="transparent" p="0">
-            <BsFillPlusCircleFill size="25px" />
-          </Button>
-        </Link>
       )}
+
       <Flex
         alignItems="center"
         justifyContent="center"

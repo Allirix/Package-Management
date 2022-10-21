@@ -11,59 +11,46 @@ export default ({
   Icon,
   value,
   title,
-  bg = "transparant",
+  bg = "green.800",
   divider = "/",
   helperText = "",
 }) => {
   return (
-    <Stat color="white" textAlign="center">
-      <StatLabel color="var(--ternary-color)">{title}</StatLabel>
-      <StatNumber>
+    <Flex
+      color="white"
+      textAlign="center"
+      background="white"
+      flexDirection="column"
+      borderRadius="8px"
+      m="4px 0"
+      w="150px"
+      boxShadow="0 1px 2px 0px gray, inset 0 1px 2px gray"
+      overflow="hidden"
+    >
+      <Text
+        color="whiteAlpha.900"
+        textTransform="uppercase"
+        background={bg}
+        fontWeight="900"
+        fontSize="12px"
+      >
+        {title}
+      </Text>
+      <Text fontSize="20px" color="blackAlpha.800" fontWeight="900">
         {value[0]}
-        <strong style={{ fontSize: "14px", color: "rgba(255,255,255,0.3)" }}>
+        <strong style={{ fontSize: "14px", color: "rgba(0,0,0,0.6)" }}>
           {divider}
           {value[1]}
         </strong>
-      </StatNumber>
-      <StatHelpText opacity="0.6" color="var(--ternary-color)">
+      </Text>
+      <Text
+        fontWeight="600"
+        color="blackAlpha.700"
+        fontSize="12px"
+        textTransform="uppercase"
+      >
         {helperText}
-      </StatHelpText>
-    </Stat>
-  );
-
-  return (
-    <Flex
-      h="50px"
-      background={bg}
-      color="var(--ternary-color-lightest)"
-      justifyContent="center"
-      alignItems="center"
-      gap="0.5rem"
-      width="100%"
-    >
-      <Icon size="28px" color="white" />
-
-      <Flex flexDir={"column"} justifyContent="center" alignItems="flex-start">
-        <Flex
-          fontSize={"20px"}
-          fontWeight="700"
-          p="0"
-          lineHeight={"25px"}
-          color="white"
-        >
-          {value?.length ? (
-            <Flex>
-              {value[0]}
-              <Text fontSize="10px"> / {value[1]}</Text>
-            </Flex>
-          ) : (
-            value
-          )}
-        </Flex>
-        <Text fontSize={"10px"} fontWeight="900" textTransform={"uppercase"}>
-          {title}
-        </Text>
-      </Flex>
+      </Text>
     </Flex>
   );
 };

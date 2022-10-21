@@ -9,11 +9,11 @@ const ParcelTypeStep = ({ title, onClick, skip }) => {
   const [number, setNumber] = useState("");
   const popularSelect = (obj) => (e) => {
     e.preventDefault();
-    onClick("parcels", 4)(JSON.stringify(obj));
+    onClick("parcels", 3)(JSON.stringify(obj));
   };
 
   const onClickTypeSize = (type) => (size, count) => (e) => {
-    onClick("parcels", 3)(JSON.stringify({ type, size, count }));
+    onClick("parcels", 2)(JSON.stringify({ type, size, count }));
   };
 
   return (
@@ -26,7 +26,7 @@ const ParcelTypeStep = ({ title, onClick, skip }) => {
         value={number === "" ? "" : number}
         onChange={(e) => setNumber(e.target.value)}
       />
-      <Flex w="calc(100%)" gap="4px">
+      <Flex w="calc(100%)" gap="4px" padding="8px">
         <ButtonGroup
           onClick={onClickTypeSize("BAG")}
           item={"BAG"}
@@ -76,12 +76,20 @@ const ButtonGroup = ({ onClick, item, count }) => {
 
 const PopularButtonGroup = ({ onClick, count }) => {
   return (
-    <Flex direction={"row"} w="100%" justifyContent="flex-end" wrap={"wrap"}>
+    <Flex
+      direction={"row"}
+      w="100%"
+      justifyContent="flex-end"
+      wrap={"wrap"}
+      p="8px"
+      gap="4px"
+    >
       {popular.map((parcel, i) => (
         <ChButton
-          height="80px"
-          padding={"4px 2px"}
-          background={"rgba(255,255,255,0.1)"}
+          height="70px"
+          w="60px"
+          padding="0"
+          background="gray.200"
           m="0"
           key={i}
         >

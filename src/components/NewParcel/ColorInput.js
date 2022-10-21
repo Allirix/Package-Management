@@ -9,7 +9,7 @@ const ParcelStep = ({ list, title, onClick }) => {
   return (
     <>
       <BasicForm title={title}></BasicForm>
-      <Flex wrap="wrap" gap="4px">
+      <Flex wrap="wrap" gap="4px" p="0 16px">
         {colors.map((item, i) => (
           <Button
             key={up(item) + i}

@@ -9,16 +9,20 @@ import { useDeliveryDb, useMyPosition } from "../../utils/providers";
 export default function Controls({ street, showCheck = true, onComplete }) {
   const { dispatch } = useDeliveryDb();
 
+  const isPickup = street.parcels.some((e) => e.type === "PICKUP");
+  const isShop = street.number === "";
+
   return (
     <Flex
       alignItems="center"
-      justifyContent="center"
-      gap="4px"
-      color="white"
-      borderRadius={"4px"}
-      flexDir="column"
+      justifyContent="space-between"
+      flexDirection="column"
     >
-      <NavigationButton street={street} />
+      <NavigationButton
+        street={street}
+        background={isPickup ? "orange.800" : isShop ? "blue.800" : "green.800"}
+      />
+
       <ControlButton
         onClick={
           showCheck
@@ -27,8 +31,7 @@ export default function Controls({ street, showCheck = true, onComplete }) {
         }
         Icon={showCheck ? BsFillCheckCircleFill : RiCloseFill}
         title={showCheck ? "Deliver" : "Delete"}
-        color={showCheck ? "white" : "red"}
-        height="72px"
+        background={showCheck ? "yellow.800" : "red.800"}
       />
     </Flex>
   );
@@ -38,18 +41,21 @@ export const ControlButton = ({
   onClick,
   Icon,
   title,
-  color = "var(--ternary-color-lightest)",
-  background = "var(--secondary-color)",
+  color = "white",
+  background = "green.800",
   ...styles
 }) => {
   return (
     <Button
       onClick={onClick}
       background={background}
-      h="50px"
-      w="60px"
+      h="100%"
+      minH="40px"
+      w="50px"
       color={color}
       textTransform="uppercase"
+      // border="1px solid gray"
+      borderRadius="0px"
       // boxShadow={
       //   `2px 2px 10px -8px black, -2px -2px 10px -8px ${color}, inset 2px 2px 2px -3px white, 0 0 10px -5px black, inset 0 0 4px -2px ` +
       //   color
@@ -58,8 +64,8 @@ export const ControlButton = ({
       {...{ ...styles }}
     >
       <Flex flexDir="column" alignItems="center" gap="4px" opacity="0.9">
-        {Icon && <Icon size="30px" />}
-        {/* <Text fontSize="7px" textShadow={`0px 0px 1px ${color}`}>
+        {Icon && <Icon size="25px" />}
+        {/* <Text fontSize="5px" textShadow={`0px 0px 1px ${color}`} mt="-2px">
           {title}
         </Text> */}
       </Flex>
@@ -67,7 +73,7 @@ export const ControlButton = ({
   );
 };
 
-const NavigationButton = ({ street }) => {
+const NavigationButton = ({ street, background }) => {
   const myPosition = useMyPosition();
 
   return (
@@ -77,7 +83,8 @@ const NavigationButton = ({ street }) => {
       }
       Icon={BiNavigation}
       title="Navigate"
-      height="48px"
+      height="50%"
+      background={background}
     />
   );
 };

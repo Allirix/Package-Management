@@ -22,7 +22,7 @@ import { getUrlParamsFromPlace } from "../../utils/hooks/utils";
 
 export default function NewParcel() {
   const { step, place, setParam, nextParcel, complete } = useNewParcel();
-  const titles = ["Street Number", "Street Name", "Parcel", "Color", "Notes"];
+  const titles = ["Street Name", "Parcel", "Color", "Notes"];
 
   const Step = (() => {
     switch (step) {
@@ -39,12 +39,12 @@ export default function NewParcel() {
       case "1":
         return <TypeInput onClick={setParam} />;
       case "2":
-        return <ColorInput onClick={setParam("color", 4)} />;
+        return <ColorInput onClick={setParam("color", 3)} />;
       case "3":
         return (
           <FinalStep
             notes={place.notes}
-            setNotes={setParam("notes", 4)}
+            setNotes={setParam("notes", 3)}
             nextParcel={nextParcel}
             complete={complete}
           />
@@ -53,6 +53,8 @@ export default function NewParcel() {
         return <>404 Error: Return to Home</>;
     }
   })();
+
+  console.log({ step });
 
   return (
     <Flex
@@ -64,7 +66,15 @@ export default function NewParcel() {
       // boxShadow="0 0 10px black"
     >
       <Caption title={titles[step] ?? "Error 404"} />
-      <Place street={place} editATL={setParam("atl", 4)} show={false} />
+      {step !== "0" && (
+        <Flex
+          flexDirection="column"
+          p="4px 16px 8px 16px"
+          background="rgb(204,204,204)"
+        >
+          <Place street={place} editATL={setParam("atl", 3)} show={false} />
+        </Flex>
+      )}
       {Step}
     </Flex>
   );
@@ -135,7 +145,7 @@ const useNewParcel = () => {
     step,
     place,
     setParam,
-    nextParcel: () => nav(getUrlParamsFromPlace("2", place)),
+    nextParcel: () => nav(getUrlParamsFromPlace("1", place)),
     complete: (url) => {
       const callback = () => {
         try {

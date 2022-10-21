@@ -17,7 +17,7 @@ const NameStep = ({ set, setNumber, number }) => {
   const displayedLocations = locations
     .map(toDistance(place))
     .sort((a, b) => a.similarity - b.similarity)
-    .slice(0, 5);
+    .slice(0, 10);
 
   function onChange(e) {
     setValue(e.target.value);
@@ -45,14 +45,16 @@ const NameStep = ({ set, setNumber, number }) => {
       onSubmit={onSubmit}
       input={{ onChange, value, helperText: "Enter a location" }}
     >
-      {displayedLocations.map((location, key) => (
-        <LocationButton
-          key={key}
-          onClick={onClick}
-          location={location}
-          text={place}
-        />
-      ))}
+      {place &&
+        displayedLocations.map((location, key) => (
+          <LocationButton
+            key={key}
+            onClick={onClick}
+            location={location}
+            text={place}
+          />
+        ))}
+      <Flex p="16px">#ToDO: Add Popular Locations here</Flex>
     </SingleInputForm>
   );
 };
@@ -65,20 +67,6 @@ const toDistance = (name) => (e) => ({
 
 export const LocationButton = ({ location, onClick, text }) => {
   const a = location.name.split("").map((e, i) => {
-    console.log({
-      e,
-      text,
-      length: text.length,
-      i,
-      input: text[i],
-
-      color:
-        text.length < i
-          ? "rgba(255,255,255,0.8)"
-          : e === text[i]
-          ? "white"
-          : "red",
-    });
     return text.length <= i
       ? "rgba(255,255,255,0.8)"
       : e === text[i]
@@ -86,12 +74,11 @@ export const LocationButton = ({ location, onClick, text }) => {
       : "red";
   });
 
-  console.log({ a });
-
   return (
     <Button
-      className="location-option"
+      height="50px"
       onClick={preventDefault(onClick(location))}
+      color="black"
     >
       <Grid
         templateColumns={"110px 1fr 20px"}
@@ -100,12 +87,9 @@ export const LocationButton = ({ location, onClick, text }) => {
         textAlign="left"
         fontSize="23px"
         alignItems="center"
+        background=""
       >
-        <Text
-          textTransform="uppercase"
-          color="var(--ternary-color)"
-          fontSize="14px"
-        >
+        <Text textTransform="uppercase" color="green.800" fontSize="14px">
           {location.suburb}
         </Text>
         <Flex
@@ -117,9 +101,9 @@ export const LocationButton = ({ location, onClick, text }) => {
             <Text
               color={
                 text.length <= i
-                  ? "rgba(255,255,255,0.8)"
+                  ? "blackAlpha.600"
                   : e.toLowerCase() === text[i]?.toLowerCase()
-                  ? "white"
+                  ? "blackAlpha.800"
                   : "red"
               }
             >
@@ -130,7 +114,7 @@ export const LocationButton = ({ location, onClick, text }) => {
             {location.type}
           </Text>
         </Flex>
-        <MdOutlineChevronRight />
+        <MdOutlineChevronRight color="green.800" />
       </Grid>
     </Button>
   );

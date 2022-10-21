@@ -20,25 +20,21 @@ export default ({
 
   return (
     <Flex
-      className="delivery"
+      // className="delivery"
       alignItems="space-between"
       justifyContent="space-between"
       w="calc(100%)"
-      background="var(--secondary-color-light)"
-      p="12px"
+      background="white"
       id={place.id}
-      backdropFilter="blur( 4px )"
       borderRadius="8px"
-      border={
-        isHighlighted
-          ? "1px solid green"
-          : "1px solid rgba( 255, 255, 255, 0.05 )"
-      }
-      // minHeight="3000px"
+      border={isHighlighted ? "1px solid green" : ""}
+      overflow="hidden"
+      minHeight="100px"
+      boxShadow="0 1px 1px gray"
     >
-      <Flex flexDir="column" w="calc(100%)" overflowX="auto">
+      <Flex flexDir="column" w="calc(100%)">
         <LocationInformation {...{ ...place }} />
-        <DeliveryInformation {...{ place, editATL }} />
+        <DeliveryInformation {...{ ...place, editATL, place }} />
       </Flex>
       {show && (
         <Controls
@@ -62,96 +58,103 @@ const EmptyPlace = () => (
     <h2>FILL FORM TO POPULATE STREET</h2>
   </Flex>
 );
+const LocationInformation = ({
+  number,
+  name,
+  suburb,
+  notes,
+  atl,
+  editATL,
+  id,
+  distance,
+  parcels,
+  createdAt,
+  deliveredAt,
+}) => {
+  const isPickup = parcels.some((e) => e.type === "PICKUP");
+  const isShop = number === "";
 
-const LocationInformation = ({ number, name, suburb, notes }) => (
-  <Flex
-    className="street"
-    gap="8px"
-    justifyContent="flex-start"
-    flexDirection="row"
-    justifyItems="center"
-    alignItems="center"
-  >
-    <Text
-      fontSize="32px"
-      color="var(--ternary-color-lightest)"
-      fontWeight="600"
-      display="inline-block"
+  return (
+    <Flex
+      className="street"
+      gap="12px"
+      justifyContent="flex-start"
+      flexDirection="row"
+      justifyItems="center"
+      alignItems="center"
+      background={isPickup ? "orange.800" : isShop ? "blue.800" : "green.800"}
+      height="40px"
+      p="12px"
     >
-      {number.replace("-", "/")}
-    </Text>
-    <Flex direction="column" w="100%" textAlign="left">
       <Text
-        color="rgba(255,255,255,0.9)"
-        textTransform="uppercase"
-        fontSize="18px"
+        fontSize="20px"
+        color="white"
         fontWeight="600"
-        lineHeight="36px"
-        mt="-8px"
+        display="inline-block"
       >
-        {name}
+        {number.replace("-", "/")}
       </Text>
-      <Text
-        color="rgba(255,255,255,0.7)"
-        textTransform="uppercase"
-        fontSize="8px"
-        mt="-8px"
-      >
-        {suburb}
-      </Text>
-      {notes && (
-        <Text
-          color="rgba(255,255,255,0.7)"
-          textTransform="uppercase"
-          fontSize="12px"
-          fontWeight="900"
-          color="var(--primary-color)"
-        >
-          {notes}
-        </Text>
-      )}
-    </Flex>
-  </Flex>
-);
+      <Flex direction="column" w="100%" textAlign="left">
+        <Flex gap="4px" alignItems="center">
+          <Text
+            color="whiteAlpha.900"
+            textTransform="uppercase"
+            fontSize="16px"
+            fontWeight="600"
+          >
+            {name}
+          </Text>
+          {distance && <ATL atl={atl} id={id} editATL={editATL} />}
+        </Flex>
 
-const DeliveryInformation = ({ editATL, place }) => {
-  const { name, number, atl, distance, parcels } = place;
+        <Flex color="whiteAlpha.700" fontSize="10px" gap="4px" mt="-5px">
+          <Text fontWeight="900" textTransform="uppercase">
+            {suburb}
+          </Text>
+          {createdAt && (
+            <Text
+              textTransform="uppercase"
+              fontWeight="604"
+              color="whiteAlpha.700"
+            >
+              {new Date(deliveredAt ? deliveredAt : createdAt)
+                .toLocaleTimeString()
+                .split(":")
+                .slice(0, 2)
+                .join(":")}
+            </Text>
+          )}
+          {notes && (
+            <Text textTransform="uppercase" fontWeight="900" color="red.200">
+              {notes}
+            </Text>
+          )}
+        </Flex>
+      </Flex>
+    </Flex>
+  );
+};
+
+const DeliveryInformation = ({
+  editATL,
+  name,
+  number,
+  atl,
+  distance,
+  parcels,
+  place,
+  id,
+}) => {
   return (
     <Flex
       alignItems="center"
       gap="4px"
       justifyContent="flex-start"
-      h="72px"
-      p="4px"
-      m="4px"
-      borderRadius="8px"
-      border="1px solid rgba(255,255,255,0.05)"
+      p="0 16px"
+      h="100%"
+      boxShadow="inset 0 10px 10px -8px rgb(28,69,50)"
+      overflowX="auto"
     >
-      {place.id && place.parcels?.length > 0 && (
-        <Flex
-          flexDirection="column"
-          w="50px"
-          h="60px"
-          flexDir="column"
-          borderRadius={"5px"}
-          // boxShadow={
-          //   `2px 2px 10px -8px black, -2px -2px 10px -8px ${atlStates[atl].color}, inset 2px 2px 2px -3px white, 0 0 10px -5px black, inset 0 0 4px -2px ` +
-          //   atlStates[atl].color
-          // }
-          p="4px"
-          bg="rgba(0, 0, 0, 0.2)"
-        >
-          <ATL atl={atl} id={place.id} editATL={editATL} />
-          <Text
-            color="rgba(255,255,255,0.7)"
-            fontSize="8px"
-            fontWeight="600"
-            textAlign="center"
-          >
-            {distance ? distance + "m" : "-"}
-          </Text>
-        </Flex>
-      )}
       <Parcels parcels={parcels} place={place} />
     </Flex>
   );
@@ -167,10 +170,14 @@ function ATL({ atl, id, editATL = null }) {
       onClick={onClick}
       // boxShadow={`inset 0 0 4px ${atlStates[atl].color}, inset -2px -2px 2px -3px white, inset -2px -2px 3px -3px black`}
       fontWeight="700"
-      color={atlStates[atl].color}
-      fontSize={atl === 2 ? "12px" : "12px"}
+      background={atlStates[atl].color}
+      fontSize="10px"
       borderRadius="16px"
       variant="Whatsapp"
+      p="0"
+      m="0"
+      height="15px"
+      color="white"
     >
       {atlStates[atl].name}
     </Button>

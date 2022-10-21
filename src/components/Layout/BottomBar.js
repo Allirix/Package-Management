@@ -10,30 +10,29 @@ export default ({ pathname }) => {
       justifyContent={"space-around"}
       alignItems={"center"}
       minHeight="60px"
-      background="rgba( 0, 0, 0, 0.45 )"
       backdropFilter="blur( 4px )"
       borderRadius="0"
-      borderTop="1px solid var(--ternary-color)"
-      borderBottom="none"
+      background="white"
     >
       <NavItem page={main[0]} isSelected={pathname == "/" + main[0].path} />
       <NavItem page={main[1]} isSelected={pathname == "/" + main[1].path} />
 
       <Link to="/new/0">
         <Button
-          color="var(--ternary-color-lightest)"
+          color="white"
           variant="Whatsapp"
           alignItems="center"
           flexDir="column"
           gap="2px"
-          background="var(--ternary-color-lightest)"
-          width="40px"
-          height="40px"
+          background="green.800"
+          width="50px"
+          height="50px"
           borderRadius="100%"
-          transform="scale(1.5)"
+          transform="scale(1.2)"
           transformOrigin="bottom"
+          border="5px solid white"
         >
-          <BsPlusLg size="15px" color="black" />
+          <BsPlusLg size="15px" color="white" />
         </Button>
       </Link>
       <NavItem page={main[2]} isSelected={pathname == "/" + main[2].path} />
@@ -46,22 +45,19 @@ const NavItem = ({ page: { path, Selected, Icon }, isSelected = false }) => {
   return (
     <Link to={`/${path}`}>
       <Button
-        color={
-          isSelected ? "var(--ternary-color-lightest)" : "var(--ternary-color)"
-        }
+        color={isSelected ? "green.900" : "green.800"}
         variant="Whatsapp"
         alignItems="center"
         flexDir="column"
         gap="2px"
         transition="all 0.3s"
-        _focus={{ transform: "scale(1.2)" }}
-        _hover={{ transform: "scale(1.2)" }}
         opacity={isSelected ? 1 : 0.6}
+        boxShadow={isSelected ? "inset 0 0 8px gray" : ""}
       >
         {isSelected ? <Selected size="25px" /> : <Icon size="25px" />}
-        <Text fontSize={"8px"} fontWeight="600" opacity="0.8">
+        {/* <Text fontSize="8px" fontWeight="900">
           {path.toUpperCase()}
-        </Text>
+        </Text> */}
       </Button>
     </Link>
   );

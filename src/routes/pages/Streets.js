@@ -27,18 +27,13 @@ export default function Street() {
   );
   return (
     <Flex flexDirection="column" width="100%">
-      <Flex flexDirection="row" width="100%">
+      <Flex flexDirection="row" width="100%" background="green.800">
         {suburbNames.map((name, i) => (
           <LocationTitle
             key={name}
             name={name}
             onClick={() => setSelectedSuburb(name)}
             disabled={selectedSuburb === name}
-            style={
-              selectedSuburb === name
-                ? { borderBottom: "2px solid var(--ternary-color)" }
-                : {}
-            }
           />
         ))}
       </Flex>
@@ -62,30 +57,26 @@ const Location = ({ location, i }) => {
   const onRemove = () => remove();
 
   return (
-    <Flex width="100%" gap="4px" color="white" alignItems="center">
-      <Text
-        pr="8px"
-        color="var(--ternary-color)"
-        minW="40px"
-        textAlign="center"
-      >
+    <Flex width="100%" gap="4px" color="black" alignItems="center">
+      <Text pr="8px" color="black" minW="40px" textAlign="center">
         {i}
       </Text>
       <Input
         value={location.name}
         onChange={onEdit("name")}
-        borderRadius="0"
+        borderRadius="16px"
         h="50px"
-        border="1px solid rgba(255,255,255,0.3) !important"
+        border="1px solid rgba(0,0,0,0.3) !important"
       />
       <Input
         value={location.type}
         onChange={onEdit("type")}
-        borderRadius="0"
+        borderRadius="16px"
         w="20%"
         h="50px"
         minW="40px"
-        border="1px solid rgba(255,255,255,0.3) !important"
+        border="1px solid rgba(0,0,0,0.3) !important"
+        textAlign="center"
       />
       <Button
         onClick={onRemove}
@@ -123,14 +114,15 @@ const AddLocation = ({ add, selectedSuburb }) => {
   };
 
   return (
-    <Flex gap="8px" color="white">
+    <Flex gap="8px" color="black">
       <Input
         value={state.name}
         type="text"
         placeholder={`Add ${selectedSuburb} location...`}
         onChange={onChange("name")}
         h="70px"
-        borderRadius="0"
+        borderRadius="16px"
+        border="1px solid rgba(0,0,0,0.3) !important"
       />
       <Input
         value={state.type}
@@ -140,8 +132,11 @@ const AddLocation = ({ add, selectedSuburb }) => {
         h="70px"
         variant="outline"
         w="15%"
-        borderRadius="0"
+        borderRadius="16px"
         minWidth="70px"
+        borderRadius="16px"
+        border="1px solid rgba(0,0,0,0.3) !important"
+        textAlign="center"
       />
       <Button
         onClick={onClick}
@@ -162,7 +157,7 @@ const LocationTitle = ({ name, ...props }) => {
       w="25%"
       {...{ ...props }}
       variant="unstyled"
-      color="var(--ternary-color)"
+      color="white"
       h="60px"
       borderRadius="0"
     >

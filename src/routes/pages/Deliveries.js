@@ -44,10 +44,14 @@ export default function Deliveries() {
 
   return (
     <ParcelPopupProvider>
-      <Flex direction="column" w="800px" minW="100%" p="4px" gap="4px">
+      <Flex direction="column" w="800px" minW="100%" p="4px 8px" gap="8px">
         {(undelivered?.length > 0 || delivered?.length > 0) && <Header />}
         {/* <Suspense fallback={<>Loading...</>}> */}
-        <DeliveryList list={undelivered} canDeliver={true} />
+        <DeliveryList
+          list={undelivered}
+          canDeliver={true}
+          showControls={false}
+        />
         {/* </Suspense> */}
 
         <ParcelPopup />
@@ -56,7 +60,7 @@ export default function Deliveries() {
   );
 }
 
-const Header = ({ setShowDelivered, showDelivered }) => {
+export const Header = ({ isExpanded = true, setIsExpanded = () => {} }) => {
   const { dispatch } = useDeliveryDb();
   const { average, locations, parcels, pickups, averageParcels } =
     useStatCard();
@@ -74,41 +78,45 @@ const Header = ({ setShowDelivered, showDelivered }) => {
       justifyContent="center"
       alignItems="center"
       w="calc(100%)"
-      bg="var(--secondary-color-light)"
-      p="8px 0"
-      position="sticky"
-      top="0px"
-      left="0px"
       zIndex="100"
-      borderRadius="8px"
-      border="1px solid rgba( 255, 255, 255, 0.05 )"
+      gap="8px"
+      bg="transparent"
+      onClick={() => setIsExpanded((i) => !i)}
     >
       <InfoCard
         value={locations}
         title="Places"
         Icon={FiMapPin}
         helperText={
-          Math.round((10 * parcels[1]) / locations[1]) / 10 + "/place"
+          isExpanded
+            ? Math.round((10 * parcels[1]) / locations[1]) / 10 + "/place"
+            : ""
         }
+        bg="red.700"
       />
       <InfoCard
         Icon={BsSquareHalf}
         value={parcels}
         title="Parcels"
-        helperText={pickups + " Pickups"}
+        helperText={isExpanded && pickups + " Pickups"}
+        bg="green.700"
       />
       <InfoCard
         value={[Math.round(average * 10) / 10, "hr"]}
         title="Speed"
         Icon={BiRun}
-        helperText={Math.round(averageParcels * 10) / 10 + "/hr (p)"}
+        helperText={
+          isExpanded && Math.round(averageParcels * 10) / 10 + "/hr (p)"
+        }
+        bg="blue.700"
       />
       <InfoCard
         value={[eta === Infinity ? "_" : Math.round(10 * eta) / 10, "hrs"]}
-        title="Time Left"
+        title="Time"
         Icon={BiRun}
         divider=" "
-        helperText={etaMessage ? etaMessage : "-"}
+        helperText={isExpanded && (etaMessage ? etaMessage : "-")}
+        bg="yellow.700"
       />
     </Flex>
   );

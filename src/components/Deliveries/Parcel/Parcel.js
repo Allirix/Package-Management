@@ -19,8 +19,8 @@ export default ({
       onClick={onClick}
       alignItems="center"
       justifyContent="center"
-      h="60px"
-      w="60px"
+      h="45px"
+      w="45px"
       background={pColor}
       borderRadius="4px"
     >
@@ -28,8 +28,8 @@ export default ({
         background="rgb(0,0,0,0.5)"
         alignItems="center"
         justifyContent="center"
-        minWidth="36px"
-        minHeight="36px"
+        minWidth="30px"
+        minHeight="30px"
         borderRadius="4px"
         backdropFilter="blur(4px)"
       >

@@ -11,7 +11,7 @@ export default ({ parcels, place }) => {
   const navigator = useNavigate();
 
   function newParcel() {
-    return navigator(getUrlParamsFromPlace("/new/2", place));
+    return navigator(getUrlParamsFromPlace("/new/1", place));
   }
 
   return (
@@ -30,7 +30,7 @@ export default ({ parcels, place }) => {
       ))}
       <Parcel
         onClick={newParcel}
-        color="rgba(50,50,50,0.1)"
+        color="transparent"
         isPlus={true}
         type="PLUS"
         size=""

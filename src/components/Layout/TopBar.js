@@ -7,14 +7,13 @@ import Menu from "./Menu";
 export default () => {
   return (
     <Flex
-      background={"var(--secondary-color)"}
-      color="var(--ternary-color-lightest)"
+      background="white"
+      color="green.800"
       alignItems={"center"}
-      justifyContent={"space-between"}
+      justifyContent="space-between"
       minHeight="60px"
-      p="0 1rem"
-
-      // boxShadow="inset 0 -5px 10px -10px black, inset 0 5px 7px -10px white"
+      p="0 8px"
+      boxShadow="0 0 4px 0px black"
     >
       <Search />
       {/* <Menu /> */}

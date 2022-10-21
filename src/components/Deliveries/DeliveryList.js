@@ -33,8 +33,10 @@ export default function DeliveryList({
   itemsPerPage = 20,
   selectedId = null,
   canDeliver = false,
+  showControls = true,
 }) {
-  let location = useLocation();
+  // hooks
+  const location = useLocation();
   const [count, setCount] = useState([0, itemsPerPage - 1]);
 
   useEffect(() => {
@@ -42,6 +44,15 @@ export default function DeliveryList({
     if (list.length >= itemsPerPage) setCount([0, itemsPerPage - 1]);
   }, [list]);
 
+  const filteredList = useMemo(
+    () =>
+      showControls
+        ? list?.filter((e, i) => i >= count[0] && i <= count[1])
+        : list,
+    [list, count]
+  );
+
+  //functions
   function previous() {
     setCount((c) =>
       c[0] - itemsPerPage < 0
@@ -58,84 +69,57 @@ export default function DeliveryList({
     );
   }
 
-  const filteredList = useMemo(
-    () => list?.filter((e, i) => i >= count[0] && i <= count[1]),
-    [list, count]
-  );
-
+  // dynamic rendering
   if (list?.length < 1) return <AddFirstParcel />;
 
   return (
     <>
-      <Flex
-        width="100%"
-        justifyContent="space-between"
-        color="var(--ternary-color)"
-      >
-        <Button
-          onClick={() => previous()}
-          leftIcon={<AiFillCaretLeft />}
-          variant="WhatsApp"
-          h="20px"
-          disable={(count[0] === 0).toString()}
+      {showControls && (
+        <Flex
+          position="absolute"
+          bottom="60px"
+          left="0"
+          width="100%"
+          justifyContent="space-between"
+          background="white"
+          color="blackAlpha.800"
+          borderRadius="16px"
+          boxShadow="0 1px 2px gray, inset 0 -1px 2px gray"
+          outline="1px solid rgba(100,100,100,0.4)"
+          fontWeight="900"
+          zIndex="100"
         >
-          {count[0] + 1}
-        </Button>
-        {list?.length}
-        <Button
-          onClick={() => next()}
-          rightIcon={<AiFillCaretRight />}
-          variant="WhatsApp"
-          h="20px"
-          disable={(count[1] >= list?.length).toString()}
-        >
-          {count[1] + 1}
-        </Button>
+          <Button
+            onClick={() => previous()}
+            leftIcon={<AiFillCaretLeft />}
+            variant="WhatsApp"
+            h="20px"
+            disable={(count[0] === 0).toString()}
+          >
+            {count[0] + 1}
+          </Button>
+          {list?.length}
+          <Button
+            onClick={() => next()}
+            rightIcon={<AiFillCaretRight />}
+            variant="WhatsApp"
+            h="20px"
+            disable={(count[1] >= list?.length).toString()}
+          >
+            {count[1] + 1}
+          </Button>
+        </Flex>
+      )}
+      <Flex flexDirection="column" gap="16px" w="100%" pb="16px">
+        {filteredList?.map((street, id) => (
+          <Place
+            key={id}
+            street={street}
+            isHighlighted={location.hash === `#${street.id}`}
+            showCheck={canDeliver}
+          />
+        ))}
       </Flex>
-
-      {filteredList?.map((street, id) => (
-        <Place
-          key={id}
-          street={street}
-          isHighlighted={location.hash === `#${street.id}`}
-          showCheck={canDeliver}
-        />
-      ))}
     </>
   );
 }
-
-const Header = ({ setShowDelivered, showDelivered }) => {
-  const { dispatch } = useDeliveryDb();
-  const { average, locations, parcels } = useStatCard();
-
-  return (
-    <Flex
-      justifyContent="space-between"
-      alignItems="space-between"
-      w="100%"
-      bg="var(--secondary-color)"
-      p="4px"
-    >
-      {/* <B
-        onClick={() => dispatch("reset")}
-        Icon={BiReset}
-        color="var(--primary-color)"
-      /> */}
-      <InfoCard Icon={BsSquareHalf} value={parcels} title="Parcels" />
-      <InfoCard value={locations} title="Places" Icon={FiMapPin} />
-      <InfoCard
-        value={[Math.round(average * 10) / 10, "hr"]}
-        title="Speed"
-        Icon={BiRun}
-      />
-      <B onClick={() => setShowDelivered((s) => !s)} Icon={FiDatabase}></B>
-    </Flex>
-  );
-};
-
-const B = ({ onClick, Icon, color = "white" }) => (
-  <Button onClick={onClick} background="var(--secondary-color)" h="50px" p="0">
-    <Icon size="25px" color={color} />
-  </Button>
-);

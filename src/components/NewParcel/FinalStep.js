@@ -1,3 +1,4 @@
+import { Flex } from "@chakra-ui/react";
 import { useState } from "react";
 import { Navigation, SingleInputForm } from "./shared";
 
@@ -17,12 +18,12 @@ const FinalStep = ({ setNotes, complete, nextParcel, notes }) => {
           {
             onClick: nextParcel,
             text: "PARCEL",
-            color: "var(--secondary-color)",
+            color: "orange.500",
           },
           {
             onClick: () => complete(0 + ""),
             text: "NEXT",
-            color: "var(--primary-color)",
+            color: "red.500",
           },
         ]}
       />
@@ -31,7 +32,7 @@ const FinalStep = ({ setNotes, complete, nextParcel, notes }) => {
           {
             onClick: () => complete("/deliveries"),
             text: "COMPLETE",
-            color: "var(--ternary-color)",
+            color: "green.800",
           },
         ]}
       />

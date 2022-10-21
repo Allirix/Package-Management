@@ -41,7 +41,7 @@ export const Button = (P) => {
 };
 
 export const Navigation = ({ buttons }) => (
-  <Flex justifyContent="space-around">
+  <Flex justifyContent="space-around" p="0 16px" gap="16px">
     {buttons.map((button, i) => (
       <Button
         onClick={button.onClick}
@@ -62,13 +62,13 @@ export const Caption = ({ title }) => {
   return (
     <CaptionBasic title={title}>
       <button type="button" onClick={(e) => navigation(-1)}>
-        <MdArrowBackIos size={"2rem"} color="white" />
+        <MdArrowBackIos size="1.5rem" color="white" />
       </button>
       <button
         type="button"
         onClick={(e) => [navigation("/deliveries"), reset()]}
       >
-        <MdClose size={"3rem"} color="white" />
+        <MdClose size="2rem" color="white" />
       </button>
     </CaptionBasic>
   );
@@ -78,14 +78,14 @@ export const CaptionBasic = ({
   title,
   children = [null, null],
   color = "white",
-  background = "var(--ternary-color-lightest)",
+  background = "green.800",
 }) => {
   return (
-    <div className="caption" style={{ background }}>
+    <Flex className="caption" background="green.800">
       {children["0"]}
       <h2 style={{ color }}>{title.toUpperCase()}</h2>
       {children["1"]}
-    </div>
+    </Flex>
   );
 };
 
