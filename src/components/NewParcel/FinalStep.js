@@ -8,7 +8,7 @@ const FinalStep = ({ setNotes, complete, nextParcel, notes }) => {
       onSubmit={() => complete("/deliveries")}
       input={{
         value: notes,
-        autoFocus: false,
+        autoFocus: true,
         helperText: "Enter notes",
         onChange: (e) => setNotes(e.target.value),
       }}

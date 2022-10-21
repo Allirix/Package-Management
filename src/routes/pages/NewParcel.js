@@ -70,7 +70,11 @@ export default function NewParcel() {
         <Flex
           flexDirection="column"
           p="4px 16px 8px 16px"
-          background="rgb(204,204,204)"
+          position="absolute"
+          w="100%"
+          bottom="0"
+          zIndex="10"
+          maxWidth="800px"
         >
           <Place street={place} editATL={setParam("atl", 3)} show={false} />
         </Flex>
