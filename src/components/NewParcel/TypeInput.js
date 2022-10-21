@@ -81,7 +81,7 @@ const PopularButtonGroup = ({ onClick, count }) => {
       w="100%"
       justifyContent="flex-end"
       wrap={"wrap"}
-      p="8px"
+      p="0 8px 150px 8px"
       gap="4px"
     >
       {popular.map((parcel, i) => (

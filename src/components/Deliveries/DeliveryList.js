@@ -78,8 +78,8 @@ export default function DeliveryList({
         <Flex
           position="absolute"
           bottom="60px"
-          left="0"
           width="100%"
+          maxWidth="800px"
           justifyContent="space-between"
           background="white"
           color="blackAlpha.800"
@@ -87,6 +87,7 @@ export default function DeliveryList({
           boxShadow="0 1px 2px gray, inset 0 -1px 2px gray"
           fontWeight="900"
           zIndex="100"
+          left="0"
         >
           <Button
             onClick={() => previous()}
@@ -109,7 +110,7 @@ export default function DeliveryList({
           </Button>
         </Flex>
       )}
-      <Flex flexDirection="column" gap="16px" w="100%" pb="16px">
+      <Flex flexDirection="column" gap="16px" w="100%" pb="32px">
         {filteredList?.map((street, id) => (
           <Place
             key={id}

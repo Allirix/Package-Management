@@ -70,7 +70,7 @@ export default function NewParcel() {
         <Flex
           flexDirection="column"
           p="4px 16px 8px 16px"
-          position="absolute"
+          position="fixed"
           w="100%"
           bottom="0"
           zIndex="10"
