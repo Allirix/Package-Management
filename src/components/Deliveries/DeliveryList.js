@@ -85,7 +85,6 @@ export default function DeliveryList({
           color="blackAlpha.800"
           borderRadius="16px"
           boxShadow="0 1px 2px gray, inset 0 -1px 2px gray"
-          outline="1px solid rgba(100,100,100,0.4)"
           fontWeight="900"
           zIndex="100"
         >

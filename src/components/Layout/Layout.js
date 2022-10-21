@@ -20,12 +20,7 @@ export default ({ children }) => {
 
   console.log({ pathname });
   return (
-    <Flex
-      maxWidth="800px"
-      flexDir="column"
-      m="0 auto"
-      boxShadow="0px 0px 5px var(--ternary-color)"
-    >
+    <Flex maxWidth="800px" flexDir="column" m="0 auto">
       <LoadingOverlay />
 
       <TopBar />

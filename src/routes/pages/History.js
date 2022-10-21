@@ -128,7 +128,6 @@ export default function History() {
           borderRadius="16px"
           background="whiteAlpha.800"
           boxShadow="0 1px 2px gray, inset 0 -1px 2px gray"
-          outline="1px solid rgba(100,100,100,0.4)"
           fontWeight="900"
         >
           {Object.keys(dates).length > 0 &&
