@@ -31,7 +31,7 @@ export default ({
       overflow="hidden"
       minHeight="100px"
     >
-      <Flex flexDir="column" w="calc(100%)">
+      <Flex flexDir="column" w="calc(100%)" overflow="scroll">
         <LocationInformation {...{ ...place }} />
         <DeliveryInformation {...{ ...place, editATL, place }} />
       </Flex>
@@ -152,6 +152,7 @@ const DeliveryInformation = ({
       p="0 16px"
       h="100%"
       overflowX="auto"
+      w="100%"
     >
       <Parcels parcels={parcels} place={place} />
     </Flex>
