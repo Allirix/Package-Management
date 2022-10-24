@@ -1,5 +1,6 @@
 import {
   GoogleMap,
+  InfoWindow,
   Marker,
   Polygon,
   useLoadScript,
@@ -136,7 +137,6 @@ export default function Map() {
     "route" in localStorage ? JSON.parse(localStorage.getItem("route")) : []
   );
 
-  console.log({ selected });
   const [isExpanded, setIsExpanded] = useState(false);
 
   useEffect(() => {
@@ -156,7 +156,7 @@ export default function Map() {
 
   useEffect(() => {
     setSelected((s) => {
-      return s.filter((e) => undelivered.some(({ id }) => id === e.id));
+      return s.filter((e) => undelivered.some(({ id }) => id === e));
     });
   }, [undelivered]);
 
@@ -166,6 +166,10 @@ export default function Map() {
   );
 
   const [zoom, setZoom] = useState(15);
+
+  const selectedPlaces = selected.map((e) =>
+    undelivered.find(({ id }) => e === id)
+  );
 
   useEffect(() => {
     if (waypoints.length <= 10) setWaypoints(generateWaypoints(undelivered));
@@ -197,11 +201,13 @@ export default function Map() {
   return (
     <Flex flexDir="column" w="100%" gap="2px">
       <Flex
-        position="absolute"
+        position="fixed"
         alignItems="center"
         justifyContent="center"
         w="calc(100% - 4px)"
         left="4px"
+        top="0px"
+        zIndex="500"
       >
         <Button
           zIndex="100"
@@ -224,7 +230,7 @@ export default function Map() {
 
       {selected.length > 0 && (
         <Route
-          selected={selected}
+          selected={selectedPlaces}
           setSelected={setSelected}
           location={location}
           setHighlighted={setHighlighted}
@@ -242,7 +248,7 @@ export default function Map() {
       >
         <Marker icon={currentPositionIcon} position={location} />
 
-        <Markers setSelected={setSelected} selected={selected} />
+        <Markers setSelected={setSelected} selected={selectedPlaces} />
         <Suburbs />
       </GoogleMap>
 
@@ -250,11 +256,10 @@ export default function Map() {
         <Overlay
           displayed={highlighted}
           setDisplayed={setHighlighted}
-          selected={selected}
+          selected={selectedPlaces}
+          setSelected={setSelected}
         />
       </Flex>
-
-      {/* {distanceMatrix} */}
     </Flex>
   );
 }
@@ -275,7 +280,7 @@ const Route = ({
       left="8px"
       flexDirection="column"
       background="transparent"
-      zIndex="10000"
+      zIndex="300"
       gap="4px"
       alignItems="flex-end"
       borderRadius="16px"
@@ -349,38 +354,6 @@ const Route = ({
             borderRadius="8px"
             fontFamily='"Open Sans"'
           >
-            <Flex>
-              <BiChevronDown
-                cursor="pointer"
-                color={i === selected.length - 1 ? "transparent" : "black"}
-                opacity="0.5"
-                onClick={() => setSelected(moveDown(selected, e))}
-                size="25px"
-              />
-
-              <BiChevronUp
-                cursor="pointer"
-                color={i === 0 ? "transparent" : "black"}
-                opacity="0.5"
-                onClick={() => setSelected(moveUp(selected, e))}
-                size="25px"
-              />
-            </Flex>
-
-            {/* <Flex
-            h="15px"
-            w="15px"
-            textAlign="center"
-            borderRadius="4px"
-            bg="rgb(255, 229, 229)"
-            justifyContent="center"
-            alignItems="center"
-            fontWeight="900"
-            fontSize="10px"
-          >
-            {i + 1}
-          </Flex> */}
-
             <Flex gap="4px">
               <Text
                 fontWeight="900"
@@ -395,40 +368,30 @@ const Route = ({
               </Text>
             </Flex>
 
-            {isExpanded && (
-              <Flex gap="4px" alignItems="center" justifyContent="flex-end">
-                <MdClose
-                  cursor="pointer"
-                  color="red"
-                  opacity="0.5"
-                  onClick={() =>
-                    setSelected((s) => s.filter(({ id }) => e.id !== id))
-                  }
-                  size="35px"
-                />
-                {!e?.manual && (
-                  <>
-                    <MdInfoOutline
-                      cursor="pointer"
-                      color="blue"
-                      onClick={() => setHighlighted((h) => e)}
-                      size="30px"
-                      opacity="0.5"
-                    />
-                    <MdCheck
-                      cursor="pointer"
-                      opacity="0.5"
-                      color="green"
-                      onClick={() => {
-                        dispatch("toggle", e.id);
-                        setHighlighted((s) => (s.id === e.id ? {} : s));
-                      }}
-                      size="30px"
-                    />
-                  </>
-                )}
-              </Flex>
-            )}
+            <Flex gap="4px" alignItems="center" justifyContent="flex-end">
+              <BiChevronDown
+                cursor="pointer"
+                color={i === selected.length - 1 ? "transparent" : "black"}
+                opacity="0.5"
+                onClick={() => setSelected((s) => moveDown(s, e))}
+                size="25px"
+              />
+
+              <BiChevronUp
+                cursor="pointer"
+                color={i === 0 ? "transparent" : "black"}
+                opacity="0.5"
+                onClick={() => setSelected((s) => moveUp(s, e))}
+                size="25px"
+              />
+              <MdInfoOutline
+                cursor="pointer"
+                color="blue"
+                onClick={() => setHighlighted((h) => e)}
+                size="30px"
+                opacity="0.5"
+              />
+            </Flex>
           </Flex>
         ))}
     </Flex>
@@ -483,69 +446,77 @@ const Markers = ({ setSelected, selected, setHighlighted }) => {
         //     parcels: [],
         //   },
         // ]
-        // .filter((e, i) => i < 22)
-        .map((street, i) => {
-          const onClick = (e) => navigate(`/deliveries#${street.id}`);
-          const num = selected
-            .map(({ id }, i) => ({ id, i }))
-            .find(({ id }) => id === street.id)?.i;
-
-          const isPickup = street?.parcels?.some((e) => e.color === "PICKUP");
-          const isSelected = typeof num === "undefined";
-
-          //
-          //
-
-          const label = {
-            className:
-              "marker-label marker-label--" +
-              (isPickup ? "p" : isSelected ? "black" : "red"),
-            text: isSelected ? " " : num + 1 + "",
-          };
-          const position = { lat: street.lat, lng: street.lng };
-
-          const markerIcon = {
-            path: icons.pin,
-            // fillColor: isPickup
-            //   ? colors.PICKUP
-            //   : isSelected
-            //   ? "black"
-            //   : colors[street.suburb[0]],
-            fillOpacity: 0,
-            scale: 1,
-            strokeWeight: 0,
-            fillColor: isPickup ? colors.PICKUP : isSelected ? "black" : "red",
-            fillOpacity: 0.9,
-            scale: 0.05,
-            strokeColor: "gold",
-            strokeWeight: 0,
-            rotation: 180,
-            labelOrigin: new window.google.maps.Point(250, 400),
-            anchor: new window.google.maps.Point(250, 10),
-          };
-
-          return (
-            <Marker
-              onDblClick={onClick}
-              onClick={() => {
-                setSelected((s) => {
-                  return [
-                    ...s.filter((e) => e.id !== street.id),
-                    { ...street },
-                  ];
-                });
-              }}
-              key={street.id}
-              options={{ optimized: true }}
-              icon={markerIcon}
-              position={position}
-              label={label}
-              zIndex={i}
-            />
-          );
-        })
+        .filter((e, i) => i < 30)
+        .map((street, i) => (
+          <CustomMarker {...{ navigate, street, selected, i, setSelected }} />
+        ))
     );
   }, [undelivered, selected]);
+};
+
+const CustomMarker = ({ navigate, street, selected, setSelected, i }) => {
+  const [showInfo, setShowInfo] = useState(false);
+
+  const onClick = (e) => navigate(`/deliveries#${street.id}`);
+  const num = selected
+    .map(({ id }, i) => ({ id, i }))
+    .find(({ id }) => id === street.id)?.i;
+
+  const isPickup = street?.parcels?.some((e) => e.color === "PICKUP");
+  const isSelected = typeof num === "undefined";
+
+  //
+  //
+
+  const label = {
+    className:
+      "marker-label marker-label--" +
+      (isPickup ? "p" : isSelected ? "black" : "red"),
+    text: isSelected ? " " : num + 1 + "",
+  };
+  const position = { lat: street.lat, lng: street.lng };
+
+  const markerIcon = {
+    path: icons.pin,
+    // fillColor: isPickup
+    //   ? colors.PICKUP
+    //   : isSelected
+    //   ? "black"
+    //   : colors[street.suburb[0]],
+    fillOpacity: 0,
+    scale: 1,
+    strokeWeight: 0,
+    fillColor: isPickup ? colors.PICKUP : isSelected ? "black" : "red",
+    fillOpacity: 0.9,
+    scale: 0.05,
+    strokeColor: "gold",
+    strokeWeight: 0,
+    rotation: 180,
+    labelOrigin: new window.google.maps.Point(250, 400),
+    anchor: new window.google.maps.Point(250, 10),
+  };
+  return (
+    <Marker
+      // onDblClick={onClick}
+      onClick={(e) => {
+        setSelected((s) => {
+          console.log({ s });
+          const inRoute = s.some((id) => street.id === id);
+          if (inRoute) return s.filter((id) => id !== street.id);
+
+          console.log([...s, street.id], selected);
+          return [...selected.map((e) => e.id), street.id];
+        });
+        setShowInfo(true);
+      }}
+      key={street.id}
+      options={{ optimized: true }}
+      icon={markerIcon}
+      position={position}
+      label={label}
+      zIndex={i}
+    />
+  );
 };
 
 const Suburbs = () =>
@@ -557,25 +528,51 @@ const Suburbs = () =>
     []
   );
 
-const Overlay = ({ displayed, setDisplayed, selected }) => {
+const Overlay = ({ displayed, setDisplayed, selected, setSelected }) => {
   const { dispatch } = useDeliveryDb();
   const { closest } = useSortedDelivery();
 
   const street = useMemo(() => {
-    console.log({ displayed, closest, setDisplayed });
     return (
       <Street
-        street={Object.keys(displayed).length > 0 ? displayed : closest}
-        onComplete={() => setDisplayed({})}
+        street={closest}
+        onComplete={() =>
+          setSelected((s) => {
+            return s.filter((e) => e !== closest.id);
+          })
+        }
       />
     );
   }, [displayed, dispatch, setDisplayed, closest]);
 
   return (
     <Flex flexDirection="column" w="100%" gap="16px">
-      {selected.length < 1 && street}
+      <Flex
+        borderRadius="8px"
+        position="absolute"
+        w="calc(100vw - 32px)"
+        zIndex="300"
+        top="calc(100vh - 108px)"
+        left="16px"
+      >
+        {street}
+      </Flex>
+      {/* <Flex>
+        <Text weight="900" p="0 8px">
+          Route
+        </Text>
+        <Flex>
+          <Button>Reset</Button>
+          <Button>Open Google</Button>
+          <Button>Undo</Button>
+          <Button>Bring Bottom to top</Button>
+        </Flex>
+      </Flex> */}
       {selected.map((e) => (
-        <Street street={e} onComplete={() => setDisplayed({})}></Street>
+        <Street
+          street={e}
+          onComplete={() => setSelected((s) => s.filter((st) => st !== e.id))}
+        ></Street>
       ))}
     </Flex>
   );
@@ -590,25 +587,25 @@ const generateWaypoints = (undelivered) =>
     }));
 
 const moveDown = (arr, item) => {
-  console.log({ arr, item });
-  const ind = arr.findIndex(({ id }) => id === item.id);
+  const ind = arr.findIndex((id) => id === item.id);
   const newInd = ind + 1;
-  console.log({ ind, newInd });
+  console.log({ arr, item, ind, newInd });
+
   return arrayMove(arr, ind, newInd);
 };
 
 const moveUp = (arr, item) => {
-  console.log({ arr, item });
-  const ind = arr.findIndex(({ id }) => id === item.id);
+  const ind = arr.findIndex((id) => id === item.id);
   const newInd = ind - 1;
-  console.log({ ind, newInd });
   if (newInd < 0 || newInd === arr.length) return arr;
+
   return arrayMove(arr, ind, newInd);
 };
 
 const arrayMove = (arr, fromIndex, toIndex) => {
   const newArr = [...arr];
   newArr.splice(toIndex, 0, newArr.splice(fromIndex, 1)[0]);
+  console.log({ arr, newArr });
   return newArr;
 };
 
