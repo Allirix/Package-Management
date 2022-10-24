@@ -13,7 +13,6 @@ export default () => {
       justifyContent="space-between"
       minHeight="60px"
       p="0 8px"
-      boxShadow="0 0 4px 0px black"
     >
       <Search />
       {/* <Menu /> */}

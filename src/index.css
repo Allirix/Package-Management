@@ -71,7 +71,7 @@ body {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  background: rgb(212, 212, 212) !important;
+  background: rgb(230, 230, 230) !important;
 }
 
 body::-webkit-scrollbar {

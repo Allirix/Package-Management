@@ -52,7 +52,8 @@ const NavItem = ({ page: { path, Selected, Icon }, isSelected = false }) => {
         gap="2px"
         transition="all 0.3s"
         opacity={isSelected ? 1 : 0.6}
-        boxShadow={isSelected ? "inset 0 0 8px gray" : ""}
+        boxShadow={isSelected ? "inset 0 0 2px gray" : ""}
+        borderRadius="90px"
       >
         {isSelected ? <Selected size="25px" /> : <Icon size="25px" />}
         {/* <Text fontSize="8px" fontWeight="900">

@@ -84,7 +84,6 @@ export default function DeliveryList({
           background="white"
           color="blackAlpha.800"
           borderRadius="16px"
-          boxShadow="0 1px 2px gray, inset 0 -1px 2px gray"
           fontWeight="900"
           zIndex="100"
           left="0"

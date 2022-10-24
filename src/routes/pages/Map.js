@@ -73,6 +73,7 @@ const options = (i) => ({
 });
 
 const icons = {
+  pin: "M 185 476 c -17 -7 -43 -28 -58 -45 c -50 -60 -48 -144 8 -254 c 34 -68 103 -167 116 -167 c 4 0 32 37 62 83 c 118 178 126 295 25 370 c -33 25 -113 32 -153 13 z m 105 -116 c 11 -11 20 -29 20 -40 c 0 -26 -34 -60 -60 -60 c -26 0 -60 34 -60 60 c 0 11 9 29 20 40 c 11 11 29 20 40 20 c 11 0 29 -9 40 -20 z",
   dot: "M 10 19 C 14.97 19 19 14.971 19 10 C 19 5.03 14.97 1 10 1 C 5.029 1 1 5.03 1 10 C 1 14.971 5.029 19 10 19 Z",
   G: "M32 2C15.432 2 2 15.432 2 32s13.432 30 30 30s30-13.432 30-30S48.568 2 32 2m13.484 44.508h-4.017l-.609-3.622c-1.168 1.372-2.219 2.339-3.15 2.9c-1.601.979-3.569 1.47-5.905 1.47c-3.845 0-6.995-1.332-9.448-3.993c-2.56-2.676-3.839-6.335-3.839-10.978c0-4.695 1.292-8.459 3.878-11.292c2.585-2.833 6.004-4.249 10.256-4.249c3.688 0 6.65.935 8.888 2.805s3.521 4.203 3.849 6.998h-5.965c-.459-1.981-1.582-3.366-3.365-4.153c-.998-.434-2.107-.649-3.328-.649c-2.336 0-4.255.881-5.758 2.643c-1.502 1.762-2.254 4.41-2.254 7.946c0 3.563.814 6.085 2.441 7.565c1.627 1.479 3.478 2.22 5.551 2.22c2.035 0 3.701-.584 5-1.751c1.3-1.167 2.1-2.696 2.402-4.588h-6.713v-4.843h12.087v15.571z",
   U: "M32 2C15.432 2 2 15.432 2 32s13.432 30 30 30s30-13.432 30-30S48.568 2 32 2m11.644 32.952c0 3.084-.479 5.486-1.434 7.205c-1.783 3.149-5.182 4.725-10.201 4.725c-5.018 0-8.424-1.575-10.219-4.725c-.957-1.719-1.434-4.121-1.434-7.205V17.118h6.16v17.82c0 1.993.236 3.448.707 4.366c.732 1.626 2.328 2.439 4.785 2.439c2.445 0 4.035-.813 4.768-2.439c.471-.918.705-2.373.705-4.366v-17.82h6.162v17.834z",
@@ -100,11 +101,14 @@ const colors = {
 
 const containerStyle = {
   width: "100%",
-  height: "calc(100vh - 56px - 60px - 60px - 100px - 32px)",
+  height: "700px",
+  margin: "0px",
+  padding: "0px",
 };
 
 const MapOptions = {
   maxZoom: 20,
+  gestureHandling: "cooperative",
   streetViewControl: false,
   mapTypeControl: false,
   mapTypeId: "roadmap",
@@ -123,12 +127,21 @@ const MapOptions = {
 const fallbackPosition = { lat: 152.96693758699996, lng: -27.42390230222802 };
 
 export default function Map() {
+  const navigate = useNavigate();
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_KEY,
   });
 
-  const [selected, setSelected] = useState([]);
+  const [selected, setSelected] = useState(
+    "route" in localStorage ? JSON.parse(localStorage.getItem("route")) : []
+  );
+
+  console.log({ selected });
   const [isExpanded, setIsExpanded] = useState(false);
+
+  useEffect(() => {
+    localStorage.setItem("route", JSON.stringify(selected));
+  }, [selected]);
 
   const location = useMyPosition();
   const centre = useConst(
@@ -182,55 +195,32 @@ export default function Map() {
   if (loadError) return "error";
 
   return (
-    <Flex flexDir="column" w="100%" p="2px" gap="2px">
-      <Flex p="0 4px">
+    <Flex flexDir="column" w="100%" gap="2px">
+      <Flex
+        position="absolute"
+        alignItems="center"
+        justifyContent="center"
+        w="calc(100% - 4px)"
+        left="4px"
+      >
+        <Button
+          zIndex="100"
+          onClick={() => navigate(-1)}
+          bg="white"
+          w="50px"
+          h="50px"
+          p="0"
+          fontSize="25px"
+          color="green.800"
+        >
+          <BiChevronLeft />
+        </Button>
         {(undelivered?.length > 0 || delivered?.length > 0) && (
-          <Header isExpanded={isExpanded} setIsExpanded={setIsExpanded} />
+          <Header isExpanded={false} setIsExpanded={setIsExpanded} />
         )}
       </Flex>
 
-      {/* <Flex p="4px" gap="4px" alignItems="center" h="48px">
-        <Button
-          onClick={() => setZoom((z) => Math.round(10 * (z - 0.1)) / 10)}
-          p="0"
-          variant="outline"
-        >
-          <BiMinus color="white" />
-        </Button>
-        <Flex flexDirection="column" w="100%">
-          <Text fontSize="10px" color="white" fontWeight="900">
-            Zoom
-          </Text>
-          <RangeSlider
-            aria-label={["min", "max"]}
-            defaultValue={[0, 30]}
-            onChange={(val) => setZoom(12 + (8 * val[1]) / 100)}
-          >
-            <RangeSliderTrack>
-              <RangeSliderFilledTrack bg="var(--ternary-color)" />
-            </RangeSliderTrack>
-            <RangeSliderThumb index={1} />
-          </RangeSlider>
-        </Flex>
-
-        <Text
-          fontSize="10px"
-          color="white"
-          fontWeight="900"
-          width="25px"
-          textAlign="center"
-        >
-          {Math.round(zoom * 10) / 10}
-        </Text>
-
-        <Button
-          variant="outline"
-          onClick={() => setZoom((z) => Math.round(10 * (z + 0.1)) / 10)}
-          p="0"
-        >
-          <BiPlus color="white" />
-        </Button>
-      </Flex> */}
+      <Zoom setZoom={setZoom} />
 
       {selected.length > 0 && (
         <Route
@@ -243,26 +233,18 @@ export default function Map() {
         />
       )}
 
-      {/* 56 + 60 + 60 + 100 */}
-      <Flex
-        h="calc(100vh - 56px - 60px - 60px - 100px - 32px)"
-        overflow="hidden"
-        minHeight="calc(100vh - 56px - 60px - 60px - 100px - 32px)"
-        mb="16px"
+      <GoogleMap
+        center={centre}
+        zoom={zoom}
+        style={containerStyle}
+        id="map"
+        options={MapOptions}
       >
-        <GoogleMap
-          center={centre}
-          zoom={zoom}
-          style={containerStyle}
-          id="map"
-          options={MapOptions}
-        >
-          <Marker icon={currentPositionIcon} position={location} />
+        <Marker icon={currentPositionIcon} position={location} />
 
-          <Markers setSelected={setSelected} selected={selected} />
-          <Suburbs />
-        </GoogleMap>
-      </Flex>
+        <Markers setSelected={setSelected} selected={selected} />
+        <Suburbs />
+      </GoogleMap>
 
       <Flex p="0 4px">
         <Overlay
@@ -289,34 +271,84 @@ const Route = ({
   return (
     <Flex
       position="absolute"
-      top="140px"
+      top="60px"
       left="8px"
       flexDirection="column"
-      background="white"
+      background="transparent"
       zIndex="10000"
-      p="4px"
       gap="4px"
       alignItems="flex-end"
       borderRadius="16px"
-      boxShadow="0 0 4px black"
-      background="green.800"
     >
-      {selected.map((e, i) => (
-        <Flex
-          justifyContent="space-between"
-          alignItems="center"
-          gap="4px"
-          w="100%"
-          key={e.id}
-          background="white"
-          color="black"
-          p="4px"
-          borderRadius="16px"
-          fontFamily='"Open Sans"'
-          boxShadow="0 2px 4px gray"
-          outline="1px solid gray"
+      <Flex
+        justifyContent="space-between"
+        alignItems="center"
+        w="100%"
+        background="black"
+        borderRadius="8px"
+        overflow="hidden"
+        color="white"
+        h="40px"
+      >
+        <Button
+          background="blue.300"
+          onClick={() => setIsExpanded((e) => !e)}
+          w="fit-content"
+          h="50px"
+          w="40%"
+          p="0"
+          borderRadius="0"
         >
-          {isExpanded && (
+          {isExpanded ? (
+            <BiChevronLeft color="white" size="25px" />
+          ) : (
+            <BiChevronRight color="white" size="25px" />
+          )}
+        </Button>
+
+        {isExpanded && (
+          <Button
+            background="red.300"
+            onClick={() => setSelected([])}
+            w="fit-content"
+            h="50px"
+            w="50%"
+            p="0"
+            borderRadius="0"
+          >
+            <BiReset color="white" size="25px" />
+          </Button>
+        )}
+        <Button
+          background="green.300"
+          onClick={() =>
+            window.open(getGoogleDirectionsLink(location, selected), "_blank")
+          }
+          w="fit-content"
+          h="50px"
+          w="50px"
+          p="0"
+          borderRadius="0"
+          width="100%"
+        >
+          <BiNavigation color="white" size="25px" />
+        </Button>
+      </Flex>
+
+      {isExpanded &&
+        selected.map((e, i) => (
+          <Flex
+            justifyContent="space-between"
+            alignItems="center"
+            gap="4px"
+            w="100%"
+            key={e.id}
+            background="white"
+            color="black"
+            p="4px"
+            borderRadius="8px"
+            fontFamily='"Open Sans"'
+          >
             <Flex>
               <BiChevronDown
                 cursor="pointer"
@@ -334,9 +366,8 @@ const Route = ({
                 size="25px"
               />
             </Flex>
-          )}
 
-          {/* <Flex
+            {/* <Flex
             h="15px"
             w="15px"
             textAlign="center"
@@ -350,110 +381,56 @@ const Route = ({
             {i + 1}
           </Flex> */}
 
-          <Flex gap="4px">
-            <Text
-              fontWeight="900"
-              color="black"
-              fontSize="16px"
-              lineHeight="16px"
-            >
-              {e.number}
-            </Text>
-            <Text color="black" fontSize="12px" opacity="0.7">
-              {e.name.toUpperCase()}
-            </Text>
-          </Flex>
-
-          {isExpanded && (
-            <Flex gap="4px" alignItems="center" justifyContent="flex-end">
-              <MdClose
-                cursor="pointer"
-                color="red"
-                opacity="0.5"
-                onClick={() =>
-                  setSelected((s) => s.filter(({ id }) => e.id !== id))
-                }
-                size="35px"
-              />
-              {!e?.manual && (
-                <>
-                  <MdInfoOutline
-                    cursor="pointer"
-                    color="blue"
-                    onClick={() => setHighlighted((h) => e)}
-                    size="30px"
-                    opacity="0.5"
-                  />
-                  <MdCheck
-                    cursor="pointer"
-                    opacity="0.5"
-                    color="green"
-                    onClick={() => {
-                      dispatch("toggle", e.id);
-                      setHighlighted((s) => (s.id === e.id ? {} : s));
-                    }}
-                    size="30px"
-                  />
-                </>
-              )}
+            <Flex gap="4px">
+              <Text
+                fontWeight="900"
+                color="black"
+                fontSize="16px"
+                lineHeight="16px"
+              >
+                {e.number}
+              </Text>
+              <Text color="black" fontSize="12px" opacity="0.7">
+                {e.name.toUpperCase()}
+              </Text>
             </Flex>
-          )}
-        </Flex>
-      ))}
-      <Flex
-        justifyContent="space-between"
-        alignItems="center"
-        w="100%"
-        background="black"
-        borderRadius="16px"
-        overflow="hidden"
-        color="white"
-        h="40px"
-      >
-        <Button
-          background="red.500"
-          onClick={() => setIsExpanded((e) => !e)}
-          w="fit-content"
-          h="50px"
-          w="40%"
-          p="0"
-          borderRadius="0"
-        >
-          {isExpanded ? (
-            <BiChevronLeft color="white" size="25px" />
-          ) : (
-            <BiChevronRight color="white" size="25px" />
-          )}
-        </Button>
 
-        {isExpanded && (
-          <Button
-            background="red"
-            onClick={() => setSelected([])}
-            w="fit-content"
-            h="50px"
-            w="50%"
-            p="0"
-            borderRadius="0"
-          >
-            <BiReset color="white" size="25px" />
-          </Button>
-        )}
-        <Button
-          background="green"
-          onClick={() =>
-            window.open(getGoogleDirectionsLink(location, selected), "_blank")
-          }
-          w="fit-content"
-          h="50px"
-          w="50px"
-          p="0"
-          borderRadius="0"
-          width="100%"
-        >
-          <BiNavigation color="white" size="25px" />
-        </Button>
-      </Flex>
+            {isExpanded && (
+              <Flex gap="4px" alignItems="center" justifyContent="flex-end">
+                <MdClose
+                  cursor="pointer"
+                  color="red"
+                  opacity="0.5"
+                  onClick={() =>
+                    setSelected((s) => s.filter(({ id }) => e.id !== id))
+                  }
+                  size="35px"
+                />
+                {!e?.manual && (
+                  <>
+                    <MdInfoOutline
+                      cursor="pointer"
+                      color="blue"
+                      onClick={() => setHighlighted((h) => e)}
+                      size="30px"
+                      opacity="0.5"
+                    />
+                    <MdCheck
+                      cursor="pointer"
+                      opacity="0.5"
+                      color="green"
+                      onClick={() => {
+                        dispatch("toggle", e.id);
+                        setHighlighted((s) => (s.id === e.id ? {} : s));
+                      }}
+                      size="30px"
+                    />
+                  </>
+                )}
+              </Flex>
+            )}
+          </Flex>
+        ))}
     </Flex>
   );
 };
@@ -485,27 +462,27 @@ const Markers = ({ setSelected, selected, setHighlighted }) => {
 
   return useMemo(() => {
     return (
-      [
-        ...undelivered,
-        {
-          lat: -27.328031268580506,
-          lng: 152.98566355337306,
-          id: "1",
-          name: "Brendale Depo CourierPlease",
-          manual: true,
-          parcels: [],
-        },
-        {
-          lat: -27.461804985800843,
-          lng: 153.02571603974496,
-          id: "2",
-          number: "170",
-          name: "Leichhardt",
-          type: "st",
-          manual: true,
-          parcels: [],
-        },
-      ]
+      // [
+      undelivered
+        //   {
+        //     lat: -27.328031268580506,
+        //     lng: 152.98566355337306,
+        //     id: "1",
+        //     name: "Brendale Depo CourierPlease",
+        //     manual: true,
+        //     parcels: [],
+        //   },
+        //   {
+        //     lat: -27.461804985800843,
+        //     lng: 153.02571603974496,
+        //     id: "2",
+        //     number: "170",
+        //     name: "Leichhardt",
+        //     type: "st",
+        //     manual: true,
+        //     parcels: [],
+        //   },
+        // ]
         // .filter((e, i) => i < 22)
         .map((street, i) => {
           const onClick = (e) => navigate(`/deliveries#${street.id}`);
@@ -528,7 +505,7 @@ const Markers = ({ setSelected, selected, setHighlighted }) => {
           const position = { lat: street.lat, lng: street.lng };
 
           const markerIcon = {
-            path: icons.dot,
+            path: icons.pin,
             // fillColor: isPickup
             //   ? colors.PICKUP
             //   : isSelected
@@ -537,8 +514,14 @@ const Markers = ({ setSelected, selected, setHighlighted }) => {
             fillOpacity: 0,
             scale: 1,
             strokeWeight: 0,
-            labelOrigin: new window.google.maps.Point(10, 10),
-            anchor: new window.google.maps.Point(10, 10),
+            fillColor: isPickup ? colors.PICKUP : isSelected ? "black" : "red",
+            fillOpacity: 0.9,
+            scale: 0.05,
+            strokeColor: "gold",
+            strokeWeight: 0,
+            rotation: 180,
+            labelOrigin: new window.google.maps.Point(250, 400),
+            anchor: new window.google.maps.Point(250, 10),
           };
 
           return (
@@ -629,9 +612,19 @@ const arrayMove = (arr, fromIndex, toIndex) => {
   return newArr;
 };
 
-console.log(
-  moveDown(
-    [1, 2, 3, 4].map((e) => ({ id: e })),
-    { id: 2 }
-  )
+const Zoom = ({ setZoom }) => (
+  <Flex position="absolute" top="60px" right="12px" zIndex="200" h="400px">
+    <RangeSlider
+      aria-label={["min", "max"]}
+      defaultValue={[0, 30]}
+      onChange={(val) => setZoom(12 + (8 * val[1]) / 100)}
+      orientation="vertical"
+      // h="200px"
+    >
+      <RangeSliderTrack bg="gray">
+        <RangeSliderFilledTrack bg="green.800" />
+      </RangeSliderTrack>
+      <RangeSliderThumb index={1} />
+    </RangeSlider>
+  </Flex>
 );

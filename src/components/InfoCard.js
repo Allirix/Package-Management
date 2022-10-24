@@ -23,8 +23,7 @@ export default ({
       flexDirection="column"
       borderRadius="8px"
       m="4px 0"
-      w="150px"
-      boxShadow="0 1px 2px 0px gray, inset 0 1px 2px gray"
+      w="70px"
       overflow="hidden"
     >
       <Text
@@ -36,7 +35,7 @@ export default ({
       >
         {title}
       </Text>
-      <Text fontSize="20px" color="blackAlpha.800" fontWeight="900">
+      <Text fontSize="20px" color="blackAlpha.700" fontWeight="900">
         {value[0]}
         <strong style={{ fontSize: "14px", color: "rgba(0,0,0,0.6)" }}>
           {divider}
@@ -45,7 +44,7 @@ export default ({
       </Text>
       <Text
         fontWeight="600"
-        color="blackAlpha.700"
+        color="blackAlpha.500"
         fontSize="12px"
         textTransform="uppercase"
       >

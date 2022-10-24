@@ -22,7 +22,7 @@
   width: 25px;
   height: 25px;
 
-  opacity: 0.9;
+  /* opacity: 0.9; */
   /* transform: rotate(90deg); */
 }
 
@@ -35,10 +35,10 @@
 }
 
 .marker-label--red {
-  background-color: rgb(255, 229, 229);
-  color: rgb(29, 29, 29) !important;
+  background-color: rgb(249, 0, 0);
+  color: rgb(255, 255, 255) !important;
   font-weight: 900 !important;
-  border: 1px solid rgb(29, 29, 29);
+  /* border: 1px solid rgb(29, 29, 29); */
 }
 .marker-label--black {
   background-color: black;

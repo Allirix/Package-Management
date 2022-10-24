@@ -30,7 +30,6 @@ export default ({
       border={isHighlighted ? "1px solid green" : ""}
       overflow="hidden"
       minHeight="100px"
-      boxShadow="0 1px 1px gray"
     >
       <Flex flexDir="column" w="calc(100%)">
         <LocationInformation {...{ ...place }} />
@@ -152,7 +151,6 @@ const DeliveryInformation = ({
       justifyContent="flex-start"
       p="0 16px"
       h="100%"
-      boxShadow="inset 0 10px 10px -8px rgb(28,69,50)"
       overflowX="auto"
     >
       <Parcels parcels={parcels} place={place} />
@@ -168,7 +166,6 @@ function ATL({ atl, id, editATL = null }) {
   return (
     <Button
       onClick={onClick}
-      // boxShadow={`inset 0 0 4px ${atlStates[atl].color}, inset -2px -2px 2px -3px white, inset -2px -2px 3px -3px black`}
       fontWeight="700"
       background={atlStates[atl].color}
       fontSize="10px"

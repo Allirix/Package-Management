@@ -14,7 +14,8 @@ export default ({ children }) => {
   if (
     pathname.includes("new") ||
     pathname.includes("register") ||
-    pathname.includes("login")
+    pathname.includes("login") ||
+    pathname.includes("map")
   )
     return children;
 
