@@ -33,24 +33,27 @@ import { Loading } from "../../components/Layout/Layout";
 import { useNavigate } from "react-router-dom";
 import { useLocalStorage } from "react-use";
 import { FaCross, FaInfoCircle } from "react-icons/fa";
-import { MdCheck, MdClose, MdInfoOutline } from "react-icons/md";
+import { MdCheck, MdClose, MdInfoOutline, MdResetTv } from "react-icons/md";
 import {
   BiCheck,
   BiChevronDown,
   BiChevronLeft,
   BiChevronRight,
   BiChevronUp,
+  BiMap,
   BiMinus,
   BiNavigation,
   BiPlus,
   BiReset,
+  BiUndo,
 } from "react-icons/bi";
 import {
+  BsChevronDoubleUp,
   BsFillCheckCircleFill,
   BsFillInfoCircleFill,
   BsFillInfoSquareFill,
 } from "react-icons/bs";
-import { RiInformationFill } from "react-icons/ri";
+import { RiInformationFill, RiRouteFill } from "react-icons/ri";
 import { AiFillCloseCircle, AiFillCloseSquare } from "react-icons/ai";
 import { Header } from "./Deliveries";
 
@@ -84,8 +87,8 @@ const icons = {
 
 const currentPositionIcon = {
   path: icons.dot,
-  fillColor: "#005BB2",
-  fillOpacity: 0.9,
+  fillColor: "blue",
+  fillOpacity: 1,
   scale: 0.6,
   strokeWeight: 2,
   strokeColor: "white",
@@ -222,7 +225,12 @@ export default function Map() {
           <BiChevronLeft />
         </Button>
         {(undelivered?.length > 0 || delivered?.length > 0) && (
-          <Header isExpanded={false} setIsExpanded={setIsExpanded} />
+          <Header
+            isExpanded={false}
+            setIsExpanded={setIsExpanded}
+            undelivered={undelivered}
+            delivered={delivered}
+          />
         )}
       </Flex>
 
@@ -296,7 +304,7 @@ const Route = ({
         h="40px"
       >
         <Button
-          background="blue.300"
+          background="blue.700"
           onClick={() => setIsExpanded((e) => !e)}
           w="fit-content"
           h="50px"
@@ -313,7 +321,7 @@ const Route = ({
 
         {isExpanded && (
           <Button
-            background="red.300"
+            background="red.700"
             onClick={() => setSelected([])}
             w="fit-content"
             h="50px"
@@ -324,20 +332,22 @@ const Route = ({
             <BiReset color="white" size="25px" />
           </Button>
         )}
-        <Button
-          background="green.300"
-          onClick={() =>
-            window.open(getGoogleDirectionsLink(location, selected), "_blank")
-          }
-          w="fit-content"
-          h="50px"
-          w="50px"
-          p="0"
-          borderRadius="0"
-          width="100%"
-        >
-          <BiNavigation color="white" size="25px" />
-        </Button>
+        {isExpanded && (
+          <Button
+            background="green.700"
+            onClick={() =>
+              window.open(getGoogleDirectionsLink(location, selected), "_blank")
+            }
+            w="fit-content"
+            h="50px"
+            w="50px"
+            p="0"
+            borderRadius="0"
+            width="100%"
+          >
+            <BiNavigation color="white" size="25px" />
+          </Button>
+        )}
       </Flex>
 
       {isExpanded &&
@@ -384,13 +394,13 @@ const Route = ({
                 onClick={() => setSelected((s) => moveUp(s, e))}
                 size="25px"
               />
-              <MdInfoOutline
+              {/* <MdInfoOutline
                 cursor="pointer"
                 color="blue"
                 onClick={() => setHighlighted((h) => e)}
                 size="30px"
                 opacity="0.5"
-              />
+              /> */}
             </Flex>
           </Flex>
         ))}
@@ -425,8 +435,15 @@ const Markers = ({ setSelected, selected, setHighlighted }) => {
 
   return useMemo(() => {
     return (
-      // [
       undelivered
+        // [
+        // new Array(2000)
+        //   .fill(undelivered[0])
+        //   .map((e) => ({
+        //     ...e,
+        //     lat: e.lat + Math.random() / 10 - 0.05,
+        //     lng: e.lng + Math.random() / 10 - 0.05,
+        //   }))
         //   {
         //     lat: -27.328031268580506,
         //     lng: 152.98566355337306,
@@ -446,7 +463,7 @@ const Markers = ({ setSelected, selected, setHighlighted }) => {
         //     parcels: [],
         //   },
         // ]
-        .filter((e, i) => i < 30)
+        // .filter((e, i) => i < 30)
         .map((street, i) => (
           <CustomMarker {...{ navigate, street, selected, i, setSelected }} />
         ))
@@ -492,28 +509,33 @@ const CustomMarker = ({ navigate, street, selected, setSelected, i }) => {
     strokeColor: "gold",
     strokeWeight: 0,
     rotation: 180,
-    labelOrigin: new window.google.maps.Point(250, 400),
+    labelOrigin: new window.google.maps.Point(250, 350),
     anchor: new window.google.maps.Point(250, 10),
   };
   return (
     <Marker
-      // onDblClick={onClick}
+      // onDragEnd={}
+      onDblClick={(e) => {
+        setSelected((s) => [
+          street.id,
+          ...selected.map((e) => e.id).filter((e) => e !== street.id),
+        ]);
+        setShowInfo(false);
+      }}
       onClick={(e) => {
         setSelected((s) => {
-          console.log({ s });
           const inRoute = s.some((id) => street.id === id);
           if (inRoute) return s.filter((id) => id !== street.id);
 
-          console.log([...s, street.id], selected);
           return [...selected.map((e) => e.id), street.id];
         });
         setShowInfo(true);
       }}
       key={street.id}
       options={{ optimized: true }}
-      icon={markerIcon}
+      icon={!isSelected || isPickup ? markerIcon : null}
       position={position}
-      label={label}
+      // label={label}
       zIndex={i}
     />
   );
@@ -557,17 +579,7 @@ const Overlay = ({ displayed, setDisplayed, selected, setSelected }) => {
       >
         {street}
       </Flex>
-      {/* <Flex>
-        <Text weight="900" p="0 8px">
-          Route
-        </Text>
-        <Flex>
-          <Button>Reset</Button>
-          <Button>Open Google</Button>
-          <Button>Undo</Button>
-          <Button>Bring Bottom to top</Button>
-        </Flex>
-      </Flex> */}
+
       {selected.map((e) => (
         <Street
           street={e}
@@ -618,8 +630,8 @@ const Zoom = ({ setZoom }) => (
       orientation="vertical"
       // h="200px"
     >
-      <RangeSliderTrack bg="gray">
-        <RangeSliderFilledTrack bg="green.800" />
+      <RangeSliderTrack bg="green.800">
+        <RangeSliderFilledTrack bg="gray" />
       </RangeSliderTrack>
       <RangeSliderThumb index={1} />
     </RangeSlider>

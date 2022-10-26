@@ -2,9 +2,7 @@ import { useMemo } from "react";
 import { useSortedDelivery } from "../providers";
 import { countHours } from "./utils";
 
-export default () => {
-  const { delivered, undelivered } = useSortedDelivery();
-
+export default ({ delivered, undelivered }) => {
   return useMemo(() => {
     const deliveredLocations = delivered.length;
     const deliveredParcels = delivered

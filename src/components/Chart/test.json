@@ -1,0 +1,452 @@
+[
+  {
+    "label": "Series 1",
+    "data": [
+      {
+        "primary": "2022-10-25T00:00:00.000Z",
+        "secondary": 96
+      },
+      {
+        "primary": "2022-10-26T00:00:00.000Z",
+        "secondary": 39
+      },
+      {
+        "primary": "2022-10-27T00:00:00.000Z",
+        "secondary": 82
+      },
+      {
+        "primary": "2022-10-28T00:00:00.000Z",
+        "secondary": 27
+      },
+      {
+        "primary": "2022-10-29T00:00:00.000Z",
+        "secondary": 9
+      },
+      {
+        "primary": "2022-10-30T00:00:00.000Z",
+        "secondary": 34
+      },
+      {
+        "primary": "2022-10-31T00:00:00.000Z",
+        "secondary": 16
+      },
+      {
+        "primary": "2022-11-01T00:00:00.000Z",
+        "secondary": 59
+      },
+      {
+        "primary": "2022-11-02T00:00:00.000Z",
+        "secondary": 69
+      },
+      {
+        "primary": "2022-11-03T00:00:00.000Z",
+        "secondary": 36
+      }
+    ]
+  },
+  {
+    "label": "Series 2",
+    "data": [
+      {
+        "primary": "2022-10-25T00:00:00.000Z",
+        "secondary": 31
+      },
+      {
+        "primary": "2022-10-26T00:00:00.000Z",
+        "secondary": 19
+      },
+      {
+        "primary": "2022-10-27T00:00:00.000Z",
+        "secondary": 4
+      },
+      {
+        "primary": "2022-10-28T00:00:00.000Z",
+        "secondary": 62
+      },
+      {
+        "primary": "2022-10-29T00:00:00.000Z",
+        "secondary": 79
+      },
+      {
+        "primary": "2022-10-30T00:00:00.000Z",
+        "secondary": 34
+      },
+      {
+        "primary": "2022-10-31T00:00:00.000Z",
+        "secondary": 90
+      },
+      {
+        "primary": "2022-11-01T00:00:00.000Z",
+        "secondary": 94
+      },
+      {
+        "primary": "2022-11-02T00:00:00.000Z",
+        "secondary": 87
+      },
+      {
+        "primary": "2022-11-03T00:00:00.000Z",
+        "secondary": 78
+      }
+    ]
+  },
+  {
+    "label": "Series 3",
+    "data": [
+      {
+        "primary": "2022-10-25T00:00:00.000Z",
+        "secondary": 50
+      },
+      {
+        "primary": "2022-10-26T00:00:00.000Z",
+        "secondary": 97
+      },
+      {
+        "primary": "2022-10-27T00:00:00.000Z",
+        "secondary": 63
+      },
+      {
+        "primary": "2022-10-28T00:00:00.000Z",
+        "secondary": 72
+      },
+      {
+        "primary": "2022-10-29T00:00:00.000Z",
+        "secondary": 43
+      },
+      {
+        "primary": "2022-10-30T00:00:00.000Z",
+        "secondary": 13
+      },
+      {
+        "primary": "2022-10-31T00:00:00.000Z",
+        "secondary": 18
+      },
+      {
+        "primary": "2022-11-01T00:00:00.000Z",
+        "secondary": 62
+      },
+      {
+        "primary": "2022-11-02T00:00:00.000Z",
+        "secondary": 31
+      },
+      {
+        "primary": "2022-11-03T00:00:00.000Z",
+        "secondary": 47
+      }
+    ]
+  },
+  {
+    "label": "Series 4",
+    "data": [
+      {
+        "primary": "2022-10-25T00:00:00.000Z",
+        "secondary": 10
+      },
+      {
+        "primary": "2022-10-26T00:00:00.000Z",
+        "secondary": 24
+      },
+      {
+        "primary": "2022-10-27T00:00:00.000Z",
+        "secondary": 38
+      },
+      {
+        "primary": "2022-10-28T00:00:00.000Z",
+        "secondary": 42
+      },
+      {
+        "primary": "2022-10-29T00:00:00.000Z",
+        "secondary": 28
+      },
+      {
+        "primary": "2022-10-30T00:00:00.000Z",
+        "secondary": 45
+      },
+      {
+        "primary": "2022-10-31T00:00:00.000Z",
+        "secondary": 73
+      },
+      {
+        "primary": "2022-11-01T00:00:00.000Z",
+        "secondary": 41
+      },
+      {
+        "primary": "2022-11-02T00:00:00.000Z",
+        "secondary": 34
+      },
+      {
+        "primary": "2022-11-03T00:00:00.000Z",
+        "secondary": 0
+      }
+    ]
+  },
+  {
+    "label": "Series 5",
+    "data": [
+      {
+        "primary": "2022-10-25T00:00:00.000Z",
+        "secondary": 82
+      },
+      {
+        "primary": "2022-10-26T00:00:00.000Z",
+        "secondary": 60
+      },
+      {
+        "primary": "2022-10-27T00:00:00.000Z",
+        "secondary": 2
+      },
+      {
+        "primary": "2022-10-28T00:00:00.000Z",
+        "secondary": 24
+      },
+      {
+        "primary": "2022-10-29T00:00:00.000Z",
+        "secondary": 95
+      },
+      {
+        "primary": "2022-10-30T00:00:00.000Z",
+        "secondary": 46
+      },
+      {
+        "primary": "2022-10-31T00:00:00.000Z",
+        "secondary": 65
+      },
+      {
+        "primary": "2022-11-01T00:00:00.000Z",
+        "secondary": 25
+      },
+      {
+        "primary": "2022-11-02T00:00:00.000Z",
+        "secondary": 6
+      },
+      {
+        "primary": "2022-11-03T00:00:00.000Z",
+        "secondary": 67
+      }
+    ]
+  },
+  {
+    "label": "Series 6",
+    "data": [
+      {
+        "primary": "2022-10-25T00:00:00.000Z",
+        "secondary": 78
+      },
+      {
+        "primary": "2022-10-26T00:00:00.000Z",
+        "secondary": 12
+      },
+      {
+        "primary": "2022-10-27T00:00:00.000Z",
+        "secondary": 72
+      },
+      {
+        "primary": "2022-10-28T00:00:00.000Z",
+        "secondary": 45
+      },
+      {
+        "primary": "2022-10-29T00:00:00.000Z",
+        "secondary": 29
+      },
+      {
+        "primary": "2022-10-30T00:00:00.000Z",
+        "secondary": 29
+      },
+      {
+        "primary": "2022-10-31T00:00:00.000Z",
+        "secondary": 28
+      },
+      {
+        "primary": "2022-11-01T00:00:00.000Z",
+        "secondary": 64
+      },
+      {
+        "primary": "2022-11-02T00:00:00.000Z",
+        "secondary": 18
+      },
+      {
+        "primary": "2022-11-03T00:00:00.000Z",
+        "secondary": 39
+      }
+    ]
+  },
+  {
+    "label": "Series 7",
+    "data": [
+      {
+        "primary": "2022-10-25T00:00:00.000Z",
+        "secondary": 67
+      },
+      {
+        "primary": "2022-10-26T00:00:00.000Z",
+        "secondary": 75
+      },
+      {
+        "primary": "2022-10-27T00:00:00.000Z",
+        "secondary": 85
+      },
+      {
+        "primary": "2022-10-28T00:00:00.000Z",
+        "secondary": 71
+      },
+      {
+        "primary": "2022-10-29T00:00:00.000Z",
+        "secondary": 75
+      },
+      {
+        "primary": "2022-10-30T00:00:00.000Z",
+        "secondary": 16
+      },
+      {
+        "primary": "2022-10-31T00:00:00.000Z",
+        "secondary": 16
+      },
+      {
+        "primary": "2022-11-01T00:00:00.000Z",
+        "secondary": 74
+      },
+      {
+        "primary": "2022-11-02T00:00:00.000Z",
+        "secondary": 92
+      },
+      {
+        "primary": "2022-11-03T00:00:00.000Z",
+        "secondary": 65
+      }
+    ]
+  },
+  {
+    "label": "Series 8",
+    "data": [
+      {
+        "primary": "2022-10-25T00:00:00.000Z",
+        "secondary": 59
+      },
+      {
+        "primary": "2022-10-26T00:00:00.000Z",
+        "secondary": 56
+      },
+      {
+        "primary": "2022-10-27T00:00:00.000Z",
+        "secondary": 63
+      },
+      {
+        "primary": "2022-10-28T00:00:00.000Z",
+        "secondary": 97
+      },
+      {
+        "primary": "2022-10-29T00:00:00.000Z",
+        "secondary": 76
+      },
+      {
+        "primary": "2022-10-30T00:00:00.000Z",
+        "secondary": 1
+      },
+      {
+        "primary": "2022-10-31T00:00:00.000Z",
+        "secondary": 16
+      },
+      {
+        "primary": "2022-11-01T00:00:00.000Z",
+        "secondary": 31
+      },
+      {
+        "primary": "2022-11-02T00:00:00.000Z",
+        "secondary": 55
+      },
+      {
+        "primary": "2022-11-03T00:00:00.000Z",
+        "secondary": 51
+      }
+    ]
+  },
+  {
+    "label": "Series 9",
+    "data": [
+      {
+        "primary": "2022-10-25T00:00:00.000Z",
+        "secondary": 73
+      },
+      {
+        "primary": "2022-10-26T00:00:00.000Z",
+        "secondary": 89
+      },
+      {
+        "primary": "2022-10-27T00:00:00.000Z",
+        "secondary": 60
+      },
+      {
+        "primary": "2022-10-28T00:00:00.000Z",
+        "secondary": 18
+      },
+      {
+        "primary": "2022-10-29T00:00:00.000Z",
+        "secondary": 26
+      },
+      {
+        "primary": "2022-10-30T00:00:00.000Z",
+        "secondary": 39
+      },
+      {
+        "primary": "2022-10-31T00:00:00.000Z",
+        "secondary": 81
+      },
+      {
+        "primary": "2022-11-01T00:00:00.000Z",
+        "secondary": 96
+      },
+      {
+        "primary": "2022-11-02T00:00:00.000Z",
+        "secondary": 4
+      },
+      {
+        "primary": "2022-11-03T00:00:00.000Z",
+        "secondary": 88
+      }
+    ]
+  },
+  {
+    "label": "Series 10",
+    "data": [
+      {
+        "primary": "2022-10-25T00:00:00.000Z",
+        "secondary": 37
+      },
+      {
+        "primary": "2022-10-26T00:00:00.000Z",
+        "secondary": 76
+      },
+      {
+        "primary": "2022-10-27T00:00:00.000Z",
+        "secondary": 55
+      },
+      {
+        "primary": "2022-10-28T00:00:00.000Z",
+        "secondary": 63
+      },
+      {
+        "primary": "2022-10-29T00:00:00.000Z",
+        "secondary": 19
+      },
+      {
+        "primary": "2022-10-30T00:00:00.000Z",
+        "secondary": 51
+      },
+      {
+        "primary": "2022-10-31T00:00:00.000Z",
+        "secondary": 97
+      },
+      {
+        "primary": "2022-11-01T00:00:00.000Z",
+        "secondary": 70
+      },
+      {
+        "primary": "2022-11-02T00:00:00.000Z",
+        "secondary": 90
+      },
+      {
+        "primary": "2022-11-03T00:00:00.000Z",
+        "secondary": 22
+      }
+    ]
+  }
+]

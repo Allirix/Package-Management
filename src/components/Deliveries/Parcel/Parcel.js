@@ -21,6 +21,7 @@ export default ({
       justifyContent="center"
       h="45px"
       w="45px"
+      minW="35px"
       background={pColor}
       borderRadius="4px"
     >
@@ -28,10 +29,9 @@ export default ({
         background="rgb(0,0,0,0.5)"
         alignItems="center"
         justifyContent="center"
-        minWidth="30px"
-        minHeight="30px"
+        minWidth="20px"
+        minHeight="20px"
         borderRadius="4px"
-        backdropFilter="blur(4px)"
       >
         <Flex
           flexDirection="column"

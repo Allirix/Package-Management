@@ -45,7 +45,9 @@ export default function Deliveries() {
   return (
     <ParcelPopupProvider>
       <Flex direction="column" w="800px" minW="100%" p="4px 8px" gap="8px">
-        {(undelivered?.length > 0 || delivered?.length > 0) && <Header />}
+        {(undelivered?.length > 0 || delivered?.length > 0) && (
+          <Header delivered={delivered} undelivered={undelivered} />
+        )}
         {/* <Suspense fallback={<>Loading...</>}> */}
         <DeliveryList
           list={undelivered}
@@ -60,10 +62,18 @@ export default function Deliveries() {
   );
 }
 
-export const Header = ({ isExpanded = true, setIsExpanded = () => {} }) => {
+export const Header = ({
+  isExpanded = true,
+  setIsExpanded = () => {},
+  delivered = [],
+  undelivered = [],
+}) => {
   const { dispatch } = useDeliveryDb();
-  const { average, locations, parcels, pickups, averageParcels } =
-    useStatCard();
+
+  const { average, locations, parcels, pickups, averageParcels } = useStatCard({
+    delivered,
+    undelivered,
+  });
 
   const eta = locations[0] / average;
 
