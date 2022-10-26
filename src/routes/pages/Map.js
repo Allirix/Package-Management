@@ -434,40 +434,9 @@ const Markers = ({ setSelected, selected, setHighlighted }) => {
   const navigate = useNavigate();
 
   return useMemo(() => {
-    return (
-      undelivered
-        // [
-        // new Array(2000)
-        //   .fill(undelivered[0])
-        //   .map((e) => ({
-        //     ...e,
-        //     lat: e.lat + Math.random() / 10 - 0.05,
-        //     lng: e.lng + Math.random() / 10 - 0.05,
-        //   }))
-        //   {
-        //     lat: -27.328031268580506,
-        //     lng: 152.98566355337306,
-        //     id: "1",
-        //     name: "Brendale Depo CourierPlease",
-        //     manual: true,
-        //     parcels: [],
-        //   },
-        //   {
-        //     lat: -27.461804985800843,
-        //     lng: 153.02571603974496,
-        //     id: "2",
-        //     number: "170",
-        //     name: "Leichhardt",
-        //     type: "st",
-        //     manual: true,
-        //     parcels: [],
-        //   },
-        // ]
-        // .filter((e, i) => i < 30)
-        .map((street, i) => (
-          <CustomMarker {...{ navigate, street, selected, i, setSelected }} />
-        ))
-    );
+    return undelivered.map((street, i) => (
+      <CustomMarker {...{ navigate, street, selected, i, setSelected }} />
+    ));
   }, [undelivered, selected]);
 };
 
@@ -503,7 +472,11 @@ const CustomMarker = ({ navigate, street, selected, setSelected, i }) => {
     fillOpacity: 0,
     scale: 1,
     strokeWeight: 0,
-    fillColor: isPickup ? colors.PICKUP : isSelected ? "black" : "red",
+    fillColor: isPickup
+      ? colors.PICKUP
+      : isSelected
+      ? "black"
+      : "rgb(234,67,53)",
     fillOpacity: 0.9,
     scale: 0.05,
     strokeColor: "gold",
@@ -535,7 +508,7 @@ const CustomMarker = ({ navigate, street, selected, setSelected, i }) => {
       options={{ optimized: true }}
       icon={!isSelected || isPickup ? markerIcon : null}
       position={position}
-      // label={label}
+      label={isSelected ? "" : label}
       zIndex={i}
     />
   );

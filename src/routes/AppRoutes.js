@@ -22,7 +22,7 @@ export default function AppRoutes() {
 
   const location = useLocation();
 
-  const { isLoggedIn } = useAuth();
+  // const { isLoggedIn } = useAuth();
 
   if (supportsPWA) promptInstall?.prompt();
 

@@ -141,9 +141,11 @@ const DeliveryInformation = ({
   atl,
   distance,
   parcels,
+  parcelsArchive,
   place,
   id,
 }) => {
+  console.log(parcels);
   return (
     <Flex
       alignItems="center"
@@ -154,7 +156,16 @@ const DeliveryInformation = ({
       overflowX="auto"
       w="100%"
     >
-      <Parcels parcels={parcels} place={place} />
+      <Parcels
+        parcels={
+          parcels.length >= 1
+            ? parcels
+            : parcelsArchive
+            ? Object.keys(parcelsArchive).flatMap((e) => parcelsArchive[e])
+            : []
+        }
+        place={place}
+      />
     </Flex>
   );
 };

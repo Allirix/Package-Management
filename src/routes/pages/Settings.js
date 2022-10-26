@@ -64,6 +64,14 @@ export default function Settings() {
         Set DB
       </Button> */}
 
+      <Button
+        onClick={() => (logout(), navigate("/login"))}
+        color="white"
+        background="green.800"
+        w="100%"
+      >
+        Logout
+      </Button>
       <a
         href={URL.createObjectURL(
           new Blob([localStorage.getItem("db")], { type: "text/plain" })
@@ -75,18 +83,6 @@ export default function Settings() {
 
       <Text>Upload State</Text>
       <Input type="file" onChange={(e) => readFile(e.target.files[0])} />
-
-      <Button
-        onClick={() => (logout(), navigate("/login"))}
-        color="white"
-        background="var(--ternary-color)"
-        position="fixed"
-        bottom="75px"
-        w="100%"
-        maxW="calc(800px - 32px)"
-      >
-        Logout
-      </Button>
     </Flex>
   );
 }

@@ -26,7 +26,7 @@ export default ({
       borderRadius="4px"
     >
       <Flex
-        background="rgb(0,0,0,0.5)"
+        background="rgb(0,0,0,1)"
         alignItems="center"
         justifyContent="center"
         minWidth="20px"

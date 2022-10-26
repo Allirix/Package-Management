@@ -22,6 +22,7 @@ export default function useDeliveryData() {
           e.lat !== undefined ? e : { ...e, ...(await getLatLong(e)) }
         )
       );
+
       set(newDbPromise);
       addHistory(newDbPromise);
     })();

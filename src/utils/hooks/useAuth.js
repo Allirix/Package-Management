@@ -45,6 +45,7 @@ export default function useAuth() {
   }
 
   useEffect(() => {
+    if (true) return;
     if (user) {
       login(user.email, user.password);
       redirectToHome();

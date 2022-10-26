@@ -7,7 +7,6 @@ const InstallPWA = () => {
   useEffect(() => {
     const promptHandler = (e) => {
       e.preventDefault();
-      alert("Install PWA Prompt");
       setSupportsPWA(true);
       setPromptInstall(e);
     };
@@ -23,8 +22,8 @@ const InstallPWA = () => {
 export default InstallPWA;
 
 const relatedApplicationLog = async () => {
-  // console.log(
-  //   "PWA related Applications" +
-  //     JSON.stringify(await navigator.getInstalledRelatedApps())
-  // );
+  console.log(
+    "PWA related Applications" +
+      JSON.stringify(await navigator.getInstalledRelatedApps())
+  );
 };

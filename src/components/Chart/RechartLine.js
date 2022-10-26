@@ -65,18 +65,26 @@ export default function RechartLine({ data = exampleData, keys = ["pv"] }) {
   //   console.log(`rgb(${randBit()}, ${randBit()}), ${randBit()})`);
 
   const Lines = keys.map((e, i) => {
+    const isAverage = e === "average";
     const k = Object.keys(e).filter((e) => e !== "name");
     const average = k.reduce((acc, ee) => acc + e[ee], 0);
+    const color = `rgb(${randBit()}, ${randBit()}, ${randBit()})`;
 
     return (
       <Line
-        type="natural"
+        type="linear"
         dataKey={e}
-        stroke={`rgb(${randBit()}, ${randBit()}, ${randBit()})`}
-        strokeWidth="3"
+        stroke={isAverage ? "black" : color}
+        strokeWidth={isAverage ? "5" : "3"}
         dot={false}
         key={i}
-        connectNulls
+        connectNulls={!isAverage}
+        opacity={isAverage ? "1" : "0.4"}
+        // filter={
+        //   isAverage
+        //     ? "drop-shadow(0 0 1px black)"
+        //     : `drop-shadow(0 0 1px ${color})`
+        // }
       />
     );
   });
@@ -93,7 +101,7 @@ export default function RechartLine({ data = exampleData, keys = ["pv"] }) {
           top: 5,
           right: 5,
           left: 5,
-          bottom: 0,
+          bottom: 5,
         }}
       >
         {/* <CartesianGrid strokeDasharray="10 10" stroke="rgb(250,250,250)" /> */}
@@ -116,17 +124,9 @@ export default function RechartLine({ data = exampleData, keys = ["pv"] }) {
         />
         {/* <Legend /> */}
         {Lines}
-        <Line
-          type="natural"
-          dataKey={"average"}
-          stroke={`rgb(${randBit()}, ${randBit()}, ${randBit()})`}
-          strokeWidth="3"
-          dot={false}
-          connectNulls
-        />
       </ComposedChart>
     </ResponsiveContainer>
   );
 }
 
-const randBit = () => Math.round(Math.random() * 255);
+const randBit = () => Math.round(Math.random() * 200);

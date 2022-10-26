@@ -1,4 +1,4 @@
-import { Flex, Button, Select, Box, Text } from "@chakra-ui/react";
+import { Flex, Button, Select, Box, Text, useConst } from "@chakra-ui/react";
 import { BiRun } from "react-icons/bi";
 import { BsSquareHalf } from "react-icons/bs";
 import { FiMapPin } from "react-icons/fi";
@@ -32,6 +32,21 @@ import { Header } from "./Deliveries";
 import ResizableBox from "../../components/Chart/ResizableBox";
 import Line from "../../components/Chart/Line";
 import RechartLine from "../../components/Chart/RechartLine";
+
+/*
+total pickups each week
+total parcels each week
+total locations each week
+
+best street
+
+best location
+
+
+
+
+
+*/
 
 export default function History() {
   const { sorted } = useSortedDelivery();
@@ -95,6 +110,14 @@ export default function History() {
     };
   });
 
+  const statistics = useConst(() => transformRecharted(sorted), []);
+
+  console.log(
+    statistics,
+    statistics.totals.getAveragePerDay(),
+    statistics.totals.getAveragePerHour()
+  );
+
   // data = Object.keys(data)
   //   .sort((a, b) => Number(a) - Number(b))
   //   .map((e) => ({
@@ -103,69 +126,71 @@ export default function History() {
   //   }));
 
   return (
-    <ParcelPopupProvider>
+    // <ParcelPopupProvider>
+    <Flex
+      direction="column"
+      maxWidth="800px"
+      p="8px 0"
+      gap="4px"
+      alignItems="center"
+      w="100vw"
+    >
       <Flex
-        direction="column"
-        maxWidth="800px"
-        p="8px 8px"
-        gap="4px"
-        alignItems="center"
-        w="100vw"
+        width="calc(100% - 16px)"
+        h="calc(100%)"
+        bg="white"
+        borderRadius="16px"
+        maxHeight="300px"
+        minHeight="300px"
+        p="32px 32px 16px 32px"
+        flexDirection="column"
+        // boxShadow="0 2px 2px gray"
       >
-        <Header delivered={list} />
-
         <Flex
-          width="calc(100% - 16px)"
-          h="calc(100%)"
-          bg="white"
-          borderRadius="16px"
-          minHeight="300px"
-          p="32px 32px 16px 32px"
-          flexDirection="column"
-          // boxShadow="0 2px 2px gray"
+          fontSize="44px"
+          fontWeight="500"
+          alignItems="center"
+          // textShadow="0 0 1px black"
         >
-          {/* <Text
-            textTransform="uppercase"
-            fontWeight="900"
-            // opacity="0.7"
-            color="green.800"
-            fontFamily="'Montserrat' !important"
-            w="100%"
-            fontSize="10px"
-          >
-            All Deliveries
-          </Text> */}
-          {/* <Line data={data} /> */}
-          {/* <Line /> */}
-          <RechartLine {...{ ...transformRecharted(sorted) }} />
+          {Math.round(100 * statistics.average) / 100}
+
+          <Text opacity="0.5" fontSize="20px">
+            /hr
+          </Text>
         </Flex>
 
-        <Flex w="100%" justifyContent="flex-end">
-          <Select
-            onChange={(e) => setDate(e.target.value)}
-            color="blackAlpha.900"
-            fontWeight="900"
-            border="none"
-            h="40px"
-            w="140px"
-            borderRadius="16px"
-            background="whiteAlpha.800"
-            fontWeight="900"
-          >
-            {Object.keys(dates).length > 0 &&
-              Object.keys(dates).map((e) => (
-                <option style={{ color: "white", background: "black" }} key={e}>
-                  {e}
-                </option>
-              ))}
-          </Select>
-        </Flex>
+        <RechartLine {...{ ...statistics }} />
+      </Flex>
 
-        <DeliveryList list={list} />
+      {/* <Header delivered={list} /> */}
 
-        <ParcelPopup />
+      {/* <Flex w="100%" justifyContent="flex-end">
+        <Select
+          onChange={(e) => setDate(e.target.value)}
+          color="blackAlpha.900"
+          fontWeight="900"
+          border="none"
+          h="40px"
+          w="140px"
+          borderRadius="16px"
+          background="whiteAlpha.800"
+          fontWeight="900"
+        >
+          {Object.keys(dates).length > 0 &&
+            Object.keys(dates).map((e) => (
+              <option style={{ color: "white", background: "black" }} key={e}>
+                {e}
+              </option>
+            ))}
+        </Select>
+      </Flex> */}
+      <Flex p="8px" w="100%">
+        <DeliveryList list={sorted} />
+      </Flex>
 
-        {/* <Box bg="var(--secondary-color-light)" w="100vw">
+      {/* <ParcelPopup /> */}
+
+      {/* <Box bg="var(--secondary-color-light)" w="100vw">
           <Chart
             options={{
               xaxis: {
@@ -213,17 +238,19 @@ export default function History() {
             type="area"
           />
         </Box> */}
-      </Flex>
-    </ParcelPopupProvider>
+    </Flex>
+    // </ParcelPopupProvider>
   );
 }
 
 function transformRecharted(rawData) {
-  const arr = new Array(13).fill({}).reduce((acc, e, i) => {
+  let sum = 0,
+    count = 0;
+  const arr = new Array(12).fill({}).reduce((acc, e, i) => {
     acc[i + 7] = { name: i + 7 };
     return acc;
   }, {});
-  let count = {};
+  let dateTimeCount = {};
 
   rawData
     .map((e) => e.parcelsArchive)
@@ -235,18 +262,18 @@ function transformRecharted(rawData) {
     .map((e) => e.split(", "))
     .map((e) => [e[0], e[1].split(":")[0]])
     .forEach((e) => {
-      count[e] = (count[e] || 0) + 1;
+      dateTimeCount[e] = (dateTimeCount[e] || 0) + 1;
     });
 
   let keys = new Set();
 
-  count = Object.keys(count).map((e) => {
+  dateTimeCount = Object.keys(dateTimeCount).map((e) => {
     const [date, time] = e.split(",");
 
     keys.add(date);
 
     const timeKey = Number(time);
-    arr[timeKey] = { ...arr[timeKey], [date]: count[e] };
+    arr[timeKey] = { ...arr[timeKey], [date]: dateTimeCount[e] };
     return e;
   });
 
@@ -256,21 +283,50 @@ function transformRecharted(rawData) {
 
   const keysArr = [...Array.from(keys), "average"];
 
-  return {
-    data: Object.keys(arr)
-      .map((e) => {
-        const average =
-          Object.keys(arr[e])
-            .filter((e) => e !== "name")
-            .reduce((acc, ee) => {
-              console.log(ee, e, acc, arr[e][ee]);
-              return acc + arr[e][ee];
-            }, 0) / keysArr.length;
+  const data = Object.keys(arr)
+    .map((e) => {
+      const sum = Object.keys(arr[e])
+        .filter((e) => e !== "name")
+        .reduce((acc, ee) => acc + arr[e][ee], 0);
 
-        console.log(Object.values(arr[e]), average);
-        return { name: e, ...arr[e], average };
-      })
-      .sort((a, b) => a.name - b.name),
+      const length = Object.keys(arr[e]).length - 1;
+
+      return { name: e, ...arr[e], average: !length ? 0 : sum / length };
+    })
+    .sort((a, b) => a.name - b.name);
+
+  return {
+    data,
     keys: keysArr,
+    average: data.reduce((sum, e) => sum + e.average, 0) / 12,
+    averageArr: data.map((e) => e.average),
+    min: Math.min(...data.map((e) => e.average)),
+    max: Math.max(...data.map((e) => e.average)),
+    totals: data.reduce(
+      (totals, time) => {
+        data.map((datum) => {
+          Object.keys(time)
+            .filter((e) => !(e === "average" || e === "name"))
+            .forEach((e) => {
+              if (!(e in datum)) return;
+              totals.n = totals.n + 1;
+              totals.sum = totals.sum + datum[e];
+            });
+        });
+
+        return totals;
+      },
+      {
+        sum: 0,
+        n: 0,
+        days: keysArr.length - 1,
+        getAveragePerDay() {
+          return this.sum / this.days;
+        },
+        getAveragePerHour() {
+          return this.sum / this.n;
+        },
+      }
+    ),
   };
 }
