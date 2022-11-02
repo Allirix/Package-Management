@@ -84,7 +84,7 @@ export const Loading = ({ show }) => {
         fontSize="16px"
         fontWeight="extrabold"
       >
-        I LOVE YOU NUSHI
+        NUSHI IS AMAZING!!!!!
       </Text>
     </Flex>
   );
