@@ -122,28 +122,11 @@ export const actions = {
       .sort((a, b) => b.date - a.date)
       .slice(0);
 
-    console.log({
-      d: deliveries
-        .map((e) => {
-          if (e.id === payload) {
-            const { parcels, parcelsArchive, ...del } = e;
-            const { [mostRecentParcel.key]: remove, ...other } = parcelsArchive;
-            console.log({ other, remove });
-            return {
-              ...del,
-              parcels: [...parcels, ...mostRecentParcel.parcels],
-              parcelsArchive: other,
-            };
-          }
-          // return e;
-        })
-        .filter((e) => e),
-    });
-    return deliveries.map((e) => {
+    const newDeliveries = deliveries.map((e, i) => {
       if (e.id === payload) {
         const { parcels, parcelsArchive, ...del } = e;
         const { [mostRecentParcel.key]: remove, ...other } = parcelsArchive;
-        console.log({ other, remove });
+        console.log({ other, remove, e, i });
         return {
           ...del,
           parcels: [...parcels, ...mostRecentParcel.parcels],
@@ -152,6 +135,10 @@ export const actions = {
       }
       return e;
     });
+
+    console.log(newDeliveries);
+    // return deliveries;
+    return newDeliveries;
   },
 
   overwrite: (deliveries, payload) => payload,

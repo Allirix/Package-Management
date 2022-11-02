@@ -102,7 +102,7 @@ export default function Home() {
           .flatMap((e) => e)
           .map((e) => parseDate(e))
       ),
-    [weekValues]
+    [weekValues, sorted]
   );
 
   if (sorted.length < 1) return <FirstDelivery />;
@@ -182,13 +182,13 @@ export default function Home() {
     const { selectedDays, setSelectedDays, weekValues } = props;
     const today = useConst(() => daysOfWeek[new Date().getDay()]);
 
-    const total = selectedDays.reduce(
-      (sum, dayIndex) => sum + weekValues[dayIndex].parcels,
+    const total = selectedDays?.reduce(
+      (sum, dayIndex) => sum + weekValues[dayIndex]?.parcels,
       0
     );
 
     const totalPickups = selectedDays.reduce(
-      (sum, dayIndex) => sum + weekValues[dayIndex].pickups,
+      (sum, dayIndex) => sum + weekValues[dayIndex]?.pickups,
       0
     );
 
@@ -214,9 +214,9 @@ export default function Home() {
                 <DayButton
                   key={dayIndex}
                   {...{
-                    parcels: weekValues[dayIndex].parcels,
-                    deliveries: weekValues[dayIndex].deliveries,
-                    pickups: weekValues[dayIndex].pickups,
+                    parcels: weekValues[dayIndex]?.parcels,
+                    deliveries: weekValues[dayIndex]?.deliveries,
+                    pickups: weekValues[dayIndex]?.pickups,
                     day: dayName,
                     isSelected: selectedDays.includes(dayIndex),
                     isToday: dayName === today,
