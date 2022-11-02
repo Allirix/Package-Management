@@ -131,6 +131,7 @@ export const actions = {
           ...del,
           parcels: [...parcels, ...mostRecentParcel.parcels],
           parcelsArchive: other,
+          deliveredAt: null,
         };
       }
       return e;

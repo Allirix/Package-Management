@@ -2,6 +2,8 @@ import { RiCloseFill } from "react-icons/ri";
 
 import { Button, Flex, Text } from "@chakra-ui/react";
 import { BiNavigation } from "react-icons/bi";
+import { AiOutlineUndo } from "react-icons/ai";
+
 import { BsArrowReturnLeft, BsFillCheckCircleFill } from "react-icons/bs";
 import { getGoogleMapsDirURL } from "./utils";
 import { useDeliveryDb, useMyPosition } from "../../utils/providers";
@@ -29,7 +31,7 @@ export default function Controls({ street, showCheck = true, onComplete }) {
             ? () => dispatch("toggle", street.id, onComplete(street))
             : () => dispatch("readd", street.id)
         }
-        Icon={showCheck ? BsFillCheckCircleFill : RiCloseFill}
+        Icon={showCheck ? BsFillCheckCircleFill : AiOutlineUndo}
         title={showCheck ? "Deliver" : "Delete"}
         background={showCheck ? "yellow.800" : "red.800"}
       />
