@@ -12,8 +12,6 @@ const dataDefault = testData
   .sort((a, b) => Math.random() - 0.5);
 
 export default function Line({ data = dataDefault }) {
-  console.log(data);
-
   const primaryAxis = React.useMemo(
     () => ({
       getValue: (datum) => datum.primary,

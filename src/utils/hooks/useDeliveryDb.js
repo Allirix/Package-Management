@@ -16,10 +16,14 @@ export default function useDeliveryData() {
 
   useEffect(() => {
     (async () => {
+      if (!db.some((datum) => datum.lat === undefined)) return;
+      console.log("Making request");
       // #TODO: Add proper effect handling
       const newDbPromise = await Promise.all(
-        db.map(async (e) =>
-          e.lat !== undefined ? e : { ...e, ...(await getLatLong(e)) }
+        db.map(async (datum) =>
+          datum.lat !== undefined
+            ? datum
+            : { ...datum, ...(await getLatLong(datum)) }
         )
       );
 
@@ -106,6 +110,48 @@ export const actions = {
           }
         : d
     );
+  },
+  readd: (deliveries, payload) => {
+    const activeDelivery = deliveries.find((e) => e.id === payload);
+    const [mostRecentParcel] = Object.keys(activeDelivery.parcelsArchive)
+      .map((e) => ({
+        date: new Date(Number(e)),
+        key: Number(e),
+        parcels: activeDelivery.parcelsArchive[e],
+      }))
+      .sort((a, b) => b.date - a.date)
+      .slice(0);
+
+    console.log({
+      d: deliveries
+        .map((e) => {
+          if (e.id === payload) {
+            const { parcels, parcelsArchive, ...del } = e;
+            const { [mostRecentParcel.key]: remove, ...other } = parcelsArchive;
+            console.log({ other, remove });
+            return {
+              ...del,
+              parcels: [...parcels, ...mostRecentParcel.parcels],
+              parcelsArchive: other,
+            };
+          }
+          // return e;
+        })
+        .filter((e) => e),
+    });
+    return deliveries.map((e) => {
+      if (e.id === payload) {
+        const { parcels, parcelsArchive, ...del } = e;
+        const { [mostRecentParcel.key]: remove, ...other } = parcelsArchive;
+        console.log({ other, remove });
+        return {
+          ...del,
+          parcels: [...parcels, ...mostRecentParcel.parcels],
+          parcelsArchive: other,
+        };
+      }
+      return e;
+    });
   },
 
   overwrite: (deliveries, payload) => payload,

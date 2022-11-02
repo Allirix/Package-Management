@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import {
   LineChart,
   Line,
@@ -64,38 +65,53 @@ export default function RechartLine({ data = exampleData, keys = ["pv"] }) {
 
   //   console.log(`rgb(${randBit()}, ${randBit()}), ${randBit()})`);
 
-  const Lines = keys.map((e, i) => {
-    const isAverage = e === "average";
-    const k = Object.keys(e).filter((e) => e !== "name");
-    const average = k.reduce((acc, ee) => acc + e[ee], 0);
-    const color = `rgb(${randBit()}, ${randBit()}, ${randBit()})`;
+  const Lines = useMemo(
+    () =>
+      keys.map((e, i) => {
+        const isAverage = e === "average";
+        const k = Object.keys(e).filter((e) => e !== "name");
+        const average = k.reduce((acc, ee) => acc + e[ee], 0);
+        const color = `rgb(${randBit()}, ${randBit()}, ${randBit()})`;
 
-    return (
-      <Line
-        type="linear"
-        dataKey={e}
-        stroke={isAverage ? "black" : color}
-        strokeWidth={isAverage ? "5" : "3"}
-        dot={false}
-        key={i}
-        connectNulls={!isAverage}
-        opacity={isAverage ? "1" : "0.4"}
-        // filter={
-        //   isAverage
-        //     ? "drop-shadow(0 0 1px black)"
-        //     : `drop-shadow(0 0 1px ${color})`
-        // }
-      />
-    );
-  });
+        return (
+          <Line
+            type="linear"
+            dataKey={e}
+            stroke={isAverage ? "black" : color}
+            strokeWidth={isAverage ? "2" : "1"}
+            dot={false}
+            key={i}
+            connectNulls={true}
+            opacity={isAverage ? "1" : "0.4"}
+            // filter={
+            //   isAverage
+            //     ? "drop-shadow(0 0 1px black)"
+            //     : `drop-shadow(0 0 1px ${color})`
+            // }
+          />
+        );
+      }),
+    [data]
+  );
 
-  console.log(Lines);
+  const Scatters = useMemo(() => {
+    keys.map((e, i) => {
+      const isAverage = e === "average";
+      const k = Object.keys(e).filter((e) => e !== "name");
+      const average = k.reduce((acc, ee) => acc + e[ee], 0);
+      const color = `rgb(${randBit()}, ${randBit()}, ${randBit()})`;
+
+      console.log(e);
+    });
+  }, []);
+
+  console.log(keys, data);
 
   return (
     <ResponsiveContainer width="100%" height="100%">
       <ComposedChart
         width={500}
-        height={300}
+        height={200}
         data={data}
         margin={{
           top: 5,
@@ -104,15 +120,15 @@ export default function RechartLine({ data = exampleData, keys = ["pv"] }) {
           bottom: 5,
         }}
       >
-        {/* <CartesianGrid strokeDasharray="10 10" stroke="rgb(250,250,250)" /> */}
-        <XAxis
+        {/* <CartesianGrid strokeDasharray="3 3" stroke="rgb(240,240,240)" /> */}
+        {/* <XAxis
           dataKey="name"
           minTickGap="1"
           tickMargin="10"
           fontSize="12"
           fontWeight="300"
           opacity="0.5"
-        />
+        /> */}
         {/* <YAxis yAxisId="left" /> */}
         <Tooltip
           contentStyle={{

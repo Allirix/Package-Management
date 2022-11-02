@@ -26,16 +26,8 @@ export default function NewParcel() {
 
   const Step = (() => {
     switch (step) {
-      // case "0":
-      //   return <NumberInput set={setParam("number")} />;
       case "0":
-        return (
-          <NameInput
-            set={setParam("name")}
-            setNumber={setParam("number")}
-            number={place.number}
-          />
-        );
+        return <NameInput set={setParam("name")} />;
       case "1":
         return <TypeInput onClick={setParam} />;
       case "2":
@@ -54,8 +46,6 @@ export default function NewParcel() {
     }
   })();
 
-  console.log({ step });
-
   return (
     <Flex
       flexDir="column"
@@ -69,7 +59,7 @@ export default function NewParcel() {
       {step !== "0" && (
         <Flex
           flexDirection="column"
-          p="4px 16px 8px 16px"
+          p="4px 8px 8px 8px"
           position="fixed"
           w="100%"
           bottom="0"

@@ -4,13 +4,14 @@ export default function useMyPosition() {
   // https://www.npmjs.com/package/react-geolocated
 
   const [position, setPosition] = useState({});
-  const [error, setError] = useState(null);
+  const [error, setError] = useState("Not set");
 
   const onChange = ({ coords: { latitude, longitude } }) => {
     setPosition({
       lat: latitude,
       lng: longitude,
     });
+    setError(undefined);
   };
   const onError = (error) => {
     setError(error.message);
@@ -21,6 +22,8 @@ export default function useMyPosition() {
       setError("Geolocation is not supported");
       return;
     }
+
+    // geo.getCurrentPosition((e) => console.log({ e: 1235134123 }));
     const watcher = geo.watchPosition(onChange, onError);
     return () => geo.clearWatch(watcher);
   }, []);

@@ -87,7 +87,7 @@ const PopularButtonGroup = ({ onClick, count }) => {
       {popular.map((parcel, i) => (
         <ChButton
           height="70px"
-          w="60px"
+          w="calc((100% - 32px) / 6)"
           padding="0"
           background="gray.200"
           m="0"

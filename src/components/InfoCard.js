@@ -21,9 +21,10 @@ export default ({
       textAlign="center"
       background="white"
       flexDirection="column"
-      borderRadius="8px"
+      // borderRadius="8px"
       m="4px 0"
-      w="70px"
+      w="100%"
+      minW="70px"
       overflow="hidden"
     >
       <Text

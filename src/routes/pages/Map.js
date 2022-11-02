@@ -18,7 +18,7 @@ import {
   RangeSliderThumb,
 } from "@chakra-ui/react";
 
-import Street from "../../components/Deliveries/Place";
+import Place from "../../components/Deliveries/Place";
 
 import "../../components/Map/Map.css";
 
@@ -128,7 +128,7 @@ const MapOptions = {
   ],
 };
 
-const fallbackPosition = { lat: 152.96693758699996, lng: -27.42390230222802 };
+const fallbackPosition = { lat: 152.97, lng: -27.424 };
 
 export default function Map() {
   const navigate = useNavigate();
@@ -149,7 +149,7 @@ export default function Map() {
   const location = useMyPosition();
   const centre = useConst(
     () =>
-      !location.error
+      "lat" in location
         ? { lat: location.lat, lng: location.lng }
         : fallbackPosition,
     []
@@ -196,7 +196,24 @@ export default function Map() {
   //   );
   // }, []);
 
-  if (isEmpty) return <FirstDelivery />;
+  if (isEmpty)
+    return (
+      <>
+        <Button
+          zIndex="100"
+          onClick={() => navigate(-1)}
+          w="50px"
+          h="50px"
+          p="0"
+          fontSize="25px"
+          color="green.800"
+          bg="transparent"
+        >
+          <BiChevronLeft />
+        </Button>
+        <FirstDelivery />
+      </>
+    );
 
   if (!isLoaded) return <Loading />;
   if (loadError) return "error";
@@ -207,7 +224,7 @@ export default function Map() {
         position="fixed"
         alignItems="center"
         justifyContent="center"
-        w="calc(100% - 4px)"
+        w="calc(100% - 8px)"
         left="4px"
         top="0px"
         zIndex="500"
@@ -215,12 +232,12 @@ export default function Map() {
         <Button
           zIndex="100"
           onClick={() => navigate(-1)}
-          bg="white"
           w="50px"
           h="50px"
           p="0"
           fontSize="25px"
           color="green.800"
+          bg="transparent"
         >
           <BiChevronLeft />
         </Button>
@@ -283,22 +300,23 @@ const Route = ({
   const { dispatch } = useDeliveryDb();
   return (
     <Flex
+      className="route"
       position="absolute"
       top="60px"
       left="8px"
       flexDirection="column"
       background="transparent"
-      zIndex="300"
-      gap="4px"
-      alignItems="flex-end"
-      borderRadius="16px"
+      zIndex="100"
+      borderRadius="0"
+      overflow="hidden"
+      boxShadow="0 2px 2px gray"
     >
       <Flex
         justifyContent="space-between"
         alignItems="center"
         w="100%"
         background="black"
-        borderRadius="8px"
+        borderRadius="0"
         overflow="hidden"
         color="white"
         h="40px"
@@ -349,7 +367,6 @@ const Route = ({
           </Button>
         )}
       </Flex>
-
       {isExpanded &&
         selected.map((e, i) => (
           <Flex
@@ -361,8 +378,9 @@ const Route = ({
             background="white"
             color="black"
             p="4px"
-            borderRadius="8px"
+            borderRadius="0"
             fontFamily='"Open Sans"'
+            maxW="140px"
           >
             <Flex gap="4px">
               <Text
@@ -384,7 +402,7 @@ const Route = ({
                 color={i === selected.length - 1 ? "transparent" : "black"}
                 opacity="0.5"
                 onClick={() => setSelected((s) => moveDown(s, e))}
-                size="25px"
+                size="20px"
               />
 
               <BiChevronUp
@@ -392,15 +410,8 @@ const Route = ({
                 color={i === 0 ? "transparent" : "black"}
                 opacity="0.5"
                 onClick={() => setSelected((s) => moveUp(s, e))}
-                size="25px"
+                size="20px"
               />
-              {/* <MdInfoOutline
-                cursor="pointer"
-                color="blue"
-                onClick={() => setHighlighted((h) => e)}
-                size="30px"
-                opacity="0.5"
-              /> */}
             </Flex>
           </Flex>
         ))}
@@ -435,7 +446,10 @@ const Markers = ({ setSelected, selected, setHighlighted }) => {
 
   return useMemo(() => {
     return undelivered.map((street, i) => (
-      <CustomMarker {...{ navigate, street, selected, i, setSelected }} />
+      <CustomMarker
+        {...{ navigate, street, selected, i, setSelected }}
+        key={i}
+      />
     ));
   }, [undelivered, selected]);
 };
@@ -527,9 +541,11 @@ const Overlay = ({ displayed, setDisplayed, selected, setSelected }) => {
   const { dispatch } = useDeliveryDb();
   const { closest } = useSortedDelivery();
 
+  const [zIndex, setZindex] = useState(true);
+
   const street = useMemo(() => {
     return (
-      <Street
+      <Place
         street={closest}
         onComplete={() =>
           setSelected((s) => {
@@ -541,23 +557,25 @@ const Overlay = ({ displayed, setDisplayed, selected, setSelected }) => {
   }, [displayed, dispatch, setDisplayed, closest]);
 
   return (
-    <Flex flexDirection="column" w="100%" gap="16px">
+    <Flex flexDirection="column" w="100%" gap="8px" mb="32px">
       <Flex
-        borderRadius="8px"
         position="absolute"
         w="calc(100vw - 32px)"
-        zIndex="300"
+        zIndex={zIndex ? "99" : "101"}
         top="calc(100vh - 108px)"
         left="16px"
+        onClick={() => setZindex((z) => !z)}
+        boxShadow="0 2px 2px gray"
       >
         {street}
       </Flex>
 
-      {selected.map((e) => (
-        <Street
+      {selected.map((e, i) => (
+        <Place
+          key={i}
           street={e}
           onComplete={() => setSelected((s) => s.filter((st) => st !== e.id))}
-        ></Street>
+        ></Place>
       ))}
     </Flex>
   );
@@ -574,7 +592,6 @@ const generateWaypoints = (undelivered) =>
 const moveDown = (arr, item) => {
   const ind = arr.findIndex((id) => id === item.id);
   const newInd = ind + 1;
-  console.log({ arr, item, ind, newInd });
 
   return arrayMove(arr, ind, newInd);
 };
@@ -590,7 +607,6 @@ const moveUp = (arr, item) => {
 const arrayMove = (arr, fromIndex, toIndex) => {
   const newArr = [...arr];
   newArr.splice(toIndex, 0, newArr.splice(fromIndex, 1)[0]);
-  console.log({ arr, newArr });
   return newArr;
 };
 

@@ -13,11 +13,13 @@ export const useSortedDelivery = () => {
 
     ...useMemo(() => {
       if (!selected) return { undelivered: [], delivered: [] };
+
       const sorted = selected
         .filter(bySearch(search))
         .map(addDistance(myPosition))
         .sort(sort("distance"));
       const undelivered = sorted.filter(hasParcels);
+
       return {
         sorted,
         undelivered,
@@ -41,10 +43,14 @@ const bySearch = (search) => (e) => {
   );
 };
 
-const addDistance = (myLocation) => (street) => ({
-  ...street,
-  distance: getDistance(street, myLocation),
-});
+const addDistance = (myLocation) => (street) => {
+  if (!("lat" in myLocation)) return street;
+
+  return {
+    ...street,
+    distance: getDistance(street, myLocation),
+  };
+};
 
 export const toDictionary = (acc, e) => {
   if (!acc[e.suburb]) acc[e.suburb] = [];

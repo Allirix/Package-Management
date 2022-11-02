@@ -48,3 +48,7 @@
 .marker-label--p {
   background-color: orange;
 }
+
+.route {
+  touch-action: manipulation !important;
+}

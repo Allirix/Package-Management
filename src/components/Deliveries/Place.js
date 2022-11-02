@@ -26,7 +26,7 @@ export default ({
       w="calc(100%)"
       background="white"
       id={place.id}
-      borderRadius="8px"
+      // borderRadius="8px"
       border={isHighlighted ? "1px solid green" : ""}
       overflow="hidden"
       minHeight="100px"
@@ -145,7 +145,6 @@ const DeliveryInformation = ({
   place,
   id,
 }) => {
-  console.log(parcels);
   return (
     <Flex
       alignItems="center"

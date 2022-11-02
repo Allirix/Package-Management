@@ -14,7 +14,9 @@ const NameStep = ({ set }) => {
   const [value, setValue] = useState("");
 
   const place =
-    value.split(" ").length > 1 ? value.split(" ").slice(1).join(" ") : value;
+    value.split(" ").length > 1
+      ? value.split(" ").slice(1).join(" ").trim()
+      : value;
 
   const displayedLocations = locations
     .map(toDistance(place))
@@ -33,36 +35,27 @@ const NameStep = ({ set }) => {
     )
     .filter((e) => !number || e.number == number)
     .slice(0, 12);
-  // .map(({ number, name, type, suburb, parcelsArchive }) => ({
-  //   number,
-  //   name,
-  //   type,
-  //   suburb,
-  //   parcelsArchive: Object.keys(parcelsArchive).length,
-  // }));
-
-  console.log(popularLocations, number);
 
   function onChange(e) {
     setValue(e.target.value);
   }
 
-  function setParams({ name, type, suburb }) {
+  function setParams(params) {
     const number =
       value.split(" ").length > 1
         ? value.split(" ")[0].replace("/", "-").replace("\\", "-")
         : "";
-    set({ name, type, suburb, number });
+
+    set({ number, ...params });
   }
 
   function onSubmit() {
     setParams(displayedLocations[0]);
   }
 
-  const onClick =
-    ({ name, type, suburb }) =>
-    () =>
-      setParams({ name, type, suburb });
+  function onClick({ name, type, suburb, number }) {
+    return () => setParams({ name, type, suburb, number });
+  }
 
   return (
     <SingleInputForm
@@ -160,9 +153,10 @@ export const LocationButton = ({ number, location, onClick, text }) => {
       onClick={preventDefault(onClick(location))}
       color="black"
       w="100%"
+      overflow="auto"
     >
       <Grid
-        templateColumns={"100px 20px 1fr 20px"}
+        templateColumns={"85px 35px 1fr 20px"}
         w="100%"
         gap="1rem"
         textAlign="left"
@@ -170,13 +164,13 @@ export const LocationButton = ({ number, location, onClick, text }) => {
         alignItems="center"
         background=""
       >
-        <Text textTransform="uppercase" color="green.800" fontSize="14px">
+        <Text textTransform="uppercase" color="green.800" fontSize="12px">
           {location.suburb}
         </Text>
 
         <Text
           textTransform="uppercase"
-          color="red.500"
+          color="green.500"
           fontSize="18px"
           fontWeight="900"
         >

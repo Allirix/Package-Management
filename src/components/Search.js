@@ -22,8 +22,6 @@ export default function Search() {
 
   const showBack = !["/home", "/", "/deliveries", "/map"].includes(pathname);
 
-  console.log({ showBack });
-
   return (
     <Flex w="100%" alignItems={"center"}>
       {showBack && (

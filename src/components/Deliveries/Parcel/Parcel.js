@@ -23,15 +23,18 @@ export default ({
       w="45px"
       minW="35px"
       background={pColor}
-      borderRadius="4px"
+      borderRadius="0"
+      // outline="1px solid rgb(240,240,240)"
+      boxShadow="0 2px 2px rgb(240,240,240)"
     >
       <Flex
-        background="rgb(0,0,0,1)"
+        background="rgb(0,20,0,0.8)"
         alignItems="center"
         justifyContent="center"
         minWidth="20px"
         minHeight="20px"
-        borderRadius="4px"
+        borderRadius="0"
+        p="1px"
       >
         <Flex
           flexDirection="column"

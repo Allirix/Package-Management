@@ -29,7 +29,7 @@ import { lazy } from "react";
 import Place from "./Place";
 
 export default function DeliveryList({
-  list,
+  list = [],
   itemsPerPage = 20,
   selectedId = null,
   canDeliver = false,
@@ -109,7 +109,7 @@ export default function DeliveryList({
           </Button>
         </Flex>
       )}
-      <Flex flexDirection="column" gap="16px" w="100%" pb="32px">
+      <Flex flexDirection="column" gap="8px" w="100%" pb="32px">
         {filteredList?.map((street, id) => (
           <Place
             key={id}

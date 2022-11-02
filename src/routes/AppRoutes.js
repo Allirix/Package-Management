@@ -6,7 +6,7 @@ import {
   useLocation,
 } from "react-router-dom";
 
-import { Deliveries, NewParcel, Map, Settings, Streets } from "./pages";
+import { Deliveries, NewParcel, Map, Settings, Streets, Home } from "./pages";
 
 import useInstallPWA from "../utils/hooks/useInstallPWA";
 import { useEffect, useState } from "react";
@@ -29,21 +29,23 @@ export default function AppRoutes() {
   return (
     <>
       <Routes>
-        <Route path="/login" element={<Login />} />
+        {/* <Route path="/login" element={<Login />} /> */}
 
         {/* Redirect Screens */}
         <Route
           path="/"
           element={<Navigate to="/deliveries" replace={true} />}
         />
-        <Route path="/new" element={<Navigate to="/new/1" replace={true} />} />
+        <Route path="/new" element={<Navigate to="/new/0" replace={true} />} />
 
         {/* Main Screens */}
+        <Route path="/" element={<Deliveries />} />
+
         <Route path="/deliveries" element={<Deliveries />}>
           <Route path=":id" element={<Deliveries />} />
         </Route>
-        <Route path="/history" element={<History />}>
-          <Route path=":id" element={<History />} />
+        <Route path="/history" element={<Home />}>
+          <Route path=":id" element={<Home />} />
         </Route>
         <Route path="/streets" element={<Streets />}>
           <Route path=":id" element={<Streets />} />

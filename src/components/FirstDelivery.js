@@ -11,17 +11,24 @@ export default () => {
   return (
     <Link to="/new/0">
       <Flex justifyContent="center" alignItems="center" h="60vh" w="100%">
-        <Flex flexDir="column" alignItems="center" gap="1rem">
+        <Flex flexDir="column" alignItems="center" gap="32px">
           <Text
-            color="var(--ternary-color-lightest)"
+            color="green.800"
             fontSize="32px"
             fontWeight="900"
             fontFamily="'Montserrat', sans-serif"
           >
             ADD PARCEL
           </Text>
-          <Button transform="scale(2)" bg="var(--)">
-            <BsPlusLg color="var(--ternary-color)" />
+          <Button
+            transform="scale(2)"
+            bg="green.800"
+            borderRadius="100%"
+            w="40px"
+            h="40px"
+            p="0"
+          >
+            <BsPlusLg color="white" />
           </Button>
           {/* <Button
             onClick={(e) => {

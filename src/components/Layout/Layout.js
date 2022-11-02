@@ -19,7 +19,6 @@ export default ({ children }) => {
   )
     return children;
 
-  console.log({ pathname });
   return (
     <Flex maxWidth="800px" flexDir="column" m="0 auto">
       <LoadingOverlay />
@@ -32,12 +31,12 @@ export default ({ children }) => {
 };
 
 // fill space between bars. Sticky & fixed not used since these solutions dont respond to minWidth media queries as well
-const Container = ({ children }) => (
+const Container = ({ children, height = "calc(100vh - 60px - 60px)" }) => (
   <Flex
     justifyContent={"center"}
     // sets height to fill. #TODO: Error on mobiles since 100vh does not include the browser header
-    maxHeight="calc(100vh - 60px - 60px)"
-    h="calc(100vh - 60px - 60px)"
+    maxHeight={height}
+    h={height}
     overflowY="auto" // Allows content to be scrollable
     w="100%"
   >

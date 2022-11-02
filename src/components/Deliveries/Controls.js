@@ -27,7 +27,7 @@ export default function Controls({ street, showCheck = true, onComplete }) {
         onClick={
           showCheck
             ? () => dispatch("toggle", street.id, onComplete(street))
-            : () => dispatch("removeLocation", street.id)
+            : () => dispatch("readd", street.id)
         }
         Icon={showCheck ? BsFillCheckCircleFill : RiCloseFill}
         title={showCheck ? "Deliver" : "Delete"}

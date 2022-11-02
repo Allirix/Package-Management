@@ -10,6 +10,8 @@ import {
   RiMapPinRangeLine,
   RiBus2Fill,
   RiBus2Line,
+  RiBarChartBoxFill,
+  RiBarChartBoxLine,
 } from "react-icons/ri";
 
 import { GoLocation, GoGear } from "react-icons/go";
@@ -21,8 +23,8 @@ export const pages = {
     type: "main",
   },
   history: {
-    Icon: RiFolderHistoryLine,
-    Selected: RiFolderHistoryFill,
+    Icon: RiBarChartBoxLine,
+    Selected: RiBarChartBoxFill,
     type: "main",
   },
   streets: {

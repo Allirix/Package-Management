@@ -13,6 +13,7 @@ export default ({ pathname }) => {
       backdropFilter="blur( 4px )"
       borderRadius="0"
       background="white"
+      zIndex="9000"
     >
       <NavItem page={main[0]} isSelected={pathname == "/" + main[0].path} />
       <NavItem page={main[1]} isSelected={pathname == "/" + main[1].path} />
@@ -52,8 +53,9 @@ const NavItem = ({ page: { path, Selected, Icon }, isSelected = false }) => {
         gap="2px"
         transition="all 0.3s"
         opacity={isSelected ? 1 : 0.6}
-        boxShadow={isSelected ? "inset 0 0 2px gray" : ""}
+        // boxShadow={isSelected ? "inset 0 0 2px gray" : ""}
         borderRadius="90px"
+        w="25px"
       >
         {isSelected ? <Selected size="25px" /> : <Icon size="25px" />}
         {/* <Text fontSize="8px" fontWeight="900">

@@ -112,12 +112,6 @@ export default function History() {
 
   const statistics = useConst(() => transformRecharted(sorted), []);
 
-  console.log(
-    statistics,
-    statistics.totals.getAveragePerDay(),
-    statistics.totals.getAveragePerHour()
-  );
-
   // data = Object.keys(data)
   //   .sort((a, b) => Number(a) - Number(b))
   //   .map((e) => ({

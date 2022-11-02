@@ -17,19 +17,18 @@ export async function getLatLong({ number, name, type, suburb }) {
   });
   const addressString = `${number} ${name} ${type} ${suburb} Queensland Australia`;
   const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${addressString}&key=${process.env.REACT_APP_GOOGLE_KEY}`;
-  let data = "ERROR";
 
   try {
-    data = await (await fetch(url)).json();
+    const data = await (await fetch(url)).json();
     if ("error_message" in data) console.error(data.error_message);
     return data.results[0].geometry.location;
   } catch (e) {
-    console.error(e);
-    return data;
+    alert(e);
+    return {};
   }
 }
 
-export function getDistance(location1, location2) {
+export function getDistance(location1, location2 = { lat: 0, lng: 0 }) {
   const { lat: lat1, lng: lon1 } = location1;
   const { lat: lat2, lng: lon2 } = location2;
 

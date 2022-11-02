@@ -44,7 +44,7 @@ export default function Deliveries() {
 
   return (
     <ParcelPopupProvider>
-      <Flex direction="column" w="800px" minW="100%" p="4px 8px" gap="8px">
+      <Flex direction="column" w="800px" minW="100%" p="0 4px" gap="4px">
         {(undelivered?.length > 0 || delivered?.length > 0) && (
           <Header delivered={delivered} undelivered={undelivered} />
         )}
@@ -89,7 +89,7 @@ export const Header = ({
       alignItems="center"
       w="calc(100%)"
       zIndex="100"
-      gap="8px"
+      gap="4px"
       bg="transparent"
       onClick={() => setIsExpanded((i) => !i)}
     >
