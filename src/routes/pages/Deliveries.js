@@ -25,6 +25,7 @@ import { useEffect } from "react";
 import { Suspense } from "react";
 import { lazy } from "react";
 import DeliveryList from "../../components/Deliveries/DeliveryList";
+import { memo } from "react";
 
 // const DeliveryList = lazy(() =>
 //   import("../../components/Deliveries/DeliveryList.js")
@@ -62,75 +63,81 @@ export default function Deliveries() {
   );
 }
 
-export const Header = ({
-  isExpanded = true,
-  setIsExpanded = () => {},
-  delivered = [],
-  undelivered = [],
-}) => {
-  const { dispatch } = useDeliveryDb();
+export const Header = memo(
+  ({
+    isExpanded = true,
+    setIsExpanded = () => {},
+    delivered = [],
+    undelivered = [],
+  }) => {
+    const { dispatch } = useDeliveryDb();
 
-  const { average, locations, parcels, pickups, averageParcels } = useStatCard({
-    delivered,
-    undelivered,
-  });
+    const { average, locations, parcels, pickups, averageParcels } =
+      useStatCard({
+        delivered,
+        undelivered,
+      });
 
-  const eta = locations[0] / average;
+    const eta = locations[0] / average;
 
-  const etaTime =
-    new Date().getTime() + (eta !== Infinity ? 1000 * 60 * 60 * eta : 0);
+    const etaTime =
+      new Date().getTime() + (eta !== Infinity ? 1000 * 60 * 60 * eta : 0);
 
-  const etaMessage =
-    eta !== Infinity ? new Date(etaTime)?.toLocaleString().split(",")[1] : "-";
+    const etaMessage =
+      eta !== Infinity
+        ? new Date(etaTime)?.toLocaleString().split(",")[1]
+        : "-";
 
-  return (
-    <Flex
-      justifyContent="center"
-      alignItems="center"
-      w="calc(100%)"
-      zIndex="100"
-      gap="4px"
-      bg="transparent"
-      onClick={() => setIsExpanded((i) => !i)}
-    >
-      <InfoCard
-        value={locations}
-        title="Places"
-        Icon={FiMapPin}
-        helperText={
-          isExpanded
-            ? Math.round((10 * parcels[1]) / locations[1]) / 10 + "/place"
-            : ""
-        }
-        bg="red.700"
-      />
-      <InfoCard
-        Icon={BsSquareHalf}
-        value={parcels}
-        title="Parcels"
-        helperText={isExpanded && pickups + " Pickups"}
-        bg="green.700"
-      />
-      <InfoCard
-        value={[Math.round(average * 10) / 10, "hr"]}
-        title="Speed"
-        Icon={BiRun}
-        helperText={
-          isExpanded && Math.round(averageParcels * 10) / 10 + "/hr (p)"
-        }
-        bg="blue.700"
-      />
-      <InfoCard
-        value={[eta === Infinity ? "_" : Math.round(10 * eta) / 10, "hrs"]}
-        title="Time"
-        Icon={BiRun}
-        divider=" "
-        helperText={isExpanded && (etaMessage ? etaMessage : "-")}
-        bg="yellow.700"
-      />
-    </Flex>
-  );
-};
+    return (
+      <Flex
+        justifyContent="center"
+        alignItems="center"
+        w="calc(100%)"
+        zIndex="100"
+        gap="4px"
+        bg="transparent"
+        onClick={() => setIsExpanded((i) => !i)}
+      >
+        <InfoCard
+          value={locations}
+          title="Places"
+          Icon={FiMapPin}
+          helperText={
+            isExpanded
+              ? Math.round((10 * parcels[1]) / locations[1]) / 10 + "/place"
+              : ""
+          }
+          bg="red.700"
+        />
+        <InfoCard
+          Icon={BsSquareHalf}
+          value={parcels}
+          title="Parcels"
+          helperText={isExpanded && pickups + " Pickups"}
+          bg="green.700"
+        />
+        <InfoCard
+          value={[Math.round(average * 10) / 10, "hr"]}
+          title="Speed"
+          Icon={BiRun}
+          helperText={
+            isExpanded && Math.round(averageParcels * 10) / 10 + "/hr (p)"
+          }
+          bg="blue.700"
+        />
+        <InfoCard
+          value={[eta === Infinity ? "_" : Math.round(10 * eta) / 10, "hrs"]}
+          title="Time"
+          Icon={BiRun}
+          divider=" "
+          helperText={isExpanded && (etaMessage ? etaMessage : "-")}
+          bg="yellow.700"
+        />
+      </Flex>
+    );
+  },
+  (p, n) => p.undelivered.length === n.undelivered.length
+);
 
 const B = ({ onClick, Icon, color = "white" }) => (
   <Button onClick={onClick} background="var(--secondary-color)" h="50px" p="0">

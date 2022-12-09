@@ -57,6 +57,9 @@ import { RiInformationFill, RiRouteFill } from "react-icons/ri";
 import { AiFillCloseCircle, AiFillCloseSquare } from "react-icons/ai";
 import { Header } from "./Deliveries";
 
+import { GiMeeple, GiMeepleGroup } from "react-icons/gi";
+import { memo } from "react";
+
 // const subs = ["Mitchelton", "Upper Kedron", "Keperra", "Gaythorne"];
 const mapColors = ["red", "blue", "magenta", "green"]; // red, green, blue, yellow, cyan
 const mapData = map.features.map((e) =>
@@ -132,6 +135,9 @@ const fallbackPosition = { lat: 152.97, lng: -27.424 };
 
 export default function Map() {
   const navigate = useNavigate();
+
+  const [limit, setLimit] = useState(true);
+
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_KEY,
   });
@@ -223,11 +229,12 @@ export default function Map() {
       <Flex
         position="fixed"
         alignItems="center"
-        justifyContent="center"
+        justifyContent="space-between"
         w="calc(100% - 8px)"
         left="4px"
         top="0px"
         zIndex="500"
+        w="calc(100vw - 8px)"
       >
         <Button
           zIndex="100"
@@ -241,14 +248,10 @@ export default function Map() {
         >
           <BiChevronLeft />
         </Button>
-        {(undelivered?.length > 0 || delivered?.length > 0) && (
-          <Header
-            isExpanded={false}
-            setIsExpanded={setIsExpanded}
-            undelivered={undelivered}
-            delivered={delivered}
-          />
-        )}
+
+        <Button onClick={() => setLimit((e) => !e)}>
+          {limit ? <GiMeeple /> : <GiMeepleGroup />}
+        </Button>
       </Flex>
 
       <Zoom setZoom={setZoom} />
@@ -273,9 +276,21 @@ export default function Map() {
       >
         <Marker icon={currentPositionIcon} position={location} />
 
-        <Markers setSelected={setSelected} selected={selectedPlaces} />
+        <Markers
+          setSelected={setSelected}
+          selected={selectedPlaces}
+          limit={limit ? 50 : 1000}
+        />
         <Suburbs />
       </GoogleMap>
+
+      {(undelivered?.length > 0 || delivered?.length > 0) && (
+        <Header
+          isExpanded={false}
+          undelivered={undelivered}
+          delivered={delivered}
+        />
+      )}
 
       <Flex p="0 4px">
         <Overlay
@@ -439,25 +454,29 @@ function appendLocation({ number, name, type, suburb }) {
   return `${number}+${name}+${type},+${suburb}+QLD`;
 }
 
-const Markers = ({ setSelected, selected, setHighlighted }) => {
+const Markers = ({ setSelected, selected, setHighlighted, limit = 50 }) => {
   const { undelivered } = useSortedDelivery();
 
-  const navigate = useNavigate();
+  const data = useMemo(() => {
+    return undelivered.filter(
+      (e, i) => i < limit || e.parcels?.some((e) => e.color === "PICKUP")
+    );
+  }, [undelivered, limit]);
 
-  return useMemo(() => {
-    return undelivered.map((street, i) => (
-      <CustomMarker
-        {...{ navigate, street, selected, i, setSelected }}
-        key={i}
-      />
-    ));
-  }, [undelivered, selected]);
+  return data.map((street, i) => (
+    <CustomMarker
+      {...{ street, selected, i, setSelected }}
+      key={street.lat + street.lng + street.number}
+    />
+  ));
 };
 
-const CustomMarker = ({ navigate, street, selected, setSelected, i }) => {
+const CustomMarker = ({ street, selected, setSelected, i }) => {
   const [showInfo, setShowInfo] = useState(false);
 
-  const onClick = (e) => navigate(`/deliveries#${street.id}`);
+  // const navigate = useNavigate();
+
+  // const onClick = (e) => navigate(`/deliveries#${street.id}`);
   const num = selected
     .map(({ id }, i) => ({ id, i }))
     .find(({ id }) => id === street.id)?.i;
