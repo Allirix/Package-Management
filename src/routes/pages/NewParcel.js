@@ -159,6 +159,7 @@ const useNewParcel = () => {
           nav(url);
           return true;
         } catch (e) {
+          console.error(e);
           alert(JSON.stringify(e));
           return false;
         }

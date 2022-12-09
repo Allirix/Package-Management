@@ -20,11 +20,13 @@ export default function useDeliveryData() {
       console.log("Making request");
       // #TODO: Add proper effect handling
       const newDbPromise = await Promise.all(
-        db.map(async (datum) =>
-          datum.lat !== undefined
-            ? datum
-            : { ...datum, ...(await getLatLong(datum)) }
-        )
+        db
+          .map(async (datum) =>
+            datum.lat !== undefined
+              ? datum
+              : { ...datum, ...(await getLatLong(datum)) }
+          )
+          .map((e) => e.catch(console.error))
       );
 
       set(newDbPromise);

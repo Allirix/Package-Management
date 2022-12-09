@@ -5,13 +5,14 @@ import { countHours } from "./utils";
 export default ({ delivered, undelivered }) => {
   return useMemo(() => {
     const deliveredLocations = delivered.length;
-    const deliveredParcels = delivered
+    const deliveredCount = delivered
       .filter(({ parcelsArchive }) => parcelsArchive)
       .flatMap((e) => {
         const keys = Object.keys(e.parcelsArchive);
         return keys.map((key) => {
           return {
-            key,
+            key: Number(key),
+            date: new Date(Number(key)),
             length: e.parcelsArchive[key].reduce(
               (a, ee) => a + Number(ee.count),
               0
@@ -20,7 +21,23 @@ export default ({ delivered, undelivered }) => {
         });
       })
       .filter((e) => isToday(e.key))
-      .reduce((acc, e) => acc + e.length, 0);
+      .sort((a, b) => a.date - b.date);
+
+    const MINUTES_TO_INGORE = 1;
+
+    const ts =
+      deliveredCount.length > 1 &&
+      deliveredCount
+        .map((e, i, arr) => (i === 0 ? 0 : e.key - arr[i - 1].key))
+        .map((e) => e < 1000 * 60 * MINUTES_TO_INGORE);
+    // const ignoredTime = ts > 1000 * 60 * MINUTES_TO_INGORE ? ts : 0;
+
+    console.log(ts);
+
+    const deliveredParcels = deliveredCount.reduce(
+      (acc, e) => acc + e.length,
+      0
+    );
 
     const totalLocations = deliveredLocations + undelivered.length;
 
@@ -42,6 +59,7 @@ export default ({ delivered, undelivered }) => {
     const t = delivered.map((e) => e.deliveredAt).sort();
     const shiftLength = (t[t.length - 1] - t[0]) / (1000 * 3600);
 
+    console.log(t);
     // const timeArray = Object.values(countHours(delivered));
     // const time = timeArray.reduce((acc, e) => acc + e, 0);
 

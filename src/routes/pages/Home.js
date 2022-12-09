@@ -117,6 +117,8 @@ export default function Home() {
     .filter((e) => e)
     .sort((a, b) => b.deliveredAt - a.deliveredAt);
 
+  // console.log(statistics.totals.getAveragePerDay());
+
   return (
     <Flex
       flexDirection="column"
@@ -137,39 +139,41 @@ export default function Home() {
         setSelectedDays={setSelectedDays}
         weekValues={weekValues}
       />
-      <Container
-        bg="white"
-        h="300px"
-        pb="80px"
-        fontFamily="Montserrat"
-        fontWeight="900"
-      >
-        <Flex
-          fontSize="44px"
-          fontWeight="500"
-          p="16px 16px 0 16px"
-          w="100%"
-          justifyContent="space-between"
+      {!isNaN(statistics.totals.getAveragePerDay()) && (
+        <Container
+          bg="white"
+          h="300px"
+          pb="80px"
+          fontFamily="Montserrat"
+          fontWeight="900"
         >
-          <Flex alignItems="center">
-            {Math.round(100 * statistics.totals.getAveragePerHour()) / 100}
+          <Flex
+            fontSize="44px"
+            fontWeight="500"
+            p="16px 16px 0 16px"
+            w="100%"
+            justifyContent="space-between"
+          >
+            <Flex alignItems="center">
+              {Math.round(100 * statistics.totals.getAveragePerHour()) / 100}
 
-            <Text opacity="0.5" fontSize="20px">
-              /hr
-            </Text>
+              <Text opacity="0.5" fontSize="20px">
+                /hr
+              </Text>
+            </Flex>
+
+            <Flex alignItems="center" fontSize="20px">
+              {Math.round(100 * statistics.totals.getAveragePerDay()) / 100}
+
+              <Text opacity="0.5" fontSize="12px">
+                /day
+              </Text>
+            </Flex>
           </Flex>
 
-          <Flex alignItems="center" fontSize="20px">
-            {Math.round(100 * statistics.totals.getAveragePerDay()) / 100}
-
-            <Text opacity="0.5" fontSize="12px">
-              /day
-            </Text>
-          </Flex>
-        </Flex>
-
-        <RechartLine {...{ ...statistics }} />
-      </Container>
+          <RechartLine {...{ ...statistics }} />
+        </Container>
+      )}
       <Flex flexDirection="column">
         <Flex flexDirection="column" w="100%" maxW="100vw">
           {list.length > 0 && <DeliveryList list={list} />}

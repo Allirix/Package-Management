@@ -15,11 +15,12 @@ export async function getLatLong({ number, name, type, suburb }) {
     type,
     suburb,
   });
-  const addressString = `${number} ${name} ${type} ${suburb} Queensland Australia`;
+  const addressString = `${number}+${name}+${type}+${suburb}+Queensland+Australia`;
   const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${addressString}&key=${process.env.REACT_APP_GOOGLE_KEY}`;
 
   try {
     const data = await (await fetch(url)).json();
+    console.log(url, data);
     if ("error_message" in data) console.error(data.error_message);
     return data.results[0].geometry.location;
   } catch (e) {
