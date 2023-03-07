@@ -39,16 +39,50 @@ export default function Settings() {
 
   const [input, setInput] = useState([]);
 
+  const { locations } = useDeliveryLocations();
+
   const readFile = (file) => {
+    console.log("reading file");
+    const a = new FileReader();
+    a.onloadend = () => {
+      const content = JSON.parse(a.result);
+      console.log({ content: content, file });
+
+      const undelivered = JSON.parse(localStorage.getItem("db"))
+        .filter((location) => location.parcels.length > 0)
+        .map(({ parcelArchive, ...e }) => e);
+
+      localStorage.setItem("db", JSON.stringify(content.concat(undelivered)));
+    };
+    a.readAsText(file);
+  };
+
+  const readLocationFile = (file) => {
     console.log("reading file");
     const a = new FileReader();
     a.onloadend = () => {
       const content = a.result;
       console.log({ content: JSON.parse(content), file });
 
-      localStorage.setItem("db", content);
+      localStorage.setItem("all-streets", content);
     };
     a.readAsText(file);
+  };
+
+  const getHistory = () => {
+    const db = JSON.parse(localStorage.getItem("db"));
+
+    const undelivered = db
+      .filter((location) => location.parcels.length > 0)
+      .map(({ parcelArchive, ...e }) => e);
+
+    const download = db.filter((location) => location.parcels.length === 0);
+
+    console.log(undelivered);
+
+    localStorage.setItem("db", JSON.stringify(undelivered));
+
+    return JSON.stringify(download);
   };
 
   return (
@@ -74,7 +108,7 @@ export default function Settings() {
       </Button>
       <a
         href={URL.createObjectURL(
-          new Blob([localStorage.getItem("db")], { type: "text/plain" })
+          new Blob([getHistory()], { type: "text/plain" })
         )}
         download="db.json"
       >
@@ -83,6 +117,23 @@ export default function Settings() {
 
       <Text>Upload State</Text>
       <Input type="file" onChange={(e) => readFile(e.target.files[0])} />
+
+      <a
+        href={URL.createObjectURL(
+          new Blob([localStorage.getItem("all-streets")], {
+            type: "text/plain",
+          })
+        )}
+        download="locations.json"
+      >
+        <Button w="100%">Download Locations</Button>
+      </a>
+
+      <Text>Upload Locations</Text>
+      <Input
+        type="file"
+        onChange={(e) => readLocationFile(e.target.files[0])}
+      />
     </Flex>
   );
 }
