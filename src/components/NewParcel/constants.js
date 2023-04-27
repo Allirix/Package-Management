@@ -77,6 +77,10 @@ export const popular = [
   { color: "BROWN", type: "BOX", size: "S" },
   { color: "BROWN", type: "BOX", size: "M" },
   { color: "BROWN", type: "BOX", size: "L" },
+
+  { color: "MYER", type: "BOX", size: "S" },
+  { color: "MYER", type: "BOX", size: "M" },
+  { color: "MYER", type: "BOX", size: "L" },
 ];
 
 export const TYPE = {
