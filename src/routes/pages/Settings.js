@@ -91,12 +91,22 @@ export default function Settings() {
         Create Place
       </Button> */}
 
-      {/* <Input value={localStorage.getItem("db")} />
+      <a
+        href={URL.createObjectURL(
+          new Blob([localStorage.getItem("db")], {
+            type: "text/plain",
+          })
+        )}
+        download="db.json"
+      >
+        <Button w="100%">Download All</Button>
+      </a>
+
       <Input value={input} onChange={(e) => setInput(e.target.value)} />
 
       <Button onClick={() => localStorage.setItem("db", input)} color="black">
         Set DB
-      </Button> */}
+      </Button>
 
       <Button
         onClick={() => (logout(), navigate("/login"))}
