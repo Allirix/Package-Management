@@ -443,7 +443,7 @@ https://www.google.com/maps/dir/-27.4974534,153.0503714/1+Andover+St,+Mitchelton
 function getGoogleDirectionsLink({ lat, lng }, arr) {
   let url = `https://www.google.com/maps/dir/${lat},${lng}`;
 
-  arr.forEach((element) => {
+  arr.slice(0, 10).forEach((element) => {
     url += "/" + appendLocation(element);
   });
 
