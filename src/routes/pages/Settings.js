@@ -21,28 +21,13 @@ import { useCopyToClipboard } from "react-use";
 import { useDeliveryDb } from "../../utils/providers";
 
 import { useParams, useLocation, useNavigate } from "react-router-dom";
-import { signout } from "../../utils/firebase/signout";
-import { createPlace } from "../../model/create";
-import { useAuth } from "../../utils/providers/AuthProvider";
 
 export default function Settings() {
-  let { id } = useParams();
-  const navigate = useNavigate();
-
-  const location = useLocation();
-
-  const { logout } = useAuth();
-
   const { selected, dispatch } = useDeliveryDb();
-
-  const [importValue, setImportValue] = useState("");
-
-  const [input, setInput] = useState([]);
-
-  const { locations } = useDeliveryLocations();
 
   const readFile = (file) => {
     console.log("reading file");
+    localStorage.setItem("db", "[]");
     const a = new FileReader();
     a.onloadend = () => {
       const content = JSON.parse(a.result);
@@ -70,7 +55,9 @@ export default function Settings() {
   };
 
   const getHistory = () => {
-    const db = JSON.parse(localStorage.getItem("db"));
+    const dbString = localStorage.getItem("db");
+    if (!dbString) return "";
+    const db = JSON.parse(dbString);
 
     const undelivered = db
       .filter((location) => location.parcels.length > 0)
@@ -91,6 +78,29 @@ export default function Settings() {
         Create Place
       </Button> */}
 
+      {/* <Input value={input} onChange={(e) => setInput(e.target.value)} /> */}
+
+      {/* <a
+        href={URL.createObjectURL(
+          new Blob([getHistory()], { type: "text/plain" })
+        )}
+        download="db.json"
+      >
+        <Button w="100%">Download State</Button>
+      </a> */}
+
+      <Text>Upload State</Text>
+      <Flex>
+        <Input type="file" onChange={(e) => readFile(e.target.files[0])} />
+        <Button
+          onClick={() =>
+            dispatch("overwrite", JSON.parse(localStorage.getItem("db")))
+          }
+        >
+          Upload
+        </Button>
+      </Flex>
+
       <a
         href={URL.createObjectURL(
           new Blob([localStorage.getItem("db")], {
@@ -101,33 +111,11 @@ export default function Settings() {
       >
         <Button w="100%">Download All</Button>
       </a>
-
-      <Input value={input} onChange={(e) => setInput(e.target.value)} />
-
-      <Button onClick={() => localStorage.setItem("db", input)} color="black">
-        Set DB
-      </Button>
-
-      <Button
-        onClick={() => (logout(), navigate("/login"))}
-        color="white"
-        background="green.800"
-        w="100%"
-      >
-        Logout
-      </Button>
-      <a
-        href={URL.createObjectURL(
-          new Blob([getHistory()], { type: "text/plain" })
-        )}
-        download="db.json"
-      >
-        <Button w="100%">Download State</Button>
-      </a>
-
-      <Text>Upload State</Text>
-      <Input type="file" onChange={(e) => readFile(e.target.files[0])} />
-
+      <Text>Upload Locations</Text>
+      <Input
+        type="file"
+        onChange={(e) => readLocationFile(e.target.files[0])}
+      />
       <a
         href={URL.createObjectURL(
           new Blob([localStorage.getItem("all-streets")], {
@@ -138,12 +126,6 @@ export default function Settings() {
       >
         <Button w="100%">Download Locations</Button>
       </a>
-
-      <Text>Upload Locations</Text>
-      <Input
-        type="file"
-        onChange={(e) => readLocationFile(e.target.files[0])}
-      />
     </Flex>
   );
 }

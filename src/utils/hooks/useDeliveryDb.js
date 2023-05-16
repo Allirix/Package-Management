@@ -157,6 +157,7 @@ export const actions = {
     parcels.splice(index, 1);
     return deliveries.map((d) => (d.id === id ? { ...d, parcels } : d));
   },
+  reload: (deliveries) => (deliveries.length > 0 ? [...deliveries] : []),
 };
 
 export const ACTION_TYPES = Object.keys(actions);

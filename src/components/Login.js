@@ -10,7 +10,6 @@ import {
 } from "@chakra-ui/react";
 
 import { createPlace } from "../model/create";
-import { signOut } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
